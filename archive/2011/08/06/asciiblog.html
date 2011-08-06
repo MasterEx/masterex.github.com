@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.5" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<title>Hello World AsciiBlog :)</title>
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul>
+                                        <li><a href="../../../../archive.rss"><img width="32" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<div id="header">
+<h1>Hello World AsciiBlog :)</h1>
+</div>
+<p>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p><a href="https://github.com/MasterEx/AsciiBlog">AsciiBlog</a> is a blog engine based on
+<a href="http://www.methods.co.nz/asciidoc/">Asciidoc</a>. It generates a blog in plain html.
+The idea is to have a blog in plain html generated just as the
+Asciidoc <a href="http://www.methods.co.nz/asciidoc/">homepage</a>.</p></div>
+<div class="paragraph"><p>Just a moment! That&#8217;s asciidoc already! So what&#8217;s so special about
+AsciiBlog?</p></div>
+<div class="paragraph"><p>All the magic is just some shell and bash scripts that automate the hole
+procedure. Everything else is just Asciidoc.</p></div>
+<div class="paragraph"><p>Bellow I will explain you the logic behind Asciiblog, the workflow of the
+blogging process and I&#8217;ll point out some
+features that are missing and I would like to implement in the future.</p></div>
+<div class="paragraph"><p>As you will see it is very premature at the moment (just version 0.1)
+but it works (this blog is actually a proof of concept) and it is another
+option out there.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Before I continue I&#8217;ll remind you that Asciiblog is just Asciidoc so
+every page (that includes the posts) that is generated was previously written
+in Asciidoc <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a>.</p></div>
+<div class="paragraph"><p>Here it is the directory hierarchy of Asciiblog.</p></div>
+<div class="listingblock">
+<div class="title">Hierarchy</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>archive<span style="color: #990000">/</span>
+bin<span style="color: #990000">/</span>
+images<span style="color: #990000">/</span>
+javascripts<span style="color: #990000">/</span>
+layouts<span style="color: #990000">/</span>
+mainsite<span style="color: #990000">/</span>
+styles<span style="color: #990000">/</span>
+website<span style="color: #990000">/</span></tt></pre></div></div>
+<div class="paragraph"><p>Let&#8217;s see it in more detail.</p></div>
+<div class="sect2">
+<h3 id="_archive">Archive</h3>
+<div class="paragraph"><p>Archive contains the posts written in Asciidoc markdown.</p></div>
+<div class="paragraph"><p>To create a new post we invoke the <span class="blue">new-post.sh</span> script from within bin directory.
+A new empty text file then is created. The file name is <span class="green">&lt;unix time&gt;.txt</span>
+except if the script is invoked like <span class="blue">new-post.sh</span> some-name. Then the new file
+will be named <span class="green">&lt;some-name&gt;.txt</span>.</p></div>
+<div class="paragraph"><p>Every post resides in <span class="green">archive/YEAR/MONTH/DAY/&lt;some-name&gt;.html</span>. The
+directories <span class="green">YEAR/MONTH/DAY/</span> are created automatically by the
+<span class="blue">new-post.sh</span> script.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_bin">Bin</h3>
+<div class="paragraph"><p>Bin contains all the Asciiblog magic. Currently there are <strong>6</strong> scripts.</p></div>
+<div class="sect3">
+<h4 id="_archive_sh">archive.sh</h4>
+<div class="paragraph"><p>Creates a nice directory/post listing, instead of the default webserver
+directory/file listing, that look like that:</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><p><a href="file:../../..">archive</a></p></div>
+<div class="paragraph"><p><a href="file:../..">archive/2011</a></p></div>
+<div class="paragraph"><p><a href="file:..">archive/2011/08</a></p></div>
+<div class="paragraph"><p><a href="file:index.html">archive/2011/08/03</a></p></div>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_build_website_sh">build-website.sh</h4>
+<div class="paragraph"><p>It generates the pages that aren&#8217;t posts. These pages are located in
+<span class="blue">mainsite</span> directory. Every page should be included separetely just
+like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">main</span><span style="color: #990000">=</span><span style="color: #FF0000">"$(dirname "</span><span style="color: #009900">$0</span><span style="color: #FF0000">")/../mainsite"</span>
+<span style="color: #009900">pageroot</span><span style="color: #990000">=</span><span style="color: #FF0000">"$(dirname "</span><span style="color: #009900">$0</span><span style="color: #FF0000">")/../website"</span>
+<span style="color: #990000">...</span>
+<span style="color: #009900">$ASCIIDOC_HTML</span> -a index-only -o<span style="color: #FF0000">"$pageroot/index.html"</span> <span style="color: #FF0000">"$main/index.txt"</span>
+<span style="color: #009900">$ASCIIDOC_HTML</span> -d <span style="color: #FF0000">"book"</span> -o<span style="color: #FF0000">"$pageroot/archive.html"</span> <span style="color: #FF0000">"$main/archive.txt"</span>
+<span style="color: #009900">$ASCIIDOC_HTML</span> -o<span style="color: #FF0000">"$pageroot/about.html"</span> <span style="color: #FF0000">"$main/about.txt"</span></tt></pre></div></div>
+<div class="paragraph"><p>This script should be changed accordingly.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_createrss_sh">createrss.sh</h4>
+<div class="paragraph"><p>Creates the RSS feed <span class="green">archive.rss</span> in the website home directory.
+This RSS file contains the post titles and the publication dates.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_new_post_sh">new-post.sh</h4>
+<div class="paragraph"><p>I have talked about that in the <span class="blue">archive.sh</span> section sooner.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_post_it_sh">post-it.sh</h4>
+<div class="paragraph"><p>This script has to be invoked from within the post directory.</p></div>
+<div class="paragraph"><p>Let&#8217;s say this post I am writting right now is located in
+<span class="green">archive/2011/08/03/asciiblog.html</span>. I should publish it like</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>myBlog/archive<span style="color: #990000">/</span><span style="color: #993399">2011</span><span style="color: #990000">/</span><span style="color: #993399">08</span><span style="color: #990000">/</span><span style="color: #993399">03</span><span style="color: #009900">$.</span><span style="color: #990000">./../../..</span>/bin/post-it<span style="color: #990000">.</span>sh asciiblog<span style="color: #990000">.</span>txt</tt></pre></div></div>
+<div class="paragraph"><p>That command will add an entry for the new post in <span class="green">mainsite/archive.txt</span>
+and then will generate the post and the new archive page.</p></div>
+<div class="paragraph"><p>If it&#8217;s invoked with the -r attribute the <span class="green">archive.txt</span> won&#8217;t be
+updated and regenerated. This is helpfull when editing a post and want to
+republish it without adding a new entry to <span class="green">archive.txt</span>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_rsswriter_sh">rsswriter.sh</h4>
+<div class="paragraph"><p>This script contains functions that help the rss file creation.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_images">Images</h3>
+<div class="paragraph"><p>It contains the website images.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_javascripts">Javascripts</h3>
+<div class="paragraph"><p>It contains the javascript that is included in the static html.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_layouts">Layouts</h3>
+<div class="paragraph"><p>It contains the layouts. Layout is the html that is placed previously
+and after every generated page.</p></div>
+<div class="paragraph"><p>There are <strong>3</strong> different layouts, one for the <span class="blue">mainsite</span> pages, one
+for the blog posts and one for the <span class="green">archive.sh</span> script. That layouts
+are actually the same template except that the url&#8217;s are different.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_mainsite">Mainsite</h3>
+<div class="paragraph"><p>It contains the pages that aren&#8217;t posts.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_styles">Styles</h3>
+<div class="paragraph"><p>It contains the css files.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_website">Website</h3>
+<div class="paragraph"><p>It contains the hole generated website.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_workflow">Workflow</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now I&#8217;ll explain how you can build a website like this one with Asciiblog.</p></div>
+<div class="paragraph"><p>First of all you have to modify the layouts and styles. There you will include
+your website design (html and css).</p></div>
+<div class="paragraph"><p>After that write something nice that will be the pages that aren&#8217;t posts and
+place them in the mainsite directory. Then modify the <span class="green">build-website.sh</span>
+script accordingly and run it.</p></div>
+<div class="paragraph"><p>The next step is to run the <span class="green">new-post.sh</span> script that creates a new file,
+write a cool post and then run the <span class="green">post-it.sh</span> script to generate it.</p></div>
+<div class="paragraph"><p>Run the <span class="green">archive.sh</span> to create the directory/post listing and then
+the <span class="green">createrss.sh</span>
+to update the <span class="green">archive.rss</span>.</p></div>
+<div class="paragraph"><p><strong>Tah-dah!</strong> Now you have your website build and ready!</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The procedure is working but it isn&#8217;t very smooth at the moment. Asciiblog promotes
+the <a href="http://c00kiemon5ter.github.com/code/2011/04/14/Blogging-like-Coding.html">blogging
+like coding</a> way of blogging. It isn&#8217;t supposed to be mainstream but it&#8217;s far
+enough from being as easy to use as I would like to be, so there is
+plenty of room for improvement.</p></div>
+<div class="sect2">
+<h3 id="_features_that_are_missing_and_things_that_must_be_done">Features that are missing and things that must be done</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+Tags
+</p>
+</li>
+<li>
+<p>
+Post deletion
+</p>
+</li>
+<li>
+<p>
+Post comments - that can be done right now with <a href="http://disqus.com/">disqus</a>
+ or something like that but I have to spent a little more thinking about that.
+</p>
+</li>
+<li>
+<p>
+Cleanup the scripts
+</p>
+</li>
+<li>
+<p>
+Use global configuration file for the scripts
+</p>
+</li>
+<li>
+<p>
+Add the scripts to the executables search path to call them without
+ defining the full path
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</p>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+</body>
+</html>
