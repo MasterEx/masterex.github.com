@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
   <channel>
-    <title>BLOGNAME</title>
-    <link>http://blog.address.com</link>
-    <description>BLOGTITLE</description>
+    <title>Master's Touch</title>
+    <link>http://masterex.github.com</link>
+    <description>Master_ex blog</description>
     <language>en-us</language>
     <generator>just a shell script</generator>
+    <item>
+        <title>Give a smile: Become a blood donor!</title>
+        <link>http://blog.address.com/archive/2011/08/22/blood-donation.html</link>
+        <description>Give a smile: Become a blood donor!</description>
+        <pubDate>2011-08-22</pubDate>
+    </item>
     <item>
         <title>Hello World AsciiBlog :)</title>
         <link>http://blog.address.com/archive/2011/08/06/asciiblog.html</link>
