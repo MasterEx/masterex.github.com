@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.5" />
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Trackable File Distribution - a simple approach</title>
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul>
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<div id="header">
+<h1>Trackable File Distribution - a simple approach</h1>
+</div>
+<div class="sect1">
+<h2 id="_scenario">Scenario</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Let&#8217;s asume that we have a community or something that distributes
+material such as pictures, pdf&#8217;s e.t.c. by a website to it&#8217;s registered only
+users. If the <em>management</em> wants only the registered members to download
+the material is it possible to somehow track a member who leaks
+something in another public mean such as uploading it to a public place
+or redestributing it via torrents?</p></div>
+<div class="paragraph"><p>The solution I came up is pretty simple and it&#8217;s called
+<a href="http://en.wikipedia.org/wiki/Steganography">steganography</a>.</p></div>
+<div class="paragraph"><p>Before I continue let me state that this method isn&#8217;t <em>bulletproof</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_steganography">Steganography</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Steganography is the art and science of writing hidden messages in such
+a way that no one, apart from the sender and intended recipient, suspects
+the existence of the message, a form of security through obscurity.</p></div>
+</div>
+<div class="attribution">
+&#8212; wikipedia
+</div></div>
+<div class="paragraph"><p>So, in general steaganography is a process where you are hiding something inside
+something else! Usually hiding it in plain sight.</p></div>
+<div class="paragraph"><p>The trick is that no one knows that something exists in there. As wikipedia
+states that&#8217;s <strong>a form of security through obscurity</strong>.</p></div>
+<div class="sect2">
+<h3 id="_so_how_steganography_fits_in_our_case">So how steganography fits in our case?</h3>
+<div class="paragraph"><p>That we are going to do is hide a unique identifier inside
+each downloaded file that will connect it to a specific user.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_let_8217_s_see_how">Let&#8217;s see how!</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In the above example I am going to show you that concept with some PHP code.
+Note that I just choose PHP because I feel more familiar with but this can
+be done in any language of your choise.</p></div>
+<div class="paragraph"><p>Let&#8217;s asume that we are going to distribute a GIF file.</p></div>
+<div class="paragraph"><p>First of all let&#8217;s construct the identifier.</p></div>
+<div class="paragraph"><p>You can construct the identifier any way you like but here it is the first
+thing that poped into my head.</p></div>
+<div class="paragraph"><p>If we have a user with username <strong>master</strong> and with password <strong>pass</strong> we can create
+a unique identifier that will be the first 7 digits of the user name plus
+password hash (md5 will do). This is md5("masterpass") = ab1e5cb87bca828b54a4a24c2b37ea8f
+and the first 7 digits are <strong>ab1e5cb</strong>. This pattern can identify 36^7 unique
+users.</p></div>
+<div class="paragraph"><p>So now that we have our unique identifier we can serve the file to the
+user like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&lt;?php</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">function</span></span> <span style="font-weight: bold"><span style="color: #000000">sendfile</span></span><span style="color: #990000">(</span><span style="color: #009900">$file</span><span style="color: #990000">,</span><span style="color: #009900">$identifier</span><span style="color: #990000">,</span><span style="color: #009900">$id_length</span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">file_exists</span></span><span style="color: #990000">(</span><span style="color: #009900">$file</span><span style="color: #990000">))</span> <span style="color: #FF0000">{</span>
+    <span style="color: #009900">$filesize</span> <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">filesize</span></span><span style="color: #990000">(</span><span style="color: #009900">$file</span><span style="color: #990000">)+</span><span style="color: #009900">$id_length</span><span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Content-Description: File Transfer'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Content-Type: application/octet-stream'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Content-Disposition: attachment; filename='</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">basename</span></span><span style="color: #990000">(</span><span style="color: #009900">$file</span><span style="color: #990000">));</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Content-Transfer-Encoding: binary'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Expires: 0'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Cache-Control: must-revalidate, post-check=0, pre-check=0'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Pragma: public'</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">header</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Content-Length: '</span> <span style="color: #990000">.</span> <span style="color: #009900">$filesize</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #000000">ob_clean</span></span><span style="color: #990000">();</span>
+    <span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+    <span style="font-weight: bold"><span style="color: #000000">readfile</span></span><span style="color: #990000">(</span><span style="color: #009900">$file</span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #009900">$identifier</span><span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">exit</span></span><span style="color: #990000">;</span>
+  <span style="color: #FF0000">}</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"FILE NOT FOUND! :("</span><span style="color: #990000">;</span>
+  <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span>
+
+<span style="font-weight: bold"><span style="color: #000000">sendfile</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"image.gif"</span><span style="color: #990000">,</span><span style="color: #FF0000">"ab1e5cb"</span><span style="color: #990000">,</span><span style="color: #993399">7</span><span style="color: #990000">);</span>
+
+<span style="color: #990000">?&gt;</span></tt></pre></div></div>
+<div class="paragraph"><p><a href="https://gist.github.com/1273109">Here</a> is the gist with the code.</p></div>
+<div class="paragraph"><p>The <strong>sendfile</strong> function takes the files name/location, the identifier and
+the identifiers length(in bytes) and returns the trackable file to the user.</p></div>
+<div class="paragraph"><p>If we run <em>diff</em> to the original GIF and the one our user downloaded we&#8217;ll
+see that they differ.</p></div>
+<div class="paragraph"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #993399">0002710</span> <span style="color: #993399">0000</span> 003b
+000271a</tt></pre></div></div>
+<div class="paragraph"><p><a href="http://www.forensicswiki.org/wiki/GIF">The 3B hex value is the GIF footer</a>.
+However <em>most</em> programs use only the
+header to identify the file so most image viewers will display our GIF just as
+the original.</p></div>
+<div class="paragraph"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>$ du -b image1<span style="color: #990000">.</span>gif
+<span style="color: #993399">10010</span>  image1<span style="color: #990000">.</span>gif
+$ du -b image<span style="color: #990000">.</span>gif
+<span style="color: #993399">10003</span>  image<span style="color: #990000">.</span>gif</tt></pre></div></div>
+<div class="paragraph"><p>If we hexdump it the last line will be:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #993399">0002710</span> <span style="color: #993399">0000</span> 613b <span style="color: #993399">3162</span> <span style="color: #993399">3565</span> <span style="color: #993399">6263</span>
+000271a</tt></pre></div></div>
+<div class="paragraph"><p>As we can see there are 7 more bytes which are our unique identifier.
+You can check that if you check the hex values in an <a href="http://www.asciitable.com/">ascii
+character table</a>.</p></div>
+<div class="paragraph"><p>Further more <em>hexdump</em> can dump a file in ascii with the <strong>-C</strong> switch. So
+the downloaded file last line is:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #993399">00002710</span>  <span style="color: #993399">00</span> <span style="color: #993399">00</span> 3b <span style="color: #993399">61</span> <span style="color: #993399">62</span> <span style="color: #993399">31</span> <span style="color: #993399">65</span> <span style="color: #993399">35</span>  <span style="color: #993399">63</span> <span style="color: #993399">62</span>                    <span style="color: #990000">|..;</span>ab1e5cb<span style="color: #990000">|</span>
+0000271a</tt></pre></div></div>
+<div class="paragraph"><p>Here we can see our identifier pretty clearly.</p></div>
+<div class="sect2">
+<h3 id="_sum_up">Sum up</h3>
+<div class="paragraph"><p>To sum up if a user had leaked the file image.gif we can easily associate
+that file with him!</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_not_bulletproof">Why not bulletproof</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>That&#8217;s pretty obvious! As easily as we inserted the identifier someone can
+remove it.</p></div>
+<div class="paragraph"><p>Also some programs may check the file footer before they open the file.
+That may result to a failure.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are other means that can achieve the same result such as
+a visual watermark introduced in a picture. However, those that aren&#8217;t alert/destroy
+the file can be reversed with some basic skills.</p></div>
+<div class="paragraph"><p>Furthermore there are staganography methods that can mark a file in a
+less profound way. Those methods are more advanced and complex and as I
+implied earlier they may alter/destroy the original&#8217;s file data and have
+as a result a copy with lesser quality.</p></div>
+<div class="ulist"><div class="title">See Also</div><ul>
+<li>
+<p>
+<a href="http://www.forensicswiki.org/wiki/Category:File_Formats">File Formats</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Digital_rights_management">Digital rights management (DRM)</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?hexdump+1">$man hexdump</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.informit.com/guides/content.aspx?g=security&amp;seqNum=103">Steganography as a digital signing method - Watermarks</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<h2>Comments</h2>
+<p>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript><a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+</p>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+</body>
+</html>
