@@ -9,25 +9,39 @@
     <item>
         <title>Trackable File Distribution - a simple approach</title>
         <link>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
-        <description>Trackable File Distribution - a simple approach</description>
+        <description>Let's asume that we have a community or something that distributes
+material such as pictures, pdf's e.t.c. by a website to it's registered only
+users. If the _management_ wants only the registered members to download
+the material is it possible to somehow track a member who leaks
+something in another public mean such as uploading it to a public place
+or redistributing it via torrents?</description>
         <pubDate>2011-10-09</pubDate>
     </item>
     <item>
         <title>PHP: Protect the c0d3</title>
         <link>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</link>
-        <description>PHP: Protect the c0d3</description>
+        <description>Protecting the PHP code I wrote has passed my mind in the past but
+never actually bothered me because the code I have wrote was either
+open source  or hosted in a self-administrated enviroment.
+
+Anyway, as it seems many people are interested in protecting their
+code from distribution without their permission.</description>
         <pubDate>2011-08-27</pubDate>
     </item>
     <item>
         <title>Give a smile: Become a blood donor!</title>
         <link>http://masterex.github.com/archive/2011/08/22/blood-donation.html</link>
-        <description>Give a smile: Become a blood donor!</description>
+        <description>This article is about http://en.wikipedia.org/wiki/Blood_donation[blood donation]. 
+I will present you my view as a blood donor and try to point you out why 
+you should become a blood donor yourself if you fill the requirements.</description>
         <pubDate>2011-08-22</pubDate>
     </item>
     <item>
         <title>Hello World AsciiBlog :)</title>
         <link>http://masterex.github.com/archive/2011/08/06/asciiblog.html</link>
-        <description>Hello World AsciiBlog :)</description>
+        <description>Bellow I will explain you the logic behind Asciiblog, the workflow of the 
+blogging process and I'll point out some
+features that are missing and I would like to implement in the future.</description>
         <pubDate>2011-08-06</pubDate>
     </item>
   </channel>
