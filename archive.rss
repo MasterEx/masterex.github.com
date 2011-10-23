@@ -7,6 +7,14 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Java: A simple and neat cli Progress Bar</title>
+        <link>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</link>
+        <description>Back on June c00kiemon5er wrote a cli progress bar in java. As it seems
+it isn't something difficult but I find it pretty usefull and worth to
+be mentioned. The progress bar was originally written as part of F.I.C.</description>
+        <pubDate>2011-10-23</pubDate>
+    </item>
+    <item>
         <title>Trackable File Distribution - a simple approach</title>
         <link>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
         <description>Let's asume that we have a community or something that distributes
