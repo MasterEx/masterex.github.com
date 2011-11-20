@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
+    <atom:link href="http://masterex.github.com/archive.rss" rel="self" type="application/rss+xml"/>
     <title>Master's Touch</title>
     <link>http://masterex.github.com</link>
     <description>Master_ex's personal blog</description>
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Some retro technology! ZX Spectrum</title>
+        <link>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</link>
+        <description>The first computer I've used and I remember (8-bit game consoles don't count)
+was a *386* running *MS-DOS* and *Windows 3.1*. However, before that my
+parents have got a very cool computer! That was a *Sinclair's ZX Spectrum*.</description>
+        <pubDate>Sun, 20 Nov 2011 00:00:00 +0200</pubDate>
+        <guid>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</guid>
+    </item>
+    <item>
         <title>Java: A simple and neat cli Progress Bar</title>
         <link>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</link>
         <description>Back on June c00kiemon5er wrote a cli progress bar in java. As it seems
 it isn't something difficult but I find it pretty usefull and worth to
 be mentioned. The progress bar was originally written as part of F.I.C.</description>
-        <pubDate>2011-10-23</pubDate>
+        <pubDate>Sun, 23 Oct 2011 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</guid>
     </item>
     <item>
         <title>Trackable File Distribution - a simple approach</title>
@@ -23,7 +34,8 @@ users. If the _management_ wants only the registered members to download
 the material is it possible to somehow track a member who leaks
 something in another public mean such as uploading it to a public place
 or redistributing it via torrents?</description>
-        <pubDate>2011-10-09</pubDate>
+        <pubDate>Sun, 09 Oct 2011 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</guid>
     </item>
     <item>
         <title>PHP: Protect the c0d3</title>
@@ -34,7 +46,8 @@ open source  or hosted in a self-administrated enviroment.
 
 Anyway, as it seems many people are interested in protecting their
 code from distribution without their permission.</description>
-        <pubDate>2011-08-27</pubDate>
+        <pubDate>Sat, 27 Aug 2011 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</guid>
     </item>
     <item>
         <title>Give a smile: Become a blood donor!</title>
@@ -42,7 +55,8 @@ code from distribution without their permission.</description>
         <description>This article is about http://en.wikipedia.org/wiki/Blood_donation[blood donation]. 
 I will present you my view as a blood donor and try to point you out why 
 you should become a blood donor yourself if you fill the requirements.</description>
-        <pubDate>2011-08-22</pubDate>
+        <pubDate>Mon, 22 Aug 2011 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/archive/2011/08/22/blood-donation.html</guid>
     </item>
     <item>
         <title>Hello World AsciiBlog :)</title>
@@ -50,7 +64,8 @@ you should become a blood donor yourself if you fill the requirements.</descript
         <description>Bellow I will explain you the logic behind Asciiblog, the workflow of the 
 blogging process and I'll point out some
 features that are missing and I would like to implement in the future.</description>
-        <pubDate>2011-08-06</pubDate>
+        <pubDate>Sat, 06 Aug 2011 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/archive/2011/08/06/asciiblog.html</guid>
     </item>
   </channel>
 </rss>
