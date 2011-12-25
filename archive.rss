@@ -8,6 +8,13 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>JUPAR: Updating Java desktop applications made easy!</title>
+        <link>http://masterex.github.com/archive/2011/12/25/jupar.html</link>
+        <description></description>
+        <pubDate>Sun, 25 Dec 2011 00:00:00 +0200</pubDate>
+        <guid>http://masterex.github.com/archive/2011/12/25/jupar.html</guid>
+    </item>
+    <item>
         <title>Some retro technology! ZX Spectrum</title>
         <link>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</link>
         <description>The first computer I've used and I remember (8-bit game consoles don't count)
@@ -19,7 +26,7 @@ parents have got a very cool computer! That was a *Sinclair's ZX Spectrum*.</des
     <item>
         <title>Java: A simple and neat cli Progress Bar</title>
         <link>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</link>
-        <description>Back on June c00kiemon5er wrote a cli progress bar in java. As it seems
+        <description>Back on June c00kiemon5ter wrote a cli progress bar in java. As it seems
 it isn't something difficult but I find it pretty usefull and worth to
 be mentioned. The progress bar was originally written as part of F.I.C.</description>
         <pubDate>Sun, 23 Oct 2011 00:00:00 +0300</pubDate>
