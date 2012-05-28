@@ -1,0 +1,555 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.7" />
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Android: Crafting a Metronome with Audio Synthesis</title>
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul>
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<div id="header">
+<h1>Android: Crafting a Metronome with Audio Synthesis</h1>
+</div>
+<div class="sect1">
+<h2 id="_where_is_the_source_code">Where is the source code</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Currently I am working on a project for my uni where I need to extend a metronome
+for android with some additional functionalities. At first I thought that it
+would be very easy to find plenty of open source metronomes out there.</p></div>
+<div class="paragraph"><p>As it seems I was wrong. The only code I found was <a href="http://code.google.com/p/android-metronome/">android-metronome</a>
+by Akshat Aranya. After compiling and running the project with my colleague
+we saw that the beat wasn&#8217;t stable. For my disappointment <a href="http://stackoverflow.com/questions/6018824/play-a-sound-every-n-milliseconds">this</a>
+stackoverflow thrad confirmed that.</p></div>
+<div class="paragraph"><p>Funny thing is that the google play version of it seems stable, but anyway
+we weren&#8217;t able to produce a stable version from the source code.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crafting_a_metronome_day_0">Crafting a Metronome day 0</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Amazed how the code for such a <em>trivial</em> thing wasn&#8217;t available we started
+our own implementation.</p></div>
+<div class="paragraph"><p>In the beginning we used timers to play a sound every x seconds. It was
+a great a failure!</p></div>
+<div class="paragraph"><p>We used threads and the like but the <em>metronome</em> was far from accurate.
+Again after a
+<a href="http://stackoverflow.com/questions/4035971/metronome-timer-slowdown-via-handler-or-threads-too">stackoverflow search</a>
+we saw that this path was wrong.</p></div>
+<div class="paragraph"><p>Just for the story, it was about then when my colleague had to quit for personal matters.</p></div>
+<div class="paragraph"><p>So, convinced by the <a href="http://stackoverflow.com/questions/6018824/play-a-sound-every-n-milliseconds">first</a>
+stackoverflow thread that the android <strong>AudioTrack</strong> was the right way to go I started
+to implement a metronome with that.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_at_last_a_metronome">At last a Metronome!</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>So, here we are now with a working metronome :D</p></div>
+<div class="paragraph"><p>Let&#8217;s see the core metronome class.</p></div>
+<div class="listingblock">
+<div class="title">AudioGenerator</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">package</span></span> pntanasis<span style="color: #990000">.</span>master_ex<span style="color: #990000">.</span>android<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>media<span style="color: #990000">.</span>AudioFormat<span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>media<span style="color: #990000">.</span>AudioManager<span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>media<span style="color: #990000">.</span>AudioTrack<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">AudioGenerator</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> sampleRate<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">AudioTrack</span> audioTrack<span style="color: #990000">;</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">AudioGenerator</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> sampleRate<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>sampleRate <span style="color: #990000">=</span> sampleRate<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">double</span><span style="color: #990000">[]</span> <span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> samples<span style="color: #990000">,</span><span style="color: #009900">int</span> sampleRate<span style="color: #990000">,</span><span style="color: #009900">double</span> frequencyOfTone<span style="color: #990000">)</span><span style="color: #FF0000">{</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> sample <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="color: #009900">double</span><span style="color: #990000">[</span>samples<span style="color: #990000">];</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(</span><span style="color: #009900">int</span> i <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span> i <span style="color: #990000">&lt;</span> samples<span style="color: #990000">;</span> i<span style="color: #990000">++)</span> <span style="color: #FF0000">{</span>
+            sample<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> Math<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">sin</span></span><span style="color: #990000">(</span><span style="color: #993399">2</span> <span style="color: #990000">*</span> Math<span style="color: #990000">.</span>PI <span style="color: #990000">*</span> i <span style="color: #990000">/</span> <span style="color: #990000">(</span>sampleRate<span style="color: #990000">/</span>frequencyOfTone<span style="color: #990000">));</span>
+        <span style="color: #FF0000">}</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> sample<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">byte</span><span style="color: #990000">[]</span> <span style="font-weight: bold"><span style="color: #000000">get16BitPcm</span></span><span style="color: #990000">(</span><span style="color: #009900">double</span><span style="color: #990000">[]</span> samples<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="color: #009900">byte</span><span style="color: #990000">[]</span> generatedSound <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="color: #009900">byte</span><span style="color: #990000">[</span><span style="color: #993399">2</span> <span style="color: #990000">*</span> samples<span style="color: #990000">.</span>length<span style="color: #990000">];</span>
+        <span style="color: #009900">int</span> index <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(</span><span style="color: #009900">double</span> sample <span style="color: #990000">:</span> samples<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-style: italic"><span style="color: #9A1900">// scale to maximum amplitude</span></span>
+            <span style="color: #009900">short</span> maxSample <span style="color: #990000">=</span> <span style="color: #990000">(</span><span style="color: #009900">short</span><span style="color: #990000">)</span> <span style="color: #990000">((</span>sample <span style="color: #990000">*</span> Short<span style="color: #990000">.</span>MAX_VALUE<span style="color: #990000">));</span>
+            <span style="font-style: italic"><span style="color: #9A1900">// in 16 bit wav PCM, first byte is the low order byte</span></span>
+            generatedSound<span style="color: #990000">[</span>index<span style="color: #990000">++]</span> <span style="color: #990000">=</span> <span style="color: #990000">(</span><span style="color: #009900">byte</span><span style="color: #990000">)</span> <span style="color: #990000">(</span>maxSample <span style="color: #990000">&amp;</span> <span style="color: #993399">0x00ff</span><span style="color: #990000">);</span>
+            generatedSound<span style="color: #990000">[</span>index<span style="color: #990000">++]</span> <span style="color: #990000">=</span> <span style="color: #990000">(</span><span style="color: #009900">byte</span><span style="color: #990000">)</span> <span style="color: #990000">((</span>maxSample <span style="color: #990000">&amp;</span> <span style="color: #993399">0xff00</span><span style="color: #990000">)</span> <span style="color: #990000">&gt;&gt;&gt;</span> <span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> generatedSound<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">createPlayer</span></span><span style="color: #990000">()</span><span style="color: #FF0000">{</span>
+        audioTrack <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AudioTrack</span></span><span style="color: #990000">(</span>AudioManager<span style="color: #990000">.</span>STREAM_MUSIC<span style="color: #990000">,</span>
+                sampleRate<span style="color: #990000">,</span> AudioFormat<span style="color: #990000">.</span>CHANNEL_CONFIGURATION_MONO<span style="color: #990000">,</span>
+                AudioFormat<span style="color: #990000">.</span>ENCODING_PCM_16BIT<span style="color: #990000">,</span> sampleRate<span style="color: #990000">,</span>
+                AudioTrack<span style="color: #990000">.</span>MODE_STREAM<span style="color: #990000">);</span>
+
+        audioTrack<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span><span style="color: #009900">double</span><span style="color: #990000">[]</span> samples<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="color: #009900">byte</span><span style="color: #990000">[]</span> generatedSnd <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">get16BitPcm</span></span><span style="color: #990000">(</span>samples<span style="color: #990000">);</span>
+        audioTrack<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>generatedSnd<span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> generatedSnd<span style="color: #990000">.</span>length<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">destroyAudioTrack</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        audioTrack<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">stop</span></span><span style="color: #990000">();</span>
+        audioTrack<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">release</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Here we create an AudioTrack object and set the options for streaming
+audio, using mono sound and 16bit PCM audio format.</p></div>
+<div class="sect2">
+<h3 id="_audio_101">Audio 101</h3>
+<div class="paragraph"><p>Sound is actually a wave. We call it soundwave. There are many
+different soundwaves named from their form such as sine wave, sawtooth wave,
+square wave etc.</p></div>
+<div class="paragraph"><p>Soundwaves have a frequency just as all the kind of waves. That is the circle or repeat rate.</p></div>
+<div class="paragraph"><p>So, different sounds are produced by different frequencies. For example <strong>C</strong> note
+may be produced by <strong>16.35</strong> Hz frequency and <strong>D</strong> by <strong>18.35</strong> Hz.</p></div>
+<div class="paragraph"><p>Something else important when capturing or creating sound from a digital
+device is the sample rate. This is how many samples we capture per second.</p></div>
+<div class="paragraph"><p>A sample is the value of the sound (in the waveform) at a specific moment.</p></div>
+<div class="paragraph"><p>The sample rate has to be 2 times more than the max frequency.</p></div>
+<div class="paragraph"><p>Anyway, enough with the theory.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_back_to_the_code">Back to the code</h3>
+<div class="paragraph"><p>The <span class="green">getSineWave()</span> method returns an array with samples
+of a sine wave with the given frequency and sample rate.</p></div>
+<div class="paragraph"><p>The <span class="green">get16BitPcm()</span> gets the samples and returns a PCM byte array.
+PCM is a method used to digitally represent sampled analog signals. It
+stands for Pulse Code Modulation.</p></div>
+<div class="paragraph"><p>Notice that every sample is represented by a double and in order to encode
+it to 16bit PCM we have to use only <strong>16bits</strong> aka <strong>2</strong> bytes. So we get the max
+integer (short: 2^15-1 or 32767) nearest to the double sample value and then
+we convert it to <strong>2</strong> bytes.</p></div>
+<div class="paragraph"><p>To do that we perform a bitwise AND with the bitmask <strong>0x00ff</strong> to get the
+little end bits and then a bitwise AND with the bitmask <strong>0xff00</strong> and shift
+the bits <strong>8</strong> positions (bits) to the right.</p></div>
+<div class="paragraph"><p><span class="image">
+<img src="sampleBitmask.png" alt="samples and bitmasks" />
+</span></p></div>
+<div class="paragraph"><p>So we populate an array of bytes that contains the waveform in PCM.</p></div>
+<div class="paragraph"><p>Other than that we write the sound <em>directly</em> to the audio device buffer
+with the <span class="green">writeSound()</span> method.</p></div>
+<div class="paragraph"><p>The other important class of our metronome is the <strong>Metronome</strong> class. Here it is:</p></div>
+<div class="listingblock">
+<div class="title">Metronome</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">package</span></span> pntanasis<span style="color: #990000">.</span>master_ex<span style="color: #990000">.</span>android<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>util<span style="color: #990000">.</span>Log<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">Metronome</span> <span style="color: #FF0000">{</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">double</span> bpm<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> beat<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> noteValue<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> silence<span style="color: #990000">;</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">double</span> beatSound<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">double</span> sound<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #009900">int</span> tick <span style="color: #990000">=</span> <span style="color: #993399">1000</span><span style="color: #990000">;</span> <span style="font-style: italic"><span style="color: #9A1900">// samples of tick</span></span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> play <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">;</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">AudioGenerator</span> audioGenerator <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AudioGenerator</span></span><span style="color: #990000">(</span><span style="color: #993399">8000</span><span style="color: #990000">);</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">Metronome</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createPlayer</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">calcSilence</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                silence <span style="color: #990000">=</span> <span style="color: #990000">(</span><span style="color: #009900">int</span><span style="color: #990000">)</span> <span style="color: #990000">(((</span><span style="color: #993399">60</span><span style="color: #990000">/</span>bpm<span style="color: #990000">)*</span><span style="color: #993399">8000</span><span style="color: #990000">)-</span>tick<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #000000">calcSilence</span></span><span style="color: #990000">();</span>
+                <span style="color: #009900">double</span><span style="color: #990000">[]</span> tick <span style="color: #990000">=</span>
+                        audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> beatSound<span style="color: #990000">);</span>
+                <span style="color: #009900">double</span><span style="color: #990000">[]</span> tock <span style="color: #990000">=</span>
+                        audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> sound<span style="color: #990000">);</span>
+                <span style="color: #009900">double</span> silence <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                <span style="color: #009900">double</span><span style="color: #990000">[]</span> sound <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="color: #009900">double</span><span style="color: #990000">[</span><span style="color: #993399">8000</span><span style="color: #990000">];</span>
+                <span style="color: #009900">int</span> t <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>s <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>b <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">do</span></span> <span style="color: #FF0000">{</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">for</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> i<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">;</span>i<span style="color: #990000">&lt;</span>sound<span style="color: #990000">.</span>length<span style="color: #990000">&amp;&amp;</span>play<span style="color: #990000">;</span>i<span style="color: #990000">++)</span> <span style="color: #FF0000">{</span>
+                                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>t<span style="color: #990000">&lt;</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>b <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+                                                sound<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> tock<span style="color: #990000">[</span>t<span style="color: #990000">];</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">else</span></span>
+                                                sound<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> tick<span style="color: #990000">[</span>t<span style="color: #990000">];</span>
+                                        t<span style="color: #990000">++;</span>
+                                <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+                                        sound<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> silence<span style="color: #990000">;</span>
+                                        s<span style="color: #990000">++;</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>s <span style="color: #990000">&gt;=</span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>silence<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                                                t <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                                s <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                                b<span style="color: #990000">++;</span>
+                                                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>b <span style="color: #990000">&gt;</span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>beat<span style="color: #990000">-</span><span style="color: #993399">1</span><span style="color: #990000">))</span>
+                                                        b <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                        <span style="color: #FF0000">}</span>
+                                <span style="color: #FF0000">}</span>
+                        <span style="color: #FF0000">}</span>
+                        audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>sound<span style="color: #990000">);</span>
+                <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">while</span></span><span style="color: #990000">(</span>play<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">stop</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                play <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">;</span>
+                audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">destroyAudioTrack</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-style: italic"><span style="color: #9A1900">/* Getters and Setters ... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>In a nutshell it creates <strong>2</strong> sounds or better <strong>2</strong> arrays of samples, one for
+the first beat and one for the others and it sends them to the audio device
+by the <span class="green">writeSound()</span> method. Between the sounds it writes a <em>zero
+waveform</em> which is actually silence.</p></div>
+<div class="paragraph"><p>So we produce sound all the time in a loop but this sound may be silence.</p></div>
+<div class="paragraph"><p>The only significant thing I should say is that the beat sound lasts as long as
+<strong>1000</strong> samples, which is <strong>1/8</strong> of a second beacause a second consists of <strong>8000</strong>
+samples (or another sample rate of our choice).</p></div>
+<div class="paragraph"><p>So, the remaining space between tho beats is filled with "silence" by the formula
+<span class="green">silence = 60/bpm * 8000 - tick</span>.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_some_more_audio_synthesis_magic">Some more Audio Synthesis Magic</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>As you have noticed I don&#8217;t load any sound for the metronome but I create
+one programmatisticaly.</p></div>
+<div class="paragraph"><p>In such a way one could synthesize a song. As a proof of concept I used
+my fine AudioGenerator Class to play the first few note of the traditional
+song <strong>Oh, Susanna</strong>.</p></div>
+<div class="paragraph"><p><span class="image">
+<img src="susana.png" alt="susana partiture" />
+</span></p></div>
+<div class="paragraph"><p>This partitura was created with <a href="http://tuxguitar.herac.com.ar/">TuxGuitar</a>.</p></div>
+<div class="paragraph"><p>Here is my first attempt:</p></div>
+<div class="listingblock">
+<div class="title">AudioSynthesisDemoActivity</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">package</span></span> pntanasis<span style="color: #990000">.</span>master_ex<span style="color: #990000">.</span>android<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>app<span style="color: #990000">.</span>Activity<span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>os<span style="color: #990000">.</span>Bundle<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">AudioSynthesisDemoActivity</span> <span style="font-weight: bold"><span style="color: #0000FF">extends</span></span> Activity <span style="color: #FF0000">{</span>
+    <span style="font-style: italic"><span style="color: #9A1900">/** Called when the activity is first created. */</span></span>
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">onCreate</span></span><span style="color: #990000">(</span><span style="color: #008080">Bundle</span> savedInstanceState<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">super</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">onCreate</span></span><span style="color: #990000">(</span>savedInstanceState<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #000000">setContentView</span></span><span style="color: #990000">(</span>R<span style="color: #990000">.</span>layout<span style="color: #990000">.</span>main<span style="color: #990000">);</span>
+
+        <span style="color: #008080">AudioGenerator</span> audio <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AudioGenerator</span></span><span style="color: #990000">(</span><span style="color: #993399">8000</span><span style="color: #990000">);</span>
+
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> silence <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="color: #993399">200</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">);</span>
+
+        <span style="color: #009900">int</span> noteDuration <span style="color: #990000">=</span> <span style="color: #993399">2400</span><span style="color: #990000">;</span>
+
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> doNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">/</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">523.25</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> reNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">/</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">587.33</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> faNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">698.46</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> laNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">880.00</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> laNote2 <span style="color: #990000">=</span>
+                audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">((</span><span style="color: #009900">int</span><span style="color: #990000">)</span> <span style="color: #990000">(</span>noteDuration<span style="color: #990000">*</span><span style="color: #993399">1.25</span><span style="color: #990000">),</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">880.00</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> siNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">/</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">987.77</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> doNote2 <span style="color: #990000">=</span>
+                audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">((</span><span style="color: #009900">int</span><span style="color: #990000">)</span> <span style="color: #990000">(</span>noteDuration<span style="color: #990000">*</span><span style="color: #993399">1.25</span><span style="color: #990000">),</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">523.25</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> miNote <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">/</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">659.26</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> miNote2 <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">659.26</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> doNote3 <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">523.25</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> miNote3 <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">*</span><span style="color: #993399">3</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">659.26</span><span style="color: #990000">);</span>
+        <span style="color: #009900">double</span><span style="color: #990000">[]</span> reNote2 <span style="color: #990000">=</span> audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span>noteDuration<span style="color: #990000">*</span><span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">8000</span><span style="color: #990000">,</span> <span style="color: #993399">587.33</span><span style="color: #990000">);</span>
+
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createPlayer</span></span><span style="color: #990000">();</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>doNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>reNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>siNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>doNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>doNote3<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote3<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>doNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>reNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>siNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>laNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>doNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>faNote<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>miNote2<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>silence<span style="color: #990000">);</span>
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>reNote2<span style="color: #990000">);</span>
+
+        audio<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">destroyAudioTrack</span></span><span style="color: #990000">();</span>
+
+    <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>And here is my hopefully more <strong>human</strong> readable version:</p></div>
+<div class="listingblock">
+<div class="title">AudioSynthesisDemoActivity</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">package</span></span> pntanasis<span style="color: #990000">.</span>master_ex<span style="color: #990000">.</span>android<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> pntanasis<span style="color: #990000">.</span>master_ex<span style="color: #990000">.</span>android<span style="color: #990000">.</span>Synthesizer<span style="color: #990000">.</span>Note0<span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>app<span style="color: #990000">.</span>Activity<span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> android<span style="color: #990000">.</span>os<span style="color: #990000">.</span>Bundle<span style="color: #990000">;</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">AudioSynthesisDemoActivity</span> <span style="font-weight: bold"><span style="color: #0000FF">extends</span></span> Activity <span style="color: #FF0000">{</span>
+    <span style="font-style: italic"><span style="color: #9A1900">/** Called when the activity is first created. */</span></span>
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">onCreate</span></span><span style="color: #990000">(</span><span style="color: #008080">Bundle</span> savedInstanceState<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">super</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">onCreate</span></span><span style="color: #990000">(</span>savedInstanceState<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #000000">setContentView</span></span><span style="color: #990000">(</span>R<span style="color: #990000">.</span>layout<span style="color: #990000">.</span>main<span style="color: #990000">);</span>
+
+        <span style="color: #008080">Synthesizer</span> synthesizer <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Synthesizer</span></span><span style="color: #990000">();</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">3.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>B<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">3.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">3.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">3.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>B<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>A<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">3.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">8</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>F<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>E<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">/</span><span style="color: #993399">4</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">(</span>Note0<span style="color: #990000">.</span>C<span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">);</span>
+
+        synthesizer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">stop</span></span><span style="color: #990000">();</span>
+
+    <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>The signature of the play method is <span class="green">play(Note0 note,int octave,double duration)</span>.</p></div>
+<div class="paragraph"><p>In both cases I used the frequencies corresponding to notes that I found
+in the website <a href="http://www.phy.mtu.edu/~suits/notefreqs.html">Physics of Music Notes</a> of
+MTU.</p></div>
+<div class="paragraph"><p>The code of the above snippets is available <a href="https://gist.github.com/2784265">here</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_path_of_illumination">Path of Illumination</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To sum up the trick was to use an ever lasting while loop to write sound
+to the audio device all the time and not to try to play sound every x seconds
+with timers and the like.</p></div>
+<div class="paragraph"><p>I speculate that this happens because the android os cannot guarantee a process
+to start in a specified time. However, when a process starts the system will
+split the resources equally.</p></div>
+<div class="paragraph"><p>Note that if we stop write data to the audio device buffer we&#8217;ll get an
+empty buffer warning.</p></div>
+<div class="paragraph"><p>If you don&#8217;t like that just release the device when you don&#8217;t need it.</p></div>
+<div class="sect2">
+<h3 id="_share_love">Share love</h3>
+<div class="paragraph"><p>I am relatively new to android and to multimedia stuff so I may very likely
+be wrong here or there.</p></div>
+<div class="paragraph"><p>Fill free to correct me or share your thoughts :)</p></div>
+<div class="paragraph"><p>cheers xD</p></div>
+</div>
+<div class="sect2">
+<h3 id="_see_also">See Also</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://github.com/MasterEx/BeatKeeper">Beat Keeper Unlisensed Android Metronome</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://play.google.com/store/apps/details?id=pntanasis.android.metronome">Google Play: Beat Keeper</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html">Bitwise and Bit Shift Operators</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.erpgreat.com/java/java-bitwise-shift-operators.htm">Java Bitwise Shift Operators</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Note">Wikipedia: Note</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Sine_wave">Wikipedia: Sine Wave</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Angular_frequency">Wikipedia: Angular frequency</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem">Wikipedia: Nyquist–Shannon sampling theorem</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://stackoverflow.com/questions/2413426/playing-an-arbitrary-tone-with-android">Stackoverflow: Playing an arbitrary tone with Android</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://marblemice.blogspot.com/2010/04/generate-and-play-tone-in-android.html">Generate And Play A Tone In Android</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://www.badlogicgames.com/wordpress/?p=228">FUN WITH AUDIOTRACK</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<h2>Comments</h2>
+<p>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript><a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+</p>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+</body>
+</html>
