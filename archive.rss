@@ -8,6 +8,13 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>A deep look into PHPShadow 3.2</title>
+        <link>http://masterex.github.com/0-review.html</link>
+        <description></description>
+        <pubDate>Wed, 10 Oct 2012 00:00:00 +0300</pubDate>
+        <guid>http://masterex.github.com/0-review.html</guid>
+    </item>
+    <item>
         <title>Android: Crafting a Metronome with Audio Synthesis</title>
         <link>http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html</link>
         <description></description>
@@ -24,60 +31,42 @@
     <item>
         <title>Some retro technology! ZX Spectrum</title>
         <link>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</link>
-        <description>The first computer I've used and I remember (8-bit game consoles don't count)
-was a *386* running *MS-DOS* and *Windows 3.1*. However, before that my
-parents have got a very cool computer! That was a *Sinclair's ZX Spectrum*.</description>
+        <description></description>
         <pubDate>Sun, 20 Nov 2011 00:00:00 +0200</pubDate>
         <guid>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</guid>
     </item>
     <item>
         <title>Java: A simple and neat cli Progress Bar</title>
         <link>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</link>
-        <description>Back on June c00kiemon5ter wrote a cli progress bar in java. As it seems
-it isn't something difficult but I find it pretty usefull and worth to
-be mentioned. The progress bar was originally written as part of F.I.C.</description>
+        <description></description>
         <pubDate>Sun, 23 Oct 2011 00:00:00 +0300</pubDate>
         <guid>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</guid>
     </item>
     <item>
         <title>Trackable File Distribution - a simple approach</title>
         <link>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
-        <description>Let's asume that we have a community or something that distributes
-material such as pictures, pdf's e.t.c. by a website to it's registered only
-users. If the _management_ wants only the registered members to download
-the material is it possible to somehow track a member who leaks
-something in another public mean such as uploading it to a public place
-or redistributing it via torrents?</description>
+        <description></description>
         <pubDate>Sun, 09 Oct 2011 00:00:00 +0300</pubDate>
         <guid>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</guid>
     </item>
     <item>
         <title>PHP: Protect the c0d3</title>
         <link>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</link>
-        <description>Protecting the PHP code I wrote has passed my mind in the past but
-never actually bothered me because the code I have wrote was either
-open source  or hosted in a self-administrated enviroment.
-
-Anyway, as it seems many people are interested in protecting their
-code from distribution without their permission.</description>
+        <description></description>
         <pubDate>Sat, 27 Aug 2011 00:00:00 +0300</pubDate>
         <guid>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</guid>
     </item>
     <item>
         <title>Give a smile: Become a blood donor!</title>
         <link>http://masterex.github.com/archive/2011/08/22/blood-donation.html</link>
-        <description>This article is about http://en.wikipedia.org/wiki/Blood_donation[blood donation]. 
-I will present you my view as a blood donor and try to point you out why 
-you should become a blood donor yourself if you fill the requirements.</description>
+        <description></description>
         <pubDate>Mon, 22 Aug 2011 00:00:00 +0300</pubDate>
         <guid>http://masterex.github.com/archive/2011/08/22/blood-donation.html</guid>
     </item>
     <item>
         <title>Hello World AsciiBlog :)</title>
         <link>http://masterex.github.com/archive/2011/08/06/asciiblog.html</link>
-        <description>Bellow I will explain you the logic behind Asciiblog, the workflow of the 
-blogging process and I'll point out some
-features that are missing and I would like to implement in the future.</description>
+        <description></description>
         <pubDate>Sat, 06 Aug 2011 00:00:00 +0300</pubDate>
         <guid>http://masterex.github.com/archive/2011/08/06/asciiblog.html</guid>
     </item>
