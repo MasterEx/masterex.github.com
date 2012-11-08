@@ -8,11 +8,18 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Monimix: A picture is worth a thousand words</title>
+        <link>http://masterex.github.com/archive/2012/11/08/monimix-combination-of-monochrome-images.html</link>
+        <description></description>
+        <pubDate>Thu, 08 Nov 2012 00:00:00 +0200</pubDate>
+        <guid>http://masterex.github.com/archive/2012/11/08/monimix-combination-of-monochrome-images.html</guid>
+    </item>
+    <item>
         <title>A deep look into PHPShadow 3.2</title>
-        <link>http://masterex.github.com/archive/2012/10/10/phpshadow-3.2.0-review.html</link>
+        <link>http://masterex.github.com/0-review.html</link>
         <description></description>
         <pubDate>Wed, 10 Oct 2012 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2012/10/10/phpshadow-3.2.0-review.html</guid>
+        <guid>http://masterex.github.com/0-review.html</guid>
     </item>
     <item>
         <title>Android: Crafting a Metronome with Audio Synthesis</title>
