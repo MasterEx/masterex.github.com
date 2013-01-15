@@ -3,12 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.5" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="description" content="Some thoughts about tracking the media that you distribute in your website" />
+<meta name="keywords" content="PHP, file, png, pdf, gif, steganography, track" />
 <link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
-<title>Trackable File Distribution - a simple approach</title>
-<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<title>Trackable File Distribution, a simple approach</title>
+<title></title>
 <link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
 </head>
 <body>
         <div id="layout-menu-box">
@@ -32,8 +35,11 @@
         <div id="layout-content-box">
                 <div id="layout-content">
                 <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
-<div id="header">
-<h1>Trackable File Distribution - a simple approach</h1>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_trackable_file_distribution_a_simple_approach">Trackable File Distribution: A simple approach</h2>
+<div class="sectionbody">
+</div>
 </div>
 <div class="sect1">
 <h2 id="_scenario">Scenario</h2>
@@ -90,7 +96,7 @@ users.</p></div>
 <div class="paragraph"><p>So now that we have our unique identifier we can serve the file to the
 user like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -128,7 +134,7 @@ the identifiers length(in bytes) and returns the trackable file to the user.</p>
 see that they differ.</p></div>
 <div class="paragraph"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -140,7 +146,7 @@ header to identify the file so most image viewers will display our GIF just as
 the original.</p></div>
 <div class="paragraph"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -150,7 +156,7 @@ $ du -b image<span style="color: #990000">.</span>gif
 <span style="color: #993399">10003</span>  image<span style="color: #990000">.</span>gif</tt></pre></div></div>
 <div class="paragraph"><p>If we hexdump it the last line will be:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -162,7 +168,7 @@ character table</a>.</p></div>
 <div class="paragraph"><p>Further more <em>hexdump</em> can dump a file in ascii with the <strong>-C</strong> switch. So
 the downloaded file last line is:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -219,12 +225,15 @@ as a result a copy with lesser quality.</p></div>
 </ul></div>
 </div>
 </div>
+<!-- MAIN_BODY_END -->
 <h2>Comments</h2>
-<p>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
-    <noscript><a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-</p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript>
+                <p>
+                        <a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a>
+                </p>
+    </noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>
         </div>

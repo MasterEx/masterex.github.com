@@ -4,11 +4,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="description" content="a review of phpshadow 3.2 encryption system" />
+<meta name="keywords" content="phpshadow, php, encryption, obfuscation, review" />
 <link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
 <title>A deep look into PHPShadow 3.2</title>
-<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<title></title>
 <link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
 </head>
 <body>
         <div id="layout-menu-box">
@@ -32,8 +35,11 @@
         <div id="layout-content-box">
                 <div id="layout-content">
                 <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
-<div id="header">
-<h1>A deep look into PHPShadow 3.2</h1>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_a_deep_look_into_phpshadow_3_2">A deep look into PHPShadow 3.2</h2>
+<div class="sectionbody">
+</div>
 </div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
@@ -221,7 +227,7 @@ about 3-5 times and I&#8217;ve kept the best average run.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../../../../bin/../../website/images/icons/note.png" alt="Note" />
+<img src="../../../../images/icons/note.png" alt="Note" />
 </td>
 <td class="content">I&#8217;ve run the benchmark like <span class="green">ab -c 1 &lt;url&gt;</span>. That is concurrency level 1
 a.k.a. just one request.</td>
@@ -443,12 +449,9 @@ http://www.gnu.org/software/src-highlite -->
 there remove the <span class="green">&lt;?php</span> and <span class="green">?&gt;</span> tags.
 Then it puts the the ciphertext into a new file. In that case the original file
 was a "Hello World" one and the ciphertext was the above:</p></div>
-<div class="listingblock">
-<div class="content">
-<pre><code>ZZX8vÉ¢çó:7ÎgZÙ0ÄV±Î4ÉWS¨wÄt6z¹!Ä¸XT(znC¿Sµàö/ØÌ
-½f|¿øþJsé      qæ-×cîOöWsç±ß£ý¶uïü?âSÝ*ç¿ì¯â.ÖãÝµ
-×:ëu¤;0µ</code></pre>
-</div></div>
+<div class="paragraph"><p><span class="image">
+<img src="ciphertext.png" alt="Cipher Text" />
+</span></p></div>
 <div class="paragraph"><p>The critical part is the one that we&#8217;ll execute the encypted file. Here
 is our precious decoder</p></div>
 <div class="listingblock">
@@ -614,12 +617,15 @@ a previous PHPShadow version to the latest would be nice :)
 </div>
 </div>
 </div>
+<!-- MAIN_BODY_END -->
 <h2>Comments</h2>
-<p>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
-    <noscript><a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-</p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript>
+                <p>
+                        <a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a>
+                </p>
+    </noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>
         </div>

@@ -3,12 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.5" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="description" content="Some thoughts about hiding the code of PHP scripts" />
+<meta name="keywords" content="PHP, encryption, obfuscate, encrypt, source, code" />
 <link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
-<title>PHP: Protect the c0d3</title>
-<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<title>PHP, Protect the c0d3</title>
+<title></title>
 <link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
 </head>
 <body>
         <div id="layout-menu-box">
@@ -32,8 +35,11 @@
         <div id="layout-content-box">
                 <div id="layout-content">
                 <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
-<div id="header">
-<h1>PHP: Protect the c0d3</h1>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_php_protect_the_c0d3">PHP: Protect the c0d3</h2>
+<div class="sectionbody">
+</div>
 </div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
@@ -121,7 +127,7 @@ real world solutions!</p></div>
 <div class="paragraph"><p>For the above demos I&#8217;ll use this pretty cool PHP code:</p></div>
 <div class="listingblock">
 <div class="title">CoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -161,7 +167,7 @@ java application that uses the power of regex to obfuscate our code!</p></div>
 find the gist with the whole code.</p></div>
 <div class="paragraph"><p>I&#8217;ll just go directly to the interesting part:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -212,7 +218,7 @@ Rename the variables
 <div class="paragraph"><p>So after all these transformations our very <strong>coolcode</strong> will look like that:</p></div>
 <div class="listingblock">
 <div class="title">ObfuscatedCoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -235,7 +241,7 @@ without scrolling but think of it as being a single line.</p></div>
 for example you can alter string letters with their
 <a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/index.php">numerical code</a>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -248,7 +254,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../../../../bin/../images/icons/important.png" alt="Important" />
+<img src="../../../../images/icons/important.png" alt="Important" />
 </td>
 <td class="content">Attention! As difficult as it may seems for the obfuscated code to be read
 it&#8217;s just a matter of time until it does from an experienced developer after
@@ -274,7 +280,7 @@ and then we use it and an encryption algorithm to encrypt the source code.</p></
 cipher text that was generated was the above:</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><tt>w4P0PI0T9jf6059bbRIAlPqz77hlj5CRmZ4Gz/c3ZSETU3bLO/+WbDYTx9YW3RXkUWjnglCXBIIr
+<pre><code>w4P0PI0T9jf6059bbRIAlPqz77hlj5CRmZ4Gz/c3ZSETU3bLO/+WbDYTx9YW3RXkUWjnglCXBIIr
 QwnqUpsDfPkhCx2Fg9lNBJyN5cGkKCCMud5+BBB8sTwNFpPUsH2OVPUfhmKjdFea7q2SX0PcThJC
 1KW1XCtClIoRAvVgxfK58rT0VsqWtrwiLy1ghlGeSGgS3TUoVguT9IiNLm9Njq3tIe0Dk5l9nOpp
 9pW4s8GfGUZQ3WzRENxBAAGb9Y+uFI5lympQfwUG9iz2IZPJFygX4EBfIzIfMIDlyz9uECgYhmuC
@@ -282,7 +288,7 @@ bZPw8EyjArf7+m15sKCSALMy/24OTy6dQD5a/t5gFZUa1T2UtChRe/ofna+2ax1vLXx3ToEG9GyC
 Kddhck6KwEZMHvgGyBa3dYlyogh6dRcPuvTQTcewa/ESG0MVTW56asbzGBlJn0PYc3WOM6JM+GDO
 qusHmJS+Env0+V6scgDZ9p8odDL66776CTJBn3z4rL6laxdtlm76HGiw0QjULVCFcAmrc7i9Gxrs
 l2vhMhKYH3AvBGmKOlFlf8kwvWqokfGmRtPMTiZ9dSa+MaivRUxJUD10MvrrvvoJMkxmLFUa7NJf
-foobOb33hDbSyPl8i8GMSw==</tt></pre>
+foobOb33hDbSyPl8i8GMSw==</code></pre>
 </div></div>
 <div class="paragraph"><p>As you can see it is not possible for someone to decipher this without any
 help.</p></div>
@@ -298,7 +304,7 @@ the original source code.</p></div>
 <div class="paragraph"><p>The <em>PHP wrapper</em> in the figure 2 is just a PHP script that will execute
 the deciphered code. This could be something like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -315,7 +321,7 @@ algorithm that has been used could easily find the original code.</p></div>
 <div class="paragraph"><p>Secondly, the <em>PHP wrapper</em> is pretty trivial and someone could easily
 execute the above code to get the original source code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.4
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -330,7 +336,7 @@ wouldn&#8217;t be able to intervene and print the code instead of executing it.<
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="../../../../bin/../images/icons/warning.png" alt="Warning" />
+<img src="../../../../images/icons/warning.png" alt="Warning" />
 </td>
 <td class="content">In my code I have used code found on the internet. I have commemnded
 wherever I have used it. Also, both my obfuscator and encoder are very
@@ -482,12 +488,15 @@ system.</p></div>
 </div>
 </div>
 </div>
+<!-- MAIN_BODY_END -->
 <h2>Comments</h2>
-<p>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
-    <noscript><a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-</p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript>
+                <p>
+                        <a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a>
+                </p>
+    </noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>
         </div>
