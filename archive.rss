@@ -2,11 +2,108 @@
 <rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
   <channel>
     <atom:link href="http://masterex.github.com/archive.rss" rel="self" type="application/rss+xml"/>
-    <title>Interesting things that touch our [geeky] lives</title>
+    <title>Master's touch</title>
     <link>http://masterex.github.com/archive.rss</link>
-    <description></description>
+    <description>Interesting things that touch our [geeky] lives</description>
     <language>en-us</language>
     <generator>just a shell script</generator>
+    <item>
+        <title>AsciiBlog is Evolving</title>
+        <link>http://masterex.github.com/archive/2013/01/16/asciiblog-is-evolving.html</link>
+        <description>AsciiBlog is Evolving</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_asciiblog_is_evolving">AsciiBlog is Evolving</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I have recently redesigned asciiblog and here I would like to share some thoughts with you.
+I know that I am very likely the only person that uses asciiblog at the moment but however
+I made some changes to make at least my life easier :)</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_design">New Design</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In the past asciiblog consisted of many different bash scripts. Right now asciiblog is only two
+files and I am thinking very seriously to merge them.</p></div>
+<div class="paragraph"><p>In the previous versions there were problems when one used a script from a wrong location. As far
+as I know these issues are solved. So, there are 3 different ways of setting up asciiblog.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Call the asciiblog script by it&#8217;s full or referenced path
+</p>
+</li>
+<li>
+<p>
+Add it to your execution <strong>PATH</strong> (I am using this one atm)
+</p>
+</li>
+<li>
+<p>
+Install it in /usr/bin or something like that
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Command set resembles the git one. I&#8217;ll list it here:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AsciiBlog v<span style="color: #990000">.</span><span style="color: #993399">1</span><span style="color: #990000">.</span>0a - https<span style="color: #990000">:</span>//github<span style="color: #990000">.</span>com/MasterEx/AsciiBlog
+Periklis Ntanasis <span style="color: #990000">&lt;</span>pntanasis@gmail<span style="color: #990000">.</span>com<span style="color: #990000">&gt;</span>
+
+    usage<span style="color: #990000">:</span> asciiblog <span style="color: #990000">&lt;</span>option<span style="color: #990000">&gt;</span> <span style="color: #990000">[</span>ARGUMENT<span style="color: #990000">]</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">help</span></span>            Prints this <span style="font-weight: bold"><span style="color: #0000FF">help</span></span> message
+    build-all       Builds all the pages and published posts
+    build-pages     Builds all the pages
+    delete          Deletes a published post
+    init            Initializes a new asciiblog directory
+    new-post        Creates a new post <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> tmp
+    post            Publishes an unpublished post
+    tmp-build       Temporary builds all the pages and posts <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> tmp</tt></pre></div></div>
+<div class="paragraph"><p>Code is much more stable than the previous versions but there are plenty things still to be done.</p></div>
+<div class="paragraph"><p>Keywords and description works now in the articles as it should so it is more SEO friendly.</p></div>
+<div class="paragraph"><p>I am very happy with the new RSS witch contains the whole article. This makes it much more friendlier
+for the RSS aggregators.</p></div>
+<div class="paragraph"><p>I believe in the long run a blogger would blog carefree with it. As I said there are many things to be done
+- and most likely there will always be some more,
+and these things are only the ones that <strong>I</strong> need. Of course one could use asciiblog as it is but if
+he would like something different he should get his hands on the code.</p></div>
+<div class="paragraph"><p><a href="https://github.com/MasterEx/AsciiBlogDemo">Here</a> are some examples of other asciiblog custom templates based on free templates. I am going also
+to make the source of this blog (before the html generation) public in the near future for having it
+backed up and for reference.a</p></div>
+<div class="ulist"><div class="title">See Also</div><ul>
+<li>
+<p>
+<a href="https://github.com/MasterEx/AsciiBlog">AsciiBlog</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://masterex.github.com/AsciiBlogDemo/">Default AsciiBlog Demo</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://masterex.github.com/AsciiBlogDemo/blueice/">BlueIce Theme Demo</a>
+</p>
+</li>
+<li>
+<p>
+<a href="http://masterex.github.com/AsciiBlogDemo/yellowcrossing/">YellowCrossing Theme Demo</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Wed, 16 Jan 2013 02:01:03 +0200</pubDate>
+        <guid>http://masterex.github.com/archive/2013/01/16/asciiblog-is-evolving.html</guid>
+    </item>
     <item>
         <title>Monimix: A picture is worth a thousand words</title>
         <link>http://masterex.github.com/archive/2012/11/08/monimix-combination-of-monochrome-images.html</link>
