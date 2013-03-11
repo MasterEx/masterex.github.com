@@ -8,6 +8,113 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>BeatKeeper: Adding a visual tick</title>
+        <link>http://masterex.github.com/archive/2013/03/11/beatkeeper-visual-tick.html</link>
+        <description>BeatKeeper: Adding a visual tick</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_beatkeeper_adding_a_visual_tick">BeatKeeper: Adding a visual tick</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Previous week
+<a href="http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html#comment-821509194">Chris from Berlin asked me how to visualize the metronome</a>.</p></div>
+<div class="paragraph"><p>So I have tried the obvious, which is to simply print the current beat without success.</p></div>
+<div class="paragraph"><p>Printing the current beat before or after writing to the audio buffer resulted
+the current beat not to change in sync with the sound.</p></div>
+<div class="paragraph"><p>However, thinking a little bit about it, it seemed pretty reasonable because each
+time I wrote to the audio buffer I wasn&#8217;t writing a single tick but instead a
+group of ticks and gaps(silence).</p></div>
+<div class="paragraph"><p>So, the first thing I did was to write only a pair of tick and gap each time to the audio buffer.</p></div>
+<div class="paragraph"><p>Here is the updated code:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">calcSilence</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                silence <span style="color: #990000">=</span> <span style="color: #990000">(</span><span style="color: #009900">int</span><span style="color: #990000">)</span> <span style="color: #990000">(((</span><span style="color: #993399">60</span><span style="color: #990000">/</span>bpm<span style="color: #990000">)*</span><span style="color: #993399">8000</span><span style="color: #990000">)-</span>tick<span style="color: #990000">);</span>
+                <span style="font-style: italic"><span style="color: #9A1900">// I am calculating audio buffers that contain</span></span>
+                <span style="font-style: italic"><span style="color: #9A1900">// a tick and a silence gap</span></span>
+                soundArray <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="color: #009900">double</span><span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">+</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>silence<span style="color: #990000">];</span>
+                msg <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Message</span></span><span style="color: #990000">();</span>
+                msg<span style="color: #990000">.</span>obj <span style="color: #990000">=</span> <span style="color: #FF0000">""</span><span style="color: #990000">+</span>currentBeat<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">play</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #000000">calcSilence</span></span><span style="color: #990000">();</span>
+                <span style="color: #009900">double</span><span style="color: #990000">[]</span> tick <span style="color: #990000">=</span> audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">,</span> <span style="color: #993399">8000</span>
+                                                                                                                        <span style="color: #990000">,</span>beatSound<span style="color: #990000">);</span>
+                <span style="color: #009900">double</span><span style="color: #990000">[]</span> tock <span style="color: #990000">=</span> audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSineWave</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">,</span> <span style="color: #993399">8000</span>
+                                                                                                                        <span style="color: #990000">,</span>sound<span style="color: #990000">);</span>
+                <span style="color: #009900">double</span> silence <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                <span style="color: #009900">int</span> t <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>s <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>b <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">do</span></span> <span style="color: #FF0000">{</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">for</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> i<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">;</span>i<span style="color: #990000">&lt;</span>soundArray<span style="color: #990000">.</span>length<span style="color: #990000">&amp;&amp;</span>play<span style="color: #990000">;</span>i<span style="color: #990000">++)</span> <span style="color: #FF0000">{</span>
+                                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>t<span style="color: #990000">&lt;</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>tick<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>b <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+                                                soundArray<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> tock<span style="color: #990000">[</span>t<span style="color: #990000">];</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">else</span></span>
+                                                soundArray<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> tick<span style="color: #990000">[</span>t<span style="color: #990000">];</span>
+                                        t<span style="color: #990000">++;</span>
+                                <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+                                        soundArray<span style="color: #990000">[</span>i<span style="color: #990000">]</span> <span style="color: #990000">=</span> silence<span style="color: #990000">;</span>
+                                        s<span style="color: #990000">++;</span>
+                                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>s <span style="color: #990000">&gt;=</span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>silence<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                                                t <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                                s <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                                b<span style="color: #990000">++;</span>
+                                                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>b <span style="color: #990000">&gt;</span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>beat<span style="color: #990000">-</span><span style="color: #993399">1</span><span style="color: #990000">))</span>
+                                                        b <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">;</span>
+                                        <span style="color: #FF0000">}</span>
+                                <span style="color: #FF0000">}</span>
+                        <span style="color: #FF0000">}</span>
+                        msg <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Message</span></span><span style="color: #990000">();</span>
+                        msg<span style="color: #990000">.</span>obj <span style="color: #990000">=</span> <span style="color: #FF0000">""</span><span style="color: #990000">+</span>currentBeat<span style="color: #990000">;</span>
+                        <span style="font-style: italic"><span style="color: #9A1900">// write the current beat right before or after</span></span>
+                        <span style="font-style: italic"><span style="color: #9A1900">// writing to the audio buffer</span></span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>bpm <span style="color: #990000">&lt;</span> <span style="color: #993399">100</span><span style="color: #990000">)</span>
+                                mHandler<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">sendMessage</span></span><span style="color: #990000">(</span>msg<span style="color: #990000">);</span>
+                        audioGenerator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">writeSound</span></span><span style="color: #990000">(</span>soundArray<span style="color: #990000">);</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>bpm <span style="color: #990000">&gt;=</span> <span style="color: #993399">100</span><span style="color: #990000">)</span>
+                                mHandler<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">sendMessage</span></span><span style="color: #990000">(</span>msg<span style="color: #990000">);</span>
+                        currentBeat<span style="color: #990000">++;</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>currentBeat <span style="color: #990000">&gt;</span> beat<span style="color: #990000">)</span>
+                                currentBeat <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">;</span>
+                <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">while</span></span><span style="color: #990000">(</span>play<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>As you can see the trick is to calculate the buffer size each time the
+beats per minute (<strong>bpm</strong>) change.</p></div>
+<div class="paragraph"><p>Some times I am printing the current beat number before writing to the audio
+buffer and some times after, because the <strong>bpm</strong> is low or high and the user
+has to see the current beat as he is listening to the sound. Doing otherwise
+would give a false sense to the user about the number of the current beat.</p></div>
+<div class="paragraph"><p>The number of <strong>100 bpm</strong> that I am using to decide whether to print before or
+after was picked after some experimentation.</p></div>
+<div class="paragraph"><p>Here is a pic about this in action:</p></div>
+<div class="paragraph"><p><span class="image">
+<img src="http://masterex.github.com/archive/2013/03/11/current-beat.png" alt="current beat in action" />
+</span></p></div>
+<div class="paragraph"><p>Current beat is the <strong>third</strong> value.</p></div>
+<div class="paragraph"><p>I have updated BeatKeeper repo so full code about this can be found
+<a href="https://github.com/MasterEx/BeatKeeper">here</a>.</p></div>
+<div class="paragraph"><p>The metronome visualization that I have implemented is very simple. If one
+implements another one, more eye candy, feel free to leave a comment about it.</p></div>
+<div class="ulist"><div class="title">See also:</div><ul>
+<li>
+<p>
+<a href="http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html">Android: Crafting a Metronome with Audio Synthesis</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Mon, 11 Mar 2013 06:39:46 +0200</pubDate>
+        <guid>http://masterex.github.com/archive/2013/03/11/beatkeeper-visual-tick.html</guid>
+    </item>
+    <item>
         <title>Wrong system time is bad for your pc health</title>
         <link>http://masterex.github.com/archive/2013/01/17/clock-related-security-concerns.html</link>
         <description>Wrong system time is bad for your pc health</description>
@@ -381,9 +488,7 @@ density.
 I am not motivated enough at this time to test
 this concept myself but if one tries this out, he&#8217;s more than welcome to
 leave a comment below.</p></div>
-<div class="sect2">
-<h3 id="_see_also">See also</h3>
-<div class="ulist"><ul>
+<div class="ulist"><div class="title">See Also</div><ul>
 <li>
 <p>
 <a href="https://github.com/MasterEx/masterex.github.com">Monimix Github Repo</a>
@@ -400,7 +505,6 @@ leave a comment below.</p></div>
 </p>
 </li>
 </ul></div>
-</div>
 </div>
 </div>
 		]]>
