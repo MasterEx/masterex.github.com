@@ -3069,6 +3069,37 @@ system.</p></div>
 </li>
 </ul></div>
 </div>
+<div class="sect2">
+<h3 id="_update">Update</h3>
+<div class="paragraph"><p>Here are the jar&#8217;s of the code mentioned above. These programs exist only as
+a proof of concept and aren&#8217;t created for production use. So use them wisely and
+at your own risk.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="coolphpobfuscator.jar">Cool PHP Obfuscator</a>
+</p>
+</li>
+<li>
+<p>
+<a href="Coder.jar">Coder</a>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_update_2">Update 2</h3>
+<div class="paragraph"><p>Dan was kind enough to take my naive php obfuscator a step further and implement
+more advanced functionality. His implementation can be found in this <a href="https://gist.github.com/MasterEx/5309265">gist</a>
+and a precombiled jar can be downloaded
+from <a href="coolphpobfuscator2.jar">here</a>.</p></div>
+<div class="paragraph"><p>You can use this obfuscator like that:</p></div>
+<div class="paragraph"><p><span class="green">java -jar coolphpobfuscator2.jar path_to_input_directory path_to_output_directory</span></p></div>
+<div class="paragraph"><p>Where <strong>path_to_input_directory</strong> is the path to the directory which contains the php
+files to be obfuscated and <strong>path_to_output_directory</strong> is the directory where
+the obfuscated files will be placed. Note that <strong>path_to_output_directory</strong> should
+already exist before running the program.</p></div>
+</div>
 </div>
 </div>
 		]]>
