@@ -140,6 +140,10 @@ height: 65px;
   border-bottom: 0px;
 }
 
+#disqus_thread {
+  margin-bottom: 20px;
+}
+
 /*
 * Footer
 */

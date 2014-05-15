@@ -1,0 +1,117 @@
+/************************************************************************************
+smaller than 816px
+*************************************************************************************/
+@media screen and (max-width: 816px) {
+	body {
+	  margin:0px;
+	}
+	/* BANNER */
+	#layout-banner-box {
+		position: relative;
+		height: 100%;
+		top: 1px;
+		margin: 0;
+		margin-top: 50px;
+		padding: 0;
+		z-index: 1;	
+	}
+	#layout-banner {
+	  width: 100%;
+	  text-align: center;
+	  margin: 0;
+	  padding: 0;
+	}
+	#layout-title {
+	  font-size: 2em;
+	  margin: 0;  
+	}
+	#layout-description {
+		width: 100%;
+		padding: 0;
+		margin: 0px;
+	}
+	/* MENU */
+	#layout-menu-box {
+	  position: fixed;
+	  padding: 0px;
+	  margin: 0px;
+	  top: 0px;
+	  height: 40px;
+	  width: 100%;
+	  background-color: white;
+	  margin-bottom: 10px;
+	}
+	#layout-menu {
+	  position: relative;
+	  text-align: center;
+	  margin: 0px;
+	  padding: 0px;
+	  width: 100%;
+	}
+	#menu li {
+		display: inline;
+		height: 100%;
+	  -webkit-transform: rotate(0deg);	
+	  -moz-transform: rotate(0deg);
+	  -ms-transform: rotate(0deg);
+	  -o-transform: rotate(0deg);
+	  transform: rotate(0deg);
+	}
+	#menu ul {
+		margin: 0;
+		padding-bottom: 35px;
+	}
+	.visible {
+		visibility:hidden;
+	}
+	/* FADE OUT EFFECT */
+	#top_fade {
+		display: none;
+	}
+	#bottom_fade {
+		display: none;
+	}
+	/* BODY */
+	#layout-content-box {
+	  position: relative;
+	  margin: 0px;
+	  padding-left: 5px;
+	  padding-right: 5px;
+	}
+	#layout-content {
+	  width:100%;
+	  padding:0px; 
+	}
+	#layout-content-box .image img {
+		width: 100%;
+	}
+	pre {
+		overflow-x: scroll;
+	}
+	/* FOOTER */
+	#footer {
+	  position: relative;
+	  z-index: 1;
+	}
+	#footer img {
+		width: 20%;
+		max-width: 80px;
+	}
+	/* ARCHIVE SPECIFIC */
+	a {
+		text-decoration:none;
+		font-size: .8em;
+	}
+	a:hover {
+		border-bottom: 0px;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	#layout-description {
+		font-size: .9em;
+	}
+	#layout-title {
+	  font-size: 1.3em;
+	}
+}
