@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
 <meta name="description" content="a library and architecture for automatically updating java applications" />
 <meta name="keywords" content="java, JUPAR, se, jdk, update, upgrade" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0">
@@ -118,7 +118,7 @@ We are going to see both the code that we should include in our application
 and the xml files that we should create!</p></div>
 <div class="paragraph"><p>Here is the relevant code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -214,7 +214,7 @@ release<span style="color: #990000">.</span><span style="font-weight: bold"><spa
 such as 1.0 , 1.1 etc and release is an integer starting from 1 and counting.</p></div>
 <div class="paragraph"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -240,7 +240,7 @@ notify the user for the new version and don&#8217;t perform an automatic update.
 <div class="paragraph"><p>Anyway, if the answer is positive we parse the <span class="red">files.xml</span> file and download
 the needed files. Here how <span class="red">files.xml</span> looks like:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -257,7 +257,7 @@ http://www.gnu.org/software/src-highlite -->
  localy.
 This is the last xml file and looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -310,7 +310,7 @@ path as an argument and let&#8217;s up to the developer how to handle this.</p><
 <h4 id="_find_the_executable_path_with_java">Find the executable path with Java</h4>
 <div class="paragraph"><p>You can try to find the executables path with a command like:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -327,7 +327,7 @@ doesn&#8217;t works for JVMs previous to 1.5.</p></div>
 <h5 id="_first_way">First way</h5>
 <div class="paragraph"><p>Use a full path to set the temporary directory:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -340,7 +340,7 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <span style="color: #008080">File</span> tmp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist/tmp"</span><span style="color: #990000">);</span></tt></pre></div></div>
 <div class="paragraph"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -361,7 +361,7 @@ http://www.gnu.org/software/src-highlite -->
 to provide an update method that takes the executable&#8217;s full path as an argument.</p></div>
 <div class="paragraph"><p>So we only need to have something like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->

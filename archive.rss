@@ -1,15 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
   <channel>
-    <atom:link href="http://masterex.github.com/archive.rss" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://masterex.github.io/archive.rss" rel="self" type="application/rss+xml"/>
     <title>Master's touch</title>
-    <link>http://masterex.github.com/archive.rss</link>
+    <link>https://masterex.github.io/archive.rss</link>
     <description>Interesting things that touch our [geeky] lives</description>
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Choosing a programming language</title>
+        <link>https://masterex.github.io/archive/2017/01/18/fosscomm2014-thoughts-on-programming-languages.html</link>
+        <description>Choosing a programming language</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_choosing_a_programming_language">Choosing a programming language</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Back in 2014 I participated in <strong><a href="https://en.wikipedia.org/wiki/Fosscomm">Fosscomm</a></strong> with the talk
+"<strong>What programming language should I choose next</strong>". The concept of the talk was to introduce
+the steps we have to take in order to choose the programming language for our next project.</p></div>
+<div class="paragraph"><p>Now I am much more experienced and I can give more insights to this subject.
+I always wanted to write about that since then. Let&#8217;s hope that it
+will be a good starting point for me to start writing in this blog more
+frequently again :-)</p></div>
+<div class="paragraph"><p>The main points that I will go through are:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Programming language characteristics
+</p>
+</li>
+<li>
+<p>
+Occasions for choosing a programming language
+</p>
+</li>
+<li>
+<p>
+Conclusion
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>The following content is mostly based on my personal thoughts and experience
+and it is intended to be considered as food for thought rather than anything
+else.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_programming_language_characteristics">Programming language characteristics</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are countless programming languages. Others are created to solve
+problems of specific domains (<a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a>
+such as <strong>AWK</strong> for text processing) and others try to be more generic and solve
+problems of many domains (<a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">general purpose languages</a>
+such as <strong>C</strong> and <strong>Java</strong>).</p></div>
+<div class="paragraph"><p>Domain specific languages may be the best/easiest way for solving particular problems
+and comparing them with other non-specific may be unfair, depending the context.</p></div>
+<div class="paragraph"><p>Let&#8217;s better have generic programming languages in mind from now on when
+referring to programming languages.</p></div>
+<div class="paragraph"><p>Every programming language has some main characteristics that distinct them from
+other languages and unites them with others. These characteristics implement
+particular concepts that may suits better on some circumstances than others.</p></div>
+<div class="paragraph"><p>Mastering these concepts is essential for choosing the most well-fit language
+for a particular task and furthermore for easily and quickly using a new language
+that implements those known concepts.</p></div>
+<div class="paragraph"><p>Let&#8217;s see the basic concepts that I think that are worthy to mention.</p></div>
+<div class="sect2">
+<h3 id="_compiled_vs_interpreted">Compiled vs Interpreted</h3>
+<div class="paragraph"><p>A main characteristic of a language is if it is
+compiled or interpreted.</p></div>
+<div class="paragraph"><p>By compiled we mean that the default implementation of the language
+provides a compiler that translates the source program to machine code.</p></div>
+<div class="paragraph"><p>An example of such a language is <strong>C</strong> or <strong>C++</strong>.</p></div>
+<div class="paragraph"><p>By interpreted we mean that the default implementation of the language
+provides an interpreter that executes the source code on the fly.</p></div>
+<div class="paragraph"><p>An example would be <strong>Perl</strong> or <strong>PHP</strong>.</p></div>
+<div class="paragraph"><p>I refer to the default implementation because the truth is that any language
+may be compiled or interpreted. However, the default implementation is the
+one that is widely adopted and best supported. Some languages as <strong>Haskell</strong>
+may provide both compilers and interpreters.</p></div>
+<div class="paragraph"><p>The advantages of a compiled language is that the program will run faster.
+However a binary executable has to be built against each desired target
+architecture. Changes to the source code require re-compilation in order
+to run the updated program. This would be time consuming in large programs
+such as a video game and would disrupt more the development process.</p></div>
+<div class="paragraph"><p>The advantages of an interpreted language is that we may do changes to the
+source code and test at once. This makes development much easier as we may
+test our changes much faster. Also, the source code is distributed as it
+is and it may run everywhere an appropriate interpreter is installed. Of course
+running the program is slower that the previous solution as the translation
+happens at run time.</p></div>
+<div class="paragraph"><p>Some languages as <strong>Java</strong> combine the two mentioned techniques. Java compiles
+the source code to bytecode, an intermediate representation of the program
+and the interpreter(jvm) runs the bytecode. Also, in the case of Java and jvm
+there are other optimizations that take place such as <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT</a>
+(just in time compilation) that makes the performance of the programs much
+better.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_programming_paradigms">Programming paradigms</h3>
+<div class="paragraph"><p>The compiler/interpreter provided by the default implementation isn&#8217;t
+actually a language characteristic but in my opinion it is essential for one to have at
+least a basic understanding for these stuff.</p></div>
+<div class="paragraph"><p>The next thing we are going to mention is definitely a language characteristic.
+It is the <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigms</a>
+a language encapsulates.</p></div>
+<div class="paragraph"><p>I won&#8217;t mention which the programming paradigms are. You can check wikipedia for that.
+I&#8217;ll just mention that a programming paradigm dictates the way we will face a problem and how we
+will use the programming language at hand in order to model a solution. It
+highly affects the development process. Some paradigms are better suited for
+specific tasks and may result in more elegant solutions and more readable
+code (for those familiar with the used paradigm at least).</p></div>
+<div class="paragraph"><p>A programming language may implement at least partially more than one paradigm.
+Having a basic understanding of some paradigms may be a great asset in one&#8217;s programming
+arsenal.</p></div>
+<div class="paragraph"><p>Also, some other important things such as <a href="https://en.wikipedia.org/wiki/Software_design_pattern">design patterns</a>
+may be specific to specific programming paradigms. Usually, most design patterns
+are related to object-oriented paradigm actually.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_type_checking_system">Type checking system</h3>
+<div class="paragraph"><p>The next thing that we should have in mind is the <a href="https://en.wikipedia.org/wiki/Type_system">type checking system</a>.</p></div>
+<div class="paragraph"><p>The type checking system of a language is the mechanism that checks if a
+type contains a permitted value accordingly to some specified rules. In
+other words a type safe language is one that shields the programmer from
+using the types in a not desired way.</p></div>
+<div class="paragraph"><p><strong>Java</strong> is such a language. Here is an example.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">//this fails with a compiler error</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">//error: incompatible types: int cannot be converted to String</span></span>
+<span style="color: #008080">String</span> one <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">;</span></tt></pre></div></div>
+<div class="paragraph"><p>Other than that the extend and the way the type safety is enforced may vary.
+For example some languages check for type errors at compile time while others
+check at run time.</p></div>
+<div class="paragraph"><p>Of course there are languages that have limited or none type safety. This
+doesn&#8217;t mean that a non type safe language is inferior to others. There are
+some merits such as the development process may be faster and the learning
+curve of such a language quicker as the syntax tends to be simpler.</p></div>
+<div class="paragraph"><p>Such a language is <strong>Javascript</strong>. Here is an example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">var</span></span> h <span style="color: #990000">=</span> <span style="color: #FF0000">"hello, "</span><span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #0000FF">var</span></span> w <span style="color: #990000">=</span> <span style="color: #993399">5</span><span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>h<span style="color: #990000">+</span>w<span style="color: #990000">);</span>   <span style="font-style: italic"><span style="color: #9A1900">// prints hello, 5</span></span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>w<span style="color: #990000">+</span><span style="color: #993399">4</span><span style="color: #990000">);</span>   <span style="font-style: italic"><span style="color: #9A1900">// prints 9</span></span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>h<span style="color: #990000">+</span>w<span style="color: #990000">+</span><span style="color: #993399">4</span><span style="color: #990000">);</span> <span style="font-style: italic"><span style="color: #9A1900">// prints hello, 54</span></span></tt></pre></div></div>
+<div class="paragraph"><p>As you can see there aren&#8217;t many restrictions on how the types may be used.</p></div>
+<div class="paragraph"><p>Type checking may be more important than it looks. Facebook had created
+the <a href="http://hacklang.org/">hack</a> language a while back aiming to produce
+code of better quality faster.</p></div>
+<div class="paragraph"><p>As it is mentioned in hack&#8217;s website "<strong>Hack reconciles the fast development
+cycle of a dynamically typed language with the discipline provided by static typing</strong>".</p></div>
+<div class="paragraph"><p>If big companies consider type safety such an important subject and invest
+time and money on this, then we should definitely have at least a basic
+understanding of type checking systems.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_memory_management">Memory management</h3>
+<div class="paragraph"><p>Another important characteristic of a programming language is the memory
+management system that it uses.</p></div>
+<div class="paragraph"><p>Some languages require the user to allocate and free the memory by hand
+which of course requires more work. However, it provides better performance
+and control with higher risk of human errors. Such a language is traditionally
+<strong>C</strong>.</p></div>
+<div class="paragraph"><p>On the other hand there are languages that provide a garbage collection mechanisms.
+This is much safer and new programs are easier and faster to write but of course
+it costs on performance. Such a language is <strong>Java</strong>.</p></div>
+<div class="paragraph"><p>As always the best approach depends on the application that we desire to write
+and the problem we aim to solve.</p></div>
+<div class="paragraph"><p>In the case of garbage collected languages it is essential to have a basic understanding
+of the available collection strategies and the lifecycle of the objects.
+In the case of manually freeing the memory one should be very careful not
+to cause memory leaks or other security holes.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_syntactic_sugar">Syntactic sugar</h3>
+<div class="paragraph"><p>Another factor of a programming language that I find important is the
+syntactic sugar.</p></div>
+<div class="paragraph"><p>By syntactic sugar I refer to all the ways a programming language can express
+a solution to a particular problem, elegantly. Often the elegant solutions
+are the compact ones and the more readable.</p></div>
+<div class="paragraph"><p>This is not an important factor but languages that provide these facilities
+may be used somewhat faster when developing a new application and may aid the
+developer to be more expressive.</p></div>
+<div class="paragraph"><p>An example of syntactic sugar would incrementing an integer in <strong>Lua</strong> and in <strong>C</strong>:</p></div>
+<div class="listingblock">
+<div class="title">Lua</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>i <span style="color: #990000">=</span> i <span style="color: #990000">+</span> <span style="color: #993399">1</span></tt></pre></div></div>
+<div class="listingblock">
+<div class="title">C</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>i<span style="color: #990000">++;</span></tt></pre></div></div>
+<div class="paragraph"><p>These "shortcuts" may be harder to read for a newbie but they feel pretty
+natural if you get familiar with them.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_libraries_frameworks_and_community">Libraries, frameworks and community</h3>
+<div class="paragraph"><p>Last but not least an important factor is the toolset that is available for
+a specific language and the whole ecosystem around it.</p></div>
+<div class="paragraph"><p>A vivid community means that learning material is broadly available, the development
+of the language will be more  active and mature libraries, frameworks and
+other tools should already exist.</p></div>
+<div class="paragraph"><p>All these small details are actually very important. For example a powerful
+framework that let you build your next web app in a fraction of the development
+time compared to other frameworks would be a pretty good reason to choose
+a particular language.</p></div>
+<div class="paragraph"><p>Furthermore, a larger community means a larger user base. This means more
+projects in the particular language that leads to more jobs around the particular
+language and the relevant technologies.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_occasions_for_choosing_a_programming_language">Occasions for choosing a programming language</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now that we have a basic understanding of the characteristics of a programming language and we can
+detect these characteristics between various languages lets see the occasions
+that we may face when having to choose a programming language
+for our <em>next</em> <strong>big</strong> project.</p></div>
+<div class="paragraph"><p>There are 2 occasions, the project may be a personal one for fun or a professional one for profit.</p></div>
+<div class="paragraph"><p>This is the most important factor that we should have in mind for making the particular choice.</p></div>
+<div class="paragraph"><p>If the project is personal then one has to aim gaining experience through it.
+So, choosing new languages, frameworks, libraries and technologies is the
+way to go. Mind that learning a new language is really meaningful if it introduces
+new concepts. Learning just another language that is similar to the previous
+known doesn&#8217;t add extra value. In the end, <strong>it&#8217;s just syntax</strong>.</p></div>
+<div class="paragraph"><p>By new concepts I refer to the previous characteristics that we have analyzed.
+One familiar with these characteristics and hands on experience with them
+may easily jump to a new language that encapsulates similar concepts.
+Learning syntax is easy, having to learn more advanced things such as a paradigm
+is the real challenge.</p></div>
+<div class="paragraph"><p>On the other hand on a professional environment we have to choose the most <strong>easy</strong>
+solutions. This means the solution that will provide faster the desired
+result with the available work force. In case the work force is insufficient
+we have to take into account the availability of new hires with the necessary
+skills or the time required for a new inexperienced hire to master the required technologies.</p></div>
+<div class="paragraph"><p>Any existing code base has to be taken into account at this decision. We
+have to be familiar with the legacy technologies used or take into account the
+time required to move the project to newer technologies. In that case, we should
+consider if there are reasons that will force us to move to newer technologies
+in the future anyway.</p></div>
+<div class="paragraph"><p>A formula that I have created for the decision making between two languages
+A and B during my fosscomm talk is the following. First we calculate the
+COST of the 2 languages LA and LB:</p></div>
+<div class="paragraph"><p>COST_FUNCTION = (<span class="red">LTLx</span> + <span class="green">ECTLx</span> + <span class="yellow">FTECLx</span> + <span class="purple">LIBECLx</span> + <span class="blue">TECHECLx</span> + OTHERECLx) + (<span class="red">TLx</span> + <span class="yellow">FTLx</span> + <span class="purple">LIBLx</span> + <span class="blue">TECHLx</span> + OTHERLx) * TIME</p></div>
+<div class="paragraph"><p>Where:</p></div>
+<div class="paragraph"><p><span class="red">LTLx</span>: The time required to master the language Lx. LTLx = 0 if Lx is already mastered</p></div>
+<div class="paragraph"><p><span class="red">TLx</span>: The time required to maintain and develop further the application
+if we plan to use the language Lx for <strong>TIME</strong> period of time</p></div>
+<div class="paragraph"><p><span class="green">ECTLx</span>: The time required to rewrite the existing code base to the target language</p></div>
+<div class="paragraph"><p><span class="yellow">FTECLx</span>: The time required to master the used frameworks of the existing code-base</p></div>
+<div class="paragraph"><p><span class="purple">LIBECLx</span>: The time required to master the libraries of the existing code-base</p></div>
+<div class="paragraph"><p><span class="blue">TECHECLx</span>: The time required to get familiar the other technologies already used</p></div>
+<div class="paragraph"><p>OTHERECLx: Other factors related to the existing code base</p></div>
+<div class="paragraph"><p><span class="yellow">FTLx</span>, <span class="purple">LIBLx</span> etc. are the time required for each factor if
+we are going to use these things for <strong>TIME</strong> period of time.</p></div>
+<div class="paragraph"><p>So, in order to choose what language is the best to use we have to compare
+their costs and pick the one with the smaller cost.</p></div>
+<div class="paragraph"><p><strong>COST_FUNCTION(La,YEARS)</strong> &gt; <strong>COST_FUNCTION(Lb,YEARS)</strong></p></div>
+<div class="paragraph"><p>If the cost functions are equals then we may use some further things as criteria
+such as the personal preferences of the development team, the average cost
+of hiring programmers in the particular language or the availability
+of programmers for the particular language in the market.</p></div>
+<div class="sect2">
+<h3 id="_conclusion">Conclusion</h3>
+<div class="paragraph"><p>The point that I would like to make is that when we have the opportunity
+we should experiment and learn new things. In the context of programming languages
+these new things are all the characteristics that I have mentioned before.
+By getting familiar with all these we will be able to understand better and learn
+quicker new languages when it will be required.</p></div>
+<div class="paragraph"><p>All this gained knowledge will also be a great asset when we should make
+choices in our work environment, especially if we are encouraged to use
+new technologies in order to enrich our company&#8217;s know how. This is more
+usual for smaller companies.</p></div>
+<div class="paragraph"><p>On the other hand if we work on larger companies it is not easy to experiment.
+Business is about profit and the tech related choices should be the ones that will
+profit the company the most. Our gained knowledge will be again useful in order
+to make the best choices.</p></div>
+<div class="paragraph"><p>So study new concepts on your spare time, no syntax! Don&#8217;t waste your time!
+Stick to what you have mastered in your work environment except if there
+are opportunities for experimentation.</p></div>
+<div class="paragraph"><p>Please, feel free to share in the comments other language characteristics
+that you think that are important. I would love to read your thoughts on
+the subject.</p></div>
+<div class="paragraph"><p>Have fun and keep coding!</p></div>
+</div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Wed, 18 Jan 2017 23:22:40 +0200</pubDate>
+        <guid>https://masterex.github.io/archive/2017/01/18/fosscomm2014-thoughts-on-programming-languages.html</guid>
+    </item>
+    <item>
         <title>Popcorn time VS the torrent community</title>
-        <link>http://masterex.github.com/archive/2014/03/31/popcorn-time-maybe-harmful.html</link>
+        <link>https://masterex.github.io/archive/2014/03/31/popcorn-time-maybe-harmful.html</link>
         <description>Popcorn time VS the torrent community</description>
         <content:encoded>
 <![CDATA[
@@ -135,11 +435,11 @@ Fill free if you have any comments on my thoughts to leave them below!</p></div>
 </content:encoded>
         
         <pubDate>Mon, 31 Mar 2014 06:37:44 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2014/03/31/popcorn-time-maybe-harmful.html</guid>
+        <guid>https://masterex.github.io/archive/2014/03/31/popcorn-time-maybe-harmful.html</guid>
     </item>
     <item>
         <title>Cryptolexo, playing with string arrays</title>
-        <link>http://masterex.github.com/archive/2014/01/31/cryptolexo.html</link>
+        <link>https://masterex.github.io/archive/2014/01/31/cryptolexo.html</link>
         <description>Cryptolexo, playing with string arrays</description>
         <content:encoded>
 <![CDATA[
@@ -215,31 +515,31 @@ describe my approach.</p></div>
 <div class="sect2">
 <h3 id="_adding_a_word_that_fits_after_another">Adding a Word that Fits after Another</h3>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2014/01/31/word-after.png" alt="word after another" />
+<img src="https://masterex.github.io/archive/2014/01/31/word-after.png" alt="word after another" />
 </span></p></div>
 </div>
 <div class="sect2">
 <h3 id="_adding_a_word_that_fits_before_another">Adding a Word that Fits before Another</h3>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2014/01/31/word-before.png" alt="word before another" />
+<img src="https://masterex.github.io/archive/2014/01/31/word-before.png" alt="word before another" />
 </span></p></div>
 </div>
 <div class="sect2">
 <h3 id="_failing_to_add_a_word">Failing to Add a Word</h3>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2014/01/31/word-fail.png" alt="word fails to fit" />
+<img src="https://masterex.github.io/archive/2014/01/31/word-fail.png" alt="word fails to fit" />
 </span></p></div>
 </div>
 <div class="sect2">
 <h3 id="_merging_words">Merging Words</h3>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2014/01/31/word-merge.png" alt="merging words" />
+<img src="https://masterex.github.io/archive/2014/01/31/word-merge.png" alt="merging words" />
 </span></p></div>
 </div>
 <div class="sect2">
 <h3 id="_add_word_to_row_algorithm">Add Word to Row Algorithm</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -271,7 +571,7 @@ for this size of problems. Even a <strong>60x60</strong> array can be filled ver
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2014/01/31/../../../../images/icons/tip.png" alt="Tip" />
+<img src="https://masterex.github.io/archive/2014/01/31/../../../../images/icons/tip.png" alt="Tip" />
 </td>
 <td class="content">I was using originally a String array[] because I wrongly thought it to
 be more convenient. I was wrong and more importantly char[] uses less memory and
@@ -280,7 +580,7 @@ the character check is much faster.</td>
 </div>
 <div class="paragraph"><p>Here is a simple demo from the <span class="green">getColInRowWithCollision()</span> in usage:</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2014/01/31/steps.gif" alt="algorithm demo" />
+<img src="https://masterex.github.io/archive/2014/01/31/steps.gif" alt="algorithm demo" />
 </span></p></div>
 </div>
 </div>
@@ -304,11 +604,11 @@ licensed under <strong>GPLv3</strong>.</p></div>
 </content:encoded>
         
         <pubDate>Fri, 31 Jan 2014 00:18:01 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2014/01/31/cryptolexo.html</guid>
+        <guid>https://masterex.github.io/archive/2014/01/31/cryptolexo.html</guid>
     </item>
     <item>
         <title>The pitfalls of learning by example</title>
-        <link>http://masterex.github.com/archive/2013/04/15/pycrypto-hash-learning-by-example.html</link>
+        <link>https://masterex.github.io/archive/2013/04/15/pycrypto-hash-learning-by-example.html</link>
         <description>The pitfalls of learning by example</description>
         <content:encoded>
 <![CDATA[
@@ -339,7 +639,7 @@ data chunks to check if any transmission errors took place.</p></div>
 <div class="paragraph"><p>As I was unfamiliar with <strong>pycrypto</strong>, I searched for <strong>how to sha128 in pycrypto</strong>.
 This got me to the library&#8217;s pydoc and I show this example <a href="https://www.dlitz.net/software/pycrypto/api/current/toc-Crypto.Hash.SHA-module.html">here</a></p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -351,7 +651,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>So, this seemed pretty straight forward and so I did something like that
 in my program:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -380,7 +680,7 @@ comments.</p></div>
 <span class="red">m.update(a+b)</span>.</p></div>
 <div class="paragraph"><p>So, in my case I should have done the following:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -399,11 +699,11 @@ to <strong>read the f*cking manual</strong>.</p></div>
 </content:encoded>
         
         <pubDate>Mon, 15 Apr 2013 14:24:09 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2013/04/15/pycrypto-hash-learning-by-example.html</guid>
+        <guid>https://masterex.github.io/archive/2013/04/15/pycrypto-hash-learning-by-example.html</guid>
     </item>
     <item>
         <title>BeatKeeper: Adding a visual tick</title>
-        <link>http://masterex.github.com/archive/2013/03/11/beatkeeper-visual-tick.html</link>
+        <link>https://masterex.github.io/archive/2013/03/11/beatkeeper-visual-tick.html</link>
         <description>BeatKeeper: Adding a visual tick</description>
         <content:encoded>
 <![CDATA[
@@ -421,7 +721,7 @@ group of ticks and gaps(silence).</p></div>
 <div class="paragraph"><p>So, the first thing I did was to write only a pair of tick and gap each time to the audio buffer.</p></div>
 <div class="paragraph"><p>Here is the updated code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -486,7 +786,7 @@ would give a false sense to the user about the number of the current beat.</p></
 after was picked after some experimentation.</p></div>
 <div class="paragraph"><p>Here is a pic about this in action:</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2013/03/11/current-beat.png" alt="current beat in action" />
+<img src="https://masterex.github.io/archive/2013/03/11/current-beat.png" alt="current beat in action" />
 </span></p></div>
 <div class="paragraph"><p>Current beat is the <strong>third</strong> value.</p></div>
 <div class="paragraph"><p>I have updated BeatKeeper repo so full code about this can be found
@@ -506,11 +806,11 @@ implements another one, more eye candy, feel free to leave a comment about it.</
 </content:encoded>
         
         <pubDate>Mon, 11 Mar 2013 06:39:46 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2013/03/11/beatkeeper-visual-tick.html</guid>
+        <guid>https://masterex.github.io/archive/2013/03/11/beatkeeper-visual-tick.html</guid>
     </item>
     <item>
         <title>Wrong system time is bad for your pc health</title>
-        <link>http://masterex.github.com/archive/2013/01/17/clock-related-security-concerns.html</link>
+        <link>https://masterex.github.io/archive/2013/01/17/clock-related-security-concerns.html</link>
         <description>Wrong system time is bad for your pc health</description>
         <content:encoded>
 <![CDATA[
@@ -559,11 +859,11 @@ and security threats.</p></div>
 </content:encoded>
         
         <pubDate>Thu, 17 Jan 2013 01:49:30 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2013/01/17/clock-related-security-concerns.html</guid>
+        <guid>https://masterex.github.io/archive/2013/01/17/clock-related-security-concerns.html</guid>
     </item>
     <item>
         <title>AsciiBlog is Evolving</title>
-        <link>http://masterex.github.com/archive/2013/01/16/asciiblog-is-evolving.html</link>
+        <link>https://masterex.github.io/archive/2013/01/16/asciiblog-is-evolving.html</link>
         <description>AsciiBlog is Evolving</description>
         <content:encoded>
 <![CDATA[
@@ -601,7 +901,7 @@ Install it in /usr/bin or something like that
 </ul></div>
 <div class="paragraph"><p>Command set resembles the git one. I&#8217;ll list it here:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -656,11 +956,11 @@ backed up and for reference.a</p></div>
 </content:encoded>
         
         <pubDate>Wed, 16 Jan 2013 02:01:03 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2013/01/16/asciiblog-is-evolving.html</guid>
+        <guid>https://masterex.github.io/archive/2013/01/16/asciiblog-is-evolving.html</guid>
     </item>
     <item>
         <title>Monimix: A picture is worth a thousand words</title>
-        <link>http://masterex.github.com/archive/2012/11/08/monimix-combination-of-monochrome-images.html</link>
+        <link>https://masterex.github.io/archive/2012/11/08/monimix-combination-of-monochrome-images.html</link>
         <description>Monimix: A picture is worth a thousand words</description>
         <content:encoded>
 <![CDATA[
@@ -726,7 +1026,7 @@ Commands:
 <strong>3</strong> images: imageA, imageB and imageC.</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2012/11/08/images.png" alt="Original images" />
+<img src="https://masterex.github.io/archive/2012/11/08/images.png" alt="Original images" />
 </div>
 </div>
 <div class="paragraph"><p>The first main function is the creation of an image that combines our <strong>3</strong> original
@@ -736,7 +1036,7 @@ do this with monimix we should do <span class="green">java -jar monimix.jar -i i
 <div class="paragraph"><p>The result would be the combination image combo.png, which would look like that:</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2012/11/08/combo1.png" alt="Combination image 1" />
+<img src="https://masterex.github.io/archive/2012/11/08/combo1.png" alt="Combination image 1" />
 </div>
 </div>
 <div class="paragraph"><p>The second main function is the reverse process that would give us the 3 original
@@ -771,7 +1071,7 @@ however getting the original image back is out of the question.</p></div>
 <div class="paragraph"><p>Let&#8217;s see an illustrated example of all the above things.</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2012/11/08/steps.png" alt="monimix steps" />
+<img src="https://masterex.github.io/archive/2012/11/08/steps.png" alt="monimix steps" />
 </div>
 </div>
 <div class="paragraph"><p>Let&#8217;s see every step in detail:</p></div>
@@ -824,7 +1124,7 @@ need 7 and so on. The generic formula for the number of colors when combining
 N images is this:</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2012/11/08/formula.png" alt="number of colors formula" />
+<img src="https://masterex.github.io/archive/2012/11/08/formula.png" alt="number of colors formula" />
 </div>
 </div>
 <div class="paragraph"><p>Then, we combine 2 images at a time. At first we combine the first 2 images and after
@@ -858,7 +1158,7 @@ visible colors. If we get this number everything else is trivial.</p></div>
 <div class="paragraph"><p>The original idea was to use all these stuff for something like that:</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2012/11/08/qrconcept.png" alt="monimix and QRs" />
+<img src="https://masterex.github.io/archive/2012/11/08/qrconcept.png" alt="monimix and QRs" />
 </div>
 </div>
 <div class="paragraph"><p>In this colored QR we have 3 times more info in the same space than a black one.</p></div>
@@ -905,11 +1205,11 @@ leave a comment below.</p></div>
 </content:encoded>
         
         <pubDate>Thu, 08 Nov 2012 00:00:00 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2012/11/08/monimix-combination-of-monochrome-images.html</guid>
+        <guid>https://masterex.github.io/archive/2012/11/08/monimix-combination-of-monochrome-images.html</guid>
     </item>
     <item>
         <title>A deep look into PHPShadow 3.2</title>
-        <link>http://masterex.github.com/archive/2012/10/10/phpshadow-3.2.0-review.html</link>
+        <link>https://masterex.github.io/archive/2012/10/10/phpshadow-3.2.0-review.html</link>
         <description>A deep look into PHPShadow 3.2</description>
         <content:encoded>
 <![CDATA[
@@ -955,14 +1255,14 @@ in order to execute the encrypted file.</p></div>
 <div class="paragraph"><p>Here is a quick and straightforward code example:</p></div>
 <div class="listingblock">
 <div class="title">Original Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&lt;?php</span> <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">;</span> <span style="color: #990000">?&gt;</span></tt></pre></div></div>
 <div class="listingblock">
 <div class="title">Encrypted Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1018,7 +1318,7 @@ Let me quote them and explain some of them.</p></div>
 <div class="paragraph"><p>Without the -d option the dynamic loader will be included and executed before our code.
 This looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1038,7 +1338,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>This is actually PHP code in <strong>base64</strong> format that will be executed by calling the
 PHP&#8217;s <span class="green">eval()</span> method. If we decode it, it looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1104,7 +1404,7 @@ about 3-5 times and I&#8217;ve kept the best average run.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2012/10/10/../../../../images/icons/note.png" alt="Note" />
+<img src="https://masterex.github.io/archive/2012/10/10/../../../../images/icons/note.png" alt="Note" />
 </td>
 <td class="content">I&#8217;ve run the benchmark like <span class="green">ab -c 1 &lt;url&gt;</span>. That is concurrency level 1
 a.k.a. just one request.</td>
@@ -1116,7 +1416,7 @@ dynamic loader, encrypted by the free encoder) are
 almost similar for a project of that scale. However, even for a webpage as
 simple as this the online encoder ir out of the question.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats1.png" alt="stats figure 1" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats1.png" alt="stats figure 1" />
 </span></p></div>
 <div class="paragraph"><p>After that I wanted to test only the dynamic loader to see how much overhead adds
 to the whole process.</p></div>
@@ -1124,7 +1424,7 @@ to the whole process.</p></div>
 serve up to 300 requests more than the base64 one, that is included
 by the phpshadow encryption tool.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats2.png" alt="stats figure 2" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats2.png" alt="stats figure 2" />
 </span></p></div>
 <div class="paragraph"><p>This means that if you have to include the dynamic loader you should better use
 the non base64 format. However, as I&#8217;ve said before it&#8217;s really better to
@@ -1137,7 +1437,7 @@ is <strong>arq</strong>, a custom MVC project I wrote some months back for a uni
 and implements multiple file inclusions.</p></div>
 <div class="paragraph"><p>Here are the charts.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats3.png" alt="stats figure 3" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats3.png" alt="stats figure 3" />
 </span></p></div>
 <div class="paragraph"><p>In these cases as we can see unencrypted code can run significantly faster
 than the encrypted one. Note that in this chart the encrypted code doesn&#8217;t use
@@ -1150,7 +1450,7 @@ requests with <strong>arq</strong> (my custom project) until I&#8217;ve reached 
 <div class="paragraph"><p>In <strong>10000</strong> requests and concurrency level <strong>25</strong> the arq scored <strong>295.62</strong>
 requests per second while the encoded version scored <strong>67.67</strong>.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats4.png" alt="stats figure 4" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats4.png" alt="stats figure 4" />
 </span></p></div>
 <div class="paragraph"><p>This is pretty significant and shows that the encoded code scales poorly.</p></div>
 </div>
@@ -1161,12 +1461,12 @@ this I used the PHP&#8217;s <span class="green">memory_get_peak_usage()</span> f
 <div class="paragraph"><p>The unencrypted manuf.php peaked <strong>26921244</strong> or <strong>26.92</strong> MB max memory usage,
 while the encrypted peaked <strong>42244396</strong> or <strong>42.24</strong> MB.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats5.png" alt=""stats figure 5" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats5.png" alt=""stats figure 5" />
 </span></p></div>
 <div class="paragraph"><p>The unencrypted arq project peaked <strong>1245692</strong> or <strong>1.246</strong> MB max memory usage,
 while the encrypted peaked <strong>1325184</strong> or <strong>1.325</strong> MB</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/stats6.png" alt="stats figure 6" />
+<img src="https://masterex.github.io/archive/2012/10/10/stats6.png" alt="stats figure 6" />
 </span></p></div>
 <div class="paragraph"><p>As we can see in some extreme cases there can be nearly twice the normal
 maximum memory usage.</p></div>
@@ -1220,7 +1520,7 @@ had checked it out.</p></div>
 available PHP functions.</p></div>
 <div class="paragraph"><p>Here is my magic code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1278,7 +1578,7 @@ could try to implement another encryption mechanism on top of PHPShadow.</p></di
 <div class="paragraph"><p>Here I&#8217;ll introduce some code snippets that implement this concept. They
 are pretty naive but they serve our purpose really nicely.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1301,7 +1601,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>This generates an openssl key pair. We&#8217;ll use the public key for the encryption
 and the private for the decryption.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1327,12 +1627,12 @@ there remove the <span class="green">&lt;?php</span> and <span class="green">?&g
 Then it puts the the ciphertext into a new file. In that case the original file
 was a "Hello World" one and the ciphertext was the above:</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/10/10/ciphertext.png" alt="Cipher Text" />
+<img src="https://masterex.github.io/archive/2012/10/10/ciphertext.png" alt="Cipher Text" />
 </span></p></div>
 <div class="paragraph"><p>The critical part is the one that we&#8217;ll execute the encypted file. Here
 is our precious decoder</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1404,7 +1704,7 @@ However, I strongly believe that it will be ok for small to medium projects.</p>
 numbers for the cipher-text.</p></div>
 <div class="paragraph"><p>Here is an example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1498,11 +1798,11 @@ a previous PHPShadow version to the latest would be nice :)
 </content:encoded>
         
         <pubDate>Wed, 10 Oct 2012 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2012/10/10/phpshadow-3.2.0-review.html</guid>
+        <guid>https://masterex.github.io/archive/2012/10/10/phpshadow-3.2.0-review.html</guid>
     </item>
     <item>
         <title>Android: Crafting a Metronome with Audio Synthesis</title>
-        <link>http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html</link>
+        <link>https://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html</link>
         <description>Android: Crafting a Metronome with Audio Synthesis</description>
         <content:encoded>
 <![CDATA[
@@ -1549,7 +1849,7 @@ to implement a metronome with that.</p></div>
 <div class="paragraph"><p>Let&#8217;s see the core metronome class.</p></div>
 <div class="listingblock">
 <div class="title">AudioGenerator</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1641,7 +1941,7 @@ we convert it to <strong>2</strong> bytes.</p></div>
 little end bits and then a bitwise AND with the bitmask <strong>0xff00</strong> and shift
 the bits <strong>8</strong> positions (bits) to the right.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/05/28/sampleBitmask.png" alt="samples and bitmasks" />
+<img src="https://masterex.github.io/archive/2012/05/28/sampleBitmask.png" alt="samples and bitmasks" />
 </span></p></div>
 <div class="paragraph"><p>So we populate an array of bytes that contains the waveform in PCM.</p></div>
 <div class="paragraph"><p>Other than that we write the sound <em>directly</em> to the audio device buffer
@@ -1649,7 +1949,7 @@ with the <span class="green">writeSound()</span> method.</p></div>
 <div class="paragraph"><p>The other important class of our metronome is the <strong>Metronome</strong> class. Here it is:</p></div>
 <div class="listingblock">
 <div class="title">Metronome</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1742,13 +2042,13 @@ one programmatisticaly.</p></div>
 my fine AudioGenerator Class to play the first few note of the traditional
 song <strong>Oh, Susanna</strong>.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2012/05/28/susana.png" alt="susana partiture" />
+<img src="https://masterex.github.io/archive/2012/05/28/susana.png" alt="susana partiture" />
 </span></p></div>
 <div class="paragraph"><p>This partitura was created with <a href="http://tuxguitar.herac.com.ar/">TuxGuitar</a>.</p></div>
 <div class="paragraph"><p>Here is my first attempt:</p></div>
 <div class="listingblock">
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1853,7 +2153,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>And here is my hopefully more <strong>human</strong> readable version:</p></div>
 <div class="listingblock">
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2007,11 +2307,11 @@ be wrong here or there.</p></div>
 </content:encoded>
         
         <pubDate>Mon, 28 May 2012 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html</guid>
+        <guid>https://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html</guid>
     </item>
     <item>
         <title>JUPAR: Updating Java desktop applications made easy!</title>
-        <link>http://masterex.github.com/archive/2011/12/25/jupar.html</link>
+        <link>https://masterex.github.io/archive/2011/12/25/jupar.html</link>
         <description>JUPAR: Updating Java desktop applications made easy!</description>
         <content:encoded>
 <![CDATA[
@@ -2078,7 +2378,7 @@ to perform advanced operations such as updating a database scheme. This
 keeps JUPAR complexity low and provides more flexibility to the developer.</p></div>
 <div class="paragraph"><p>The hole procedure is described to the next figure.</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/12/25/jupar.png" alt="JUPAR Architecture" />
+<img src="https://masterex.github.io/archive/2011/12/25/jupar.png" alt="JUPAR Architecture" />
 </span></p></div>
 </div>
 </div>
@@ -2091,7 +2391,7 @@ We are going to see both the code that we should include in our application
 and the xml files that we should create!</p></div>
 <div class="paragraph"><p>Here is the relevant code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2187,7 +2487,7 @@ release<span style="color: #990000">.</span><span style="font-weight: bold"><spa
 such as 1.0 , 1.1 etc and release is an integer starting from 1 and counting.</p></div>
 <div class="paragraph"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2213,7 +2513,7 @@ notify the user for the new version and don&#8217;t perform an automatic update.
 <div class="paragraph"><p>Anyway, if the answer is positive we parse the <span class="red">files.xml</span> file and download
 the needed files. Here how <span class="red">files.xml</span> looks like:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2230,7 +2530,7 @@ http://www.gnu.org/software/src-highlite -->
  localy.
 This is the last xml file and looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2283,7 +2583,7 @@ path as an argument and let&#8217;s up to the developer how to handle this.</p><
 <h4 id="_find_the_executable_path_with_java">Find the executable path with Java</h4>
 <div class="paragraph"><p>You can try to find the executables path with a command like:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2300,7 +2600,7 @@ doesn&#8217;t works for JVMs previous to 1.5.</p></div>
 <h5 id="_first_way">First way</h5>
 <div class="paragraph"><p>Use a full path to set the temporary directory:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2313,7 +2613,7 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <span style="color: #008080">File</span> tmp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist/tmp"</span><span style="color: #990000">);</span></tt></pre></div></div>
 <div class="paragraph"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2334,7 +2634,7 @@ http://www.gnu.org/software/src-highlite -->
 to provide an update method that takes the executable&#8217;s full path as an argument.</p></div>
 <div class="paragraph"><p>So we only need to have something like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2432,11 +2732,11 @@ Test it!
 </content:encoded>
         
         <pubDate>Sun, 25 Dec 2011 00:00:00 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2011/12/25/jupar.html</guid>
+        <guid>https://masterex.github.io/archive/2011/12/25/jupar.html</guid>
     </item>
     <item>
         <title>Some retro technology! ZX Spectrum</title>
-        <link>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</link>
+        <link>https://masterex.github.io/archive/2011/11/20/spectrum-zx.html</link>
         <description>Some retro technology! ZX Spectrum</description>
         <content:encoded>
 <![CDATA[
@@ -2487,7 +2787,7 @@ cool and how writing, saving and loading programs works.</p></div>
 <div class="sectionbody">
 <div class="paragraph"><p>Picture is related!</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/11/20/spectrum-setup.png" alt="ZX Spectrum setup" />
+<img src="https://masterex.github.io/archive/2011/11/20/spectrum-setup.png" alt="ZX Spectrum setup" />
 </span></p></div>
 <div class="paragraph"><p><a href="http://en.wikipedia.org/wiki/File:ZXSpectrum48k.jpg">ZX Spectrum</a> , <a href="http://en.wikipedia.org/wiki/File:RadioShack-ctr-119.jpg">cassette deck</a></p></div>
 <div class="paragraph"><p>A figure like that was included in ZX Spectrum quick start guide. Due to
@@ -2506,7 +2806,7 @@ Spectrum&#8217;s initial screen with Sinclair&#8217;s copyright note.</p></div>
 <div class="paragraph"><p>It is possible to run directly commands in Sinclair BASIC.
 So we could directly run:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2517,7 +2817,7 @@ PRINT name$</tt></pre></div></div>
 <div class="paragraph"><p>A program is a series of commands that can be repeated later. Here is an
 example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2567,10 +2867,10 @@ computer will seems as exotic as ZX Spectrum to the future generations!</p></div
 <h2 id="_bonus_pictrures">Bonus Pictrures</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/11/20/spectrum1.JPG" alt="ZX Spectrum 1" width="650" />
+<img src="https://masterex.github.io/archive/2011/11/20/spectrum1.JPG" alt="ZX Spectrum 1" width="650" />
 </span></p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/11/20/spectrum2.JPG" alt="ZX Spectrum 2" width="650" />
+<img src="https://masterex.github.io/archive/2011/11/20/spectrum2.JPG" alt="ZX Spectrum 2" width="650" />
 </span></p></div>
 <div class="paragraph"><p>Unfortunately the asdf keys seems not to work anymore&#8230; :_(</p></div>
 </div>
@@ -2579,11 +2879,11 @@ computer will seems as exotic as ZX Spectrum to the future generations!</p></div
 </content:encoded>
         
         <pubDate>Sun, 20 Nov 2011 00:00:00 +0200</pubDate>
-        <guid>http://masterex.github.com/archive/2011/11/20/spectrum-zx.html</guid>
+        <guid>https://masterex.github.io/archive/2011/11/20/spectrum-zx.html</guid>
     </item>
     <item>
         <title>Java: A simple and neat cli Progress Bar</title>
-        <link>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</link>
+        <link>https://masterex.github.io/archive/2011/10/23/java-cli-progress-bar.html</link>
         <description>Java: A simple and neat cli Progress Bar</description>
         <content:encoded>
 <![CDATA[
@@ -2595,7 +2895,7 @@ it isn&#8217;t something difficult but I find it pretty usefull and worth to
 be mentioned. The progress bar was originally written as part of F.I.C.</p></div>
 <div class="paragraph"><p>Here is how it looks like:</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/10/23/progressbar.gif" alt="Progress Bar Demo" />
+<img src="https://masterex.github.io/archive/2011/10/23/progressbar.gif" alt="Progress Bar Demo" />
 </span></p></div>
 </div>
 </div>
@@ -2605,7 +2905,7 @@ be mentioned. The progress bar was originally written as part of F.I.C.</p></div
 <div class="paragraph"><p>Let&#8217;s see how you can use it in your own project. The ProgressBar Class
 is the following one:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2663,7 +2963,7 @@ http://www.gnu.org/software/src-highlite -->
 update method takes the done work units so far and the total work units.</p></div>
 <div class="paragraph"><p>Here is an example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2694,7 +2994,7 @@ K more files then we use <span class="green">bar.update(X',Y+K);</span> , on the
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2011/10/23/../../../../images/icons/warning.png" alt="Warning" />
+<img src="https://masterex.github.io/archive/2011/10/23/../../../../images/icons/warning.png" alt="Warning" />
 </td>
 <td class="content">The Progress Bar is meaningful only when the user has to wait. If the
 process terminates quickly it is meaningless and furthermore the symbols are
@@ -2715,7 +3015,7 @@ long. This is obviously the progress bar!</p></div>
 <div class="paragraph"><p>So let&#8217;s see the <span class="blue">update</span> method. I&#8217;ll introduce it again with extra
 comments that explain what&#8217;s happening.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2804,11 +3104,11 @@ pretty cli progress bar. Thank you dude! :)</p></div>
 </content:encoded>
         
         <pubDate>Sun, 23 Oct 2011 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2011/10/23/java-cli-progress-bar.html</guid>
+        <guid>https://masterex.github.io/archive/2011/10/23/java-cli-progress-bar.html</guid>
     </item>
     <item>
         <title>Trackable File Distribution: A simple approach</title>
-        <link>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
+        <link>https://masterex.github.io/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
         <description>Trackable File Distribution: A simple approach</description>
         <content:encoded>
 <![CDATA[
@@ -2872,7 +3172,7 @@ users.</p></div>
 <div class="paragraph"><p>So now that we have our unique identifier we can serve the file to the
 user like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2910,7 +3210,7 @@ the identifiers length(in bytes) and returns the trackable file to the user.</p>
 see that they differ.</p></div>
 <div class="paragraph"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2922,7 +3222,7 @@ header to identify the file so most image viewers will display our GIF just as
 the original.</p></div>
 <div class="paragraph"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2932,7 +3232,7 @@ $ du -b image<span style="color: #990000">.</span>gif
 <span style="color: #993399">10003</span>  image<span style="color: #990000">.</span>gif</tt></pre></div></div>
 <div class="paragraph"><p>If we hexdump it the last line will be:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2944,7 +3244,7 @@ character table</a>.</p></div>
 <div class="paragraph"><p>Further more <em>hexdump</em> can dump a file in ascii with the <strong>-C</strong> switch. So
 the downloaded file last line is:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3005,11 +3305,11 @@ as a result a copy with lesser quality.</p></div>
 </content:encoded>
         
         <pubDate>Sun, 09 Oct 2011 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</guid>
+        <guid>https://masterex.github.io/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</guid>
     </item>
     <item>
         <title>PHP: Protect the c0d3</title>
-        <link>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</link>
+        <link>https://masterex.github.io/archive/2011/08/27/php-protect-the-code.html</link>
         <description>PHP: Protect the c0d3</description>
         <content:encoded>
 <![CDATA[
@@ -3104,7 +3404,7 @@ real world solutions!</p></div>
 <div class="paragraph"><p>For the above demos I&#8217;ll use this pretty cool PHP code:</p></div>
 <div class="listingblock">
 <div class="title">CoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3144,7 +3444,7 @@ java application that uses the power of regex to obfuscate our code!</p></div>
 find the gist with the whole code.</p></div>
 <div class="paragraph"><p>I&#8217;ll just go directly to the interesting part:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3195,7 +3495,7 @@ Rename the variables
 <div class="paragraph"><p>So after all these transformations our very <strong>coolcode</strong> will look like that:</p></div>
 <div class="listingblock">
 <div class="title">ObfuscatedCoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3218,7 +3518,7 @@ without scrolling but think of it as being a single line.</p></div>
 for example you can alter string letters with their
 <a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/index.php">numerical code</a>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3231,7 +3531,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2011/08/27/../../../../images/icons/important.png" alt="Important" />
+<img src="https://masterex.github.io/archive/2011/08/27/../../../../images/icons/important.png" alt="Important" />
 </td>
 <td class="content">Attention! As difficult as it may seems for the obfuscated code to be read
 it&#8217;s just a matter of time until it does from an experienced developer after
@@ -3246,7 +3546,7 @@ PHP encoding. The code can be found <a href="https://gist.github.com/1173762">he
 <div class="paragraph"><p>So let&#8217;s see the <strong>encoding</strong> process:</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2011/08/27/img1.png" alt="Encryption" />
+<img src="https://masterex.github.io/archive/2011/08/27/img1.png" alt="Encryption" />
 </div>
 <div class="title">Figure 1. Encoding Process</div>
 </div>
@@ -3272,7 +3572,7 @@ help.</p></div>
 <div class="paragraph"><p>Now let&#8217;s see the <strong>decryption</strong> process:</p></div>
 <div class="imageblock">
 <div class="content">
-<img src="http://masterex.github.com/archive/2011/08/27/img2.png" alt="Decryption" />
+<img src="https://masterex.github.io/archive/2011/08/27/img2.png" alt="Decryption" />
 </div>
 <div class="title">Figure 2. Decryption Process</div>
 </div>
@@ -3281,7 +3581,7 @@ the original source code.</p></div>
 <div class="paragraph"><p>The <em>PHP wrapper</em> in the figure 2 is just a PHP script that will execute
 the deciphered code. This could be something like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3298,7 +3598,7 @@ algorithm that has been used could easily find the original code.</p></div>
 <div class="paragraph"><p>Secondly, the <em>PHP wrapper</em> is pretty trivial and someone could easily
 execute the above code to get the original source code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3313,7 +3613,7 @@ wouldn&#8217;t be able to intervene and print the code instead of executing it.<
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2011/08/27/../../../../images/icons/warning.png" alt="Warning" />
+<img src="https://masterex.github.io/archive/2011/08/27/../../../../images/icons/warning.png" alt="Warning" />
 </td>
 <td class="content">In my code I have used code found on the internet. I have commemnded
 wherever I have used it. Also, both my obfuscator and encoder are very
@@ -3500,11 +3800,11 @@ already exist before running the program.</p></div>
 </content:encoded>
         
         <pubDate>Sat, 27 Aug 2011 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html</guid>
+        <guid>https://masterex.github.io/archive/2011/08/27/php-protect-the-code.html</guid>
     </item>
     <item>
         <title>Give a smile: Become a blood donor!</title>
-        <link>http://masterex.github.com/archive/2011/08/22/blood-donation.html</link>
+        <link>https://masterex.github.io/archive/2011/08/22/blood-donation.html</link>
         <description>Give a smile: Become a blood donor!</description>
         <content:encoded>
 <![CDATA[
@@ -3538,7 +3838,7 @@ in terms that nobody should donate blood for money or other things in return.</p
 <h2 id="_the_procedure">The procedure</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><span class="image">
-<img src="http://masterex.github.com/archive/2011/08/22/http://upload.wikimedia.org/wikipedia/commons/b/b9/Blutspende_Piktogramm.GIF" alt="Blood Donation" width="64" />
+<img src="https://masterex.github.io/archive/2011/08/22/http://upload.wikimedia.org/wikipedia/commons/b/b9/Blutspende_Piktogramm.GIF" alt="Blood Donation" width="64" />
 </span>
 You should visit a public hospital with a blood department, fill in a
 questionnaire about your health status, have a 5 minute interview with
@@ -3589,7 +3889,7 @@ arranged with them to go and donate blood.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="http://masterex.github.com/archive/2011/08/22/../../../../images/icons/tip.png" alt="Tip" />
+<img src="https://masterex.github.io/archive/2011/08/22/../../../../images/icons/tip.png" alt="Tip" />
 </td>
 <td class="content">So my advice for you that are considering blood donation but haven&#8217;t
 decided yet is to find a friend of yours and go together to donate blood.
@@ -3633,11 +3933,11 @@ blood you are entitled some blood units.</p></div>
 </content:encoded>
         
         <pubDate>Mon, 22 Aug 2011 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2011/08/22/blood-donation.html</guid>
+        <guid>https://masterex.github.io/archive/2011/08/22/blood-donation.html</guid>
     </item>
     <item>
         <title>Hello World AsciiBlog :)</title>
-        <link>http://masterex.github.com/archive/2011/08/06/asciiblog.html</link>
+        <link>https://masterex.github.io/archive/2011/08/06/asciiblog.html</link>
         <description>Hello World AsciiBlog :)</description>
         <content:encoded>
 <![CDATA[
@@ -3669,7 +3969,7 @@ in Asciidoc <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a>.</p></d
 <div class="paragraph"><p>Here it is the directory hierarchy of Asciiblog.</p></div>
 <div class="listingblock">
 <div class="title">Hierarchy</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3714,7 +4014,7 @@ directory/file listing, that look like that:</p></div>
 <span class="blue">mainsite</span> directory. Every page should be included separetely just
 like that:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3741,7 +4041,7 @@ This RSS file contains the post titles and the publication dates.</p></div>
 <div class="paragraph"><p>Let&#8217;s say this post I am writting right now is located in
 <span class="green">archive/2011/08/03/asciiblog.html</span>. I should publish it like</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3855,7 +4155,7 @@ Add the scripts to the executables search path to call them without
 </content:encoded>
         
         <pubDate>Sat, 06 Aug 2011 00:00:00 +0300</pubDate>
-        <guid>http://masterex.github.com/archive/2011/08/06/asciiblog.html</guid>
+        <guid>https://masterex.github.io/archive/2011/08/06/asciiblog.html</guid>
     </item>
   </channel>
 </rss>

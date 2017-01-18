@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
 <meta name="description" content="a review of phpshadow 3.2 encryption system" />
 <meta name="keywords" content="phpshadow, php, encryption, obfuscation, review" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0">
@@ -84,14 +84,14 @@ in order to execute the encrypted file.</p></div>
 <div class="paragraph"><p>Here is a quick and straightforward code example:</p></div>
 <div class="listingblock">
 <div class="title">Original Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&lt;?php</span> <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">;</span> <span style="color: #990000">?&gt;</span></tt></pre></div></div>
 <div class="listingblock">
 <div class="title">Encrypted Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -147,7 +147,7 @@ Let me quote them and explain some of them.</p></div>
 <div class="paragraph"><p>Without the -d option the dynamic loader will be included and executed before our code.
 This looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -167,7 +167,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>This is actually PHP code in <strong>base64</strong> format that will be executed by calling the
 PHP&#8217;s <span class="green">eval()</span> method. If we decode it, it looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -349,7 +349,7 @@ had checked it out.</p></div>
 available PHP functions.</p></div>
 <div class="paragraph"><p>Here is my magic code:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -407,7 +407,7 @@ could try to implement another encryption mechanism on top of PHPShadow.</p></di
 <div class="paragraph"><p>Here I&#8217;ll introduce some code snippets that implement this concept. They
 are pretty naive but they serve our purpose really nicely.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -430,7 +430,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>This generates an openssl key pair. We&#8217;ll use the public key for the encryption
 and the private for the decryption.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -461,7 +461,7 @@ was a "Hello World" one and the ciphertext was the above:</p></div>
 <div class="paragraph"><p>The critical part is the one that we&#8217;ll execute the encypted file. Here
 is our precious decoder</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -533,7 +533,7 @@ However, I strongly believe that it will be ok for small to medium projects.</p>
 numbers for the cipher-text.</p></div>
 <div class="paragraph"><p>Here is an example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->

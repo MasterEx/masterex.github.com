@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="description" content="A briefing on my fosscomm 2014 talk on how to choose the right programming language for your next project." />
+<meta name="keywords" content="fosscomm2014, fosscomm, programming languages, project management" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Choosing the right digital tools</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_choosing_a_programming_language">Choosing a programming language</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Back in 2014 I participated in <strong><a href="https://en.wikipedia.org/wiki/Fosscomm">Fosscomm</a></strong> with the talk
+"<strong>What programming language should I choose next</strong>". The concept of the talk was to introduce
+the steps we have to take in order to choose the programming language for our next project.</p></div>
+<div class="paragraph"><p>Now I am much more experienced and I can give more insights to this subject.
+I always wanted to write about that since then. Let&#8217;s hope that it
+will be a good starting point for me to start writing in this blog more
+frequently again :-)</p></div>
+<div class="paragraph"><p>The main points that I will go through are:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Programming language characteristics
+</p>
+</li>
+<li>
+<p>
+Occasions for choosing a programming language
+</p>
+</li>
+<li>
+<p>
+Conclusion
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>The following content is mostly based on my personal thoughts and experience
+and it is intended to be considered as food for thought rather than anything
+else.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_programming_language_characteristics">Programming language characteristics</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are countless programming languages. Others are created to solve
+problems of specific domains (<a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a>
+such as <strong>AWK</strong> for text processing) and others try to be more generic and solve
+problems of many domains (<a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">general purpose languages</a>
+such as <strong>C</strong> and <strong>Java</strong>).</p></div>
+<div class="paragraph"><p>Domain specific languages may be the best/easiest way for solving particular problems
+and comparing them with other non-specific may be unfair, depending the context.</p></div>
+<div class="paragraph"><p>Let&#8217;s better have generic programming languages in mind from now on when
+referring to programming languages.</p></div>
+<div class="paragraph"><p>Every programming language has some main characteristics that distinct them from
+other languages and unites them with others. These characteristics implement
+particular concepts that may suits better on some circumstances than others.</p></div>
+<div class="paragraph"><p>Mastering these concepts is essential for choosing the most well-fit language
+for a particular task and furthermore for easily and quickly using a new language
+that implements those known concepts.</p></div>
+<div class="paragraph"><p>Let&#8217;s see the basic concepts that I think that are worthy to mention.</p></div>
+<div class="sect2">
+<h3 id="_compiled_vs_interpreted">Compiled vs Interpreted</h3>
+<div class="paragraph"><p>A main characteristic of a language is if it is
+compiled or interpreted.</p></div>
+<div class="paragraph"><p>By compiled we mean that the default implementation of the language
+provides a compiler that translates the source program to machine code.</p></div>
+<div class="paragraph"><p>An example of such a language is <strong>C</strong> or <strong>C++</strong>.</p></div>
+<div class="paragraph"><p>By interpreted we mean that the default implementation of the language
+provides an interpreter that executes the source code on the fly.</p></div>
+<div class="paragraph"><p>An example would be <strong>Perl</strong> or <strong>PHP</strong>.</p></div>
+<div class="paragraph"><p>I refer to the default implementation because the truth is that any language
+may be compiled or interpreted. However, the default implementation is the
+one that is widely adopted and best supported. Some languages as <strong>Haskell</strong>
+may provide both compilers and interpreters.</p></div>
+<div class="paragraph"><p>The advantages of a compiled language is that the program will run faster.
+However a binary executable has to be built against each desired target
+architecture. Changes to the source code require re-compilation in order
+to run the updated program. This would be time consuming in large programs
+such as a video game and would disrupt more the development process.</p></div>
+<div class="paragraph"><p>The advantages of an interpreted language is that we may do changes to the
+source code and test at once. This makes development much easier as we may
+test our changes much faster. Also, the source code is distributed as it
+is and it may run everywhere an appropriate interpreter is installed. Of course
+running the program is slower that the previous solution as the translation
+happens at run time.</p></div>
+<div class="paragraph"><p>Some languages as <strong>Java</strong> combine the two mentioned techniques. Java compiles
+the source code to bytecode, an intermediate representation of the program
+and the interpreter(jvm) runs the bytecode. Also, in the case of Java and jvm
+there are other optimizations that take place such as <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT</a>
+(just in time compilation) that makes the performance of the programs much
+better.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_programming_paradigms">Programming paradigms</h3>
+<div class="paragraph"><p>The compiler/interpreter provided by the default implementation isn&#8217;t
+actually a language characteristic but in my opinion it is essential for one to have at
+least a basic understanding for these stuff.</p></div>
+<div class="paragraph"><p>The next thing we are going to mention is definitely a language characteristic.
+It is the <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigms</a>
+a language encapsulates.</p></div>
+<div class="paragraph"><p>I won&#8217;t mention which the programming paradigms are. You can check wikipedia for that.
+I&#8217;ll just mention that a programming paradigm dictates the way we will face a problem and how we
+will use the programming language at hand in order to model a solution. It
+highly affects the development process. Some paradigms are better suited for
+specific tasks and may result in more elegant solutions and more readable
+code (for those familiar with the used paradigm at least).</p></div>
+<div class="paragraph"><p>A programming language may implement at least partially more than one paradigm.
+Having a basic understanding of some paradigms may be a great asset in one&#8217;s programming
+arsenal.</p></div>
+<div class="paragraph"><p>Also, some other important things such as <a href="https://en.wikipedia.org/wiki/Software_design_pattern">design patterns</a>
+may be specific to specific programming paradigms. Usually, most design patterns
+are related to object-oriented paradigm actually.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_type_checking_system">Type checking system</h3>
+<div class="paragraph"><p>The next thing that we should have in mind is the <a href="https://en.wikipedia.org/wiki/Type_system">type checking system</a>.</p></div>
+<div class="paragraph"><p>The type checking system of a language is the mechanism that checks if a
+type contains a permitted value accordingly to some specified rules. In
+other words a type safe language is one that shields the programmer from
+using the types in a not desired way.</p></div>
+<div class="paragraph"><p><strong>Java</strong> is such a language. Here is an example.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">//this fails with a compiler error</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">//error: incompatible types: int cannot be converted to String</span></span>
+<span style="color: #008080">String</span> one <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">;</span></tt></pre></div></div>
+<div class="paragraph"><p>Other than that the extend and the way the type safety is enforced may vary.
+For example some languages check for type errors at compile time while others
+check at run time.</p></div>
+<div class="paragraph"><p>Of course there are languages that have limited or none type safety. This
+doesn&#8217;t mean that a non type safe language is inferior to others. There are
+some merits such as the development process may be faster and the learning
+curve of such a language quicker as the syntax tends to be simpler.</p></div>
+<div class="paragraph"><p>Such a language is <strong>Javascript</strong>. Here is an example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">var</span></span> h <span style="color: #990000">=</span> <span style="color: #FF0000">"hello, "</span><span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #0000FF">var</span></span> w <span style="color: #990000">=</span> <span style="color: #993399">5</span><span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>h<span style="color: #990000">+</span>w<span style="color: #990000">);</span>   <span style="font-style: italic"><span style="color: #9A1900">// prints hello, 5</span></span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>w<span style="color: #990000">+</span><span style="color: #993399">4</span><span style="color: #990000">);</span>   <span style="font-style: italic"><span style="color: #9A1900">// prints 9</span></span>
+<span style="font-weight: bold"><span style="color: #000000">alert</span></span><span style="color: #990000">(</span>h<span style="color: #990000">+</span>w<span style="color: #990000">+</span><span style="color: #993399">4</span><span style="color: #990000">);</span> <span style="font-style: italic"><span style="color: #9A1900">// prints hello, 54</span></span></tt></pre></div></div>
+<div class="paragraph"><p>As you can see there aren&#8217;t many restrictions on how the types may be used.</p></div>
+<div class="paragraph"><p>Type checking may be more important than it looks. Facebook had created
+the <a href="http://hacklang.org/">hack</a> language a while back aiming to produce
+code of better quality faster.</p></div>
+<div class="paragraph"><p>As it is mentioned in hack&#8217;s website "<strong>Hack reconciles the fast development
+cycle of a dynamically typed language with the discipline provided by static typing</strong>".</p></div>
+<div class="paragraph"><p>If big companies consider type safety such an important subject and invest
+time and money on this, then we should definitely have at least a basic
+understanding of type checking systems.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_memory_management">Memory management</h3>
+<div class="paragraph"><p>Another important characteristic of a programming language is the memory
+management system that it uses.</p></div>
+<div class="paragraph"><p>Some languages require the user to allocate and free the memory by hand
+which of course requires more work. However, it provides better performance
+and control with higher risk of human errors. Such a language is traditionally
+<strong>C</strong>.</p></div>
+<div class="paragraph"><p>On the other hand there are languages that provide a garbage collection mechanisms.
+This is much safer and new programs are easier and faster to write but of course
+it costs on performance. Such a language is <strong>Java</strong>.</p></div>
+<div class="paragraph"><p>As always the best approach depends on the application that we desire to write
+and the problem we aim to solve.</p></div>
+<div class="paragraph"><p>In the case of garbage collected languages it is essential to have a basic understanding
+of the available collection strategies and the lifecycle of the objects.
+In the case of manually freeing the memory one should be very careful not
+to cause memory leaks or other security holes.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_syntactic_sugar">Syntactic sugar</h3>
+<div class="paragraph"><p>Another factor of a programming language that I find important is the
+syntactic sugar.</p></div>
+<div class="paragraph"><p>By syntactic sugar I refer to all the ways a programming language can express
+a solution to a particular problem, elegantly. Often the elegant solutions
+are the compact ones and the more readable.</p></div>
+<div class="paragraph"><p>This is not an important factor but languages that provide these facilities
+may be used somewhat faster when developing a new application and may aid the
+developer to be more expressive.</p></div>
+<div class="paragraph"><p>An example of syntactic sugar would incrementing an integer in <strong>Lua</strong> and in <strong>C</strong>:</p></div>
+<div class="listingblock">
+<div class="title">Lua</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>i <span style="color: #990000">=</span> i <span style="color: #990000">+</span> <span style="color: #993399">1</span></tt></pre></div></div>
+<div class="listingblock">
+<div class="title">C</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>i<span style="color: #990000">++;</span></tt></pre></div></div>
+<div class="paragraph"><p>These "shortcuts" may be harder to read for a newbie but they feel pretty
+natural if you get familiar with them.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_libraries_frameworks_and_community">Libraries, frameworks and community</h3>
+<div class="paragraph"><p>Last but not least an important factor is the toolset that is available for
+a specific language and the whole ecosystem around it.</p></div>
+<div class="paragraph"><p>A vivid community means that learning material is broadly available, the development
+of the language will be more  active and mature libraries, frameworks and
+other tools should already exist.</p></div>
+<div class="paragraph"><p>All these small details are actually very important. For example a powerful
+framework that let you build your next web app in a fraction of the development
+time compared to other frameworks would be a pretty good reason to choose
+a particular language.</p></div>
+<div class="paragraph"><p>Furthermore, a larger community means a larger user base. This means more
+projects in the particular language that leads to more jobs around the particular
+language and the relevant technologies.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_occasions_for_choosing_a_programming_language">Occasions for choosing a programming language</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now that we have a basic understanding of the characteristics of a programming language and we can
+detect these characteristics between various languages lets see the occasions
+that we may face when having to choose a programming language
+for our <em>next</em> <strong>big</strong> project.</p></div>
+<div class="paragraph"><p>There are 2 occasions, the project may be a personal one for fun or a professional one for profit.</p></div>
+<div class="paragraph"><p>This is the most important factor that we should have in mind for making the particular choice.</p></div>
+<div class="paragraph"><p>If the project is personal then one has to aim gaining experience through it.
+So, choosing new languages, frameworks, libraries and technologies is the
+way to go. Mind that learning a new language is really meaningful if it introduces
+new concepts. Learning just another language that is similar to the previous
+known doesn&#8217;t add extra value. In the end, <strong>it&#8217;s just syntax</strong>.</p></div>
+<div class="paragraph"><p>By new concepts I refer to the previous characteristics that we have analyzed.
+One familiar with these characteristics and hands on experience with them
+may easily jump to a new language that encapsulates similar concepts.
+Learning syntax is easy, having to learn more advanced things such as a paradigm
+is the real challenge.</p></div>
+<div class="paragraph"><p>On the other hand on a professional environment we have to choose the most <strong>easy</strong>
+solutions. This means the solution that will provide faster the desired
+result with the available work force. In case the work force is insufficient
+we have to take into account the availability of new hires with the necessary
+skills or the time required for a new inexperienced hire to master the required technologies.</p></div>
+<div class="paragraph"><p>Any existing code base has to be taken into account at this decision. We
+have to be familiar with the legacy technologies used or take into account the
+time required to move the project to newer technologies. In that case, we should
+consider if there are reasons that will force us to move to newer technologies
+in the future anyway.</p></div>
+<div class="paragraph"><p>A formula that I have created for the decision making between two languages
+A and B during my fosscomm talk is the following. First we calculate the
+COST of the 2 languages LA and LB:</p></div>
+<div class="paragraph"><p>COST_FUNCTION = (<span class="red">LTLx</span> + <span class="green">ECTLx</span> + <span class="yellow">FTECLx</span> + <span class="purple">LIBECLx</span> + <span class="blue">TECHECLx</span> + OTHERECLx) + (<span class="red">TLx</span> + <span class="yellow">FTLx</span> + <span class="purple">LIBLx</span> + <span class="blue">TECHLx</span> + OTHERLx) * TIME</p></div>
+<div class="paragraph"><p>Where:</p></div>
+<div class="paragraph"><p><span class="red">LTLx</span>: The time required to master the language Lx. LTLx = 0 if Lx is already mastered</p></div>
+<div class="paragraph"><p><span class="red">TLx</span>: The time required to maintain and develop further the application
+if we plan to use the language Lx for <strong>TIME</strong> period of time</p></div>
+<div class="paragraph"><p><span class="green">ECTLx</span>: The time required to rewrite the existing code base to the target language</p></div>
+<div class="paragraph"><p><span class="yellow">FTECLx</span>: The time required to master the used frameworks of the existing code-base</p></div>
+<div class="paragraph"><p><span class="purple">LIBECLx</span>: The time required to master the libraries of the existing code-base</p></div>
+<div class="paragraph"><p><span class="blue">TECHECLx</span>: The time required to get familiar the other technologies already used</p></div>
+<div class="paragraph"><p>OTHERECLx: Other factors related to the existing code base</p></div>
+<div class="paragraph"><p><span class="yellow">FTLx</span>, <span class="purple">LIBLx</span> etc. are the time required for each factor if
+we are going to use these things for <strong>TIME</strong> period of time.</p></div>
+<div class="paragraph"><p>So, in order to choose what language is the best to use we have to compare
+their costs and pick the one with the smaller cost.</p></div>
+<div class="paragraph"><p><strong>COST_FUNCTION(La,YEARS)</strong> &gt; <strong>COST_FUNCTION(Lb,YEARS)</strong></p></div>
+<div class="paragraph"><p>If the cost functions are equals then we may use some further things as criteria
+such as the personal preferences of the development team, the average cost
+of hiring programmers in the particular language or the availability
+of programmers for the particular language in the market.</p></div>
+<div class="sect2">
+<h3 id="_conclusion">Conclusion</h3>
+<div class="paragraph"><p>The point that I would like to make is that when we have the opportunity
+we should experiment and learn new things. In the context of programming languages
+these new things are all the characteristics that I have mentioned before.
+By getting familiar with all these we will be able to understand better and learn
+quicker new languages when it will be required.</p></div>
+<div class="paragraph"><p>All this gained knowledge will also be a great asset when we should make
+choices in our work environment, especially if we are encouraged to use
+new technologies in order to enrich our company&#8217;s know how. This is more
+usual for smaller companies.</p></div>
+<div class="paragraph"><p>On the other hand if we work on larger companies it is not easy to experiment.
+Business is about profit and the tech related choices should be the ones that will
+profit the company the most. Our gained knowledge will be again useful in order
+to make the best choices.</p></div>
+<div class="paragraph"><p>So study new concepts on your spare time, no syntax! Don&#8217;t waste your time!
+Stick to what you have mastered in your work environment except if there
+are opportunities for experimentation.</p></div>
+<div class="paragraph"><p>Please, feel free to share in the comments other language characteristics
+that you think that are important. I would love to read your thoughts on
+the subject.</p></div>
+<div class="paragraph"><p>Have fun and keep coding!</p></div>
+</div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript" src="http://disqus.com/forums/masterstouch/embed.js"></script>
+    <noscript>
+                <p>
+                        <a href="http://masterstouch.disqus.com/?url=ref">View the discussion thread.</a>
+                </p>
+    </noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
