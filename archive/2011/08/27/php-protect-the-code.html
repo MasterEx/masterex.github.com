@@ -50,31 +50,31 @@
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Protecting the PHP code I wrote has passed my mind in the past but
+<div class="paragraph" id="php-protect-the-code"><p>Protecting the PHP code I wrote has passed my mind in the past but
 never actually bothered me because the code I have wrote was either
 open source  or hosted in a self-administrated enviroment.</p></div>
-<div class="paragraph"><p>Anyway, as it seems many people are interested in protecting their
+<div class="paragraph" id="php-protect-the-code"><p>Anyway, as it seems many people are interested in protecting their
 code from distribution without their permission.</p></div>
-<div class="paragraph"><p>The only true case where I may find it meaningful is when it is about
+<div class="paragraph" id="php-protect-the-code"><p>The only true case where I may find it meaningful is when it is about
 a commercial module that may be redistributed many times and imported in
 many different projects. In that case the developer may be afraid for
 pirate redistribution of his work.</p></div>
-<div class="paragraph"><p>However, the best thing a developer can do is to use an appropriate license
+<div class="paragraph" id="php-protect-the-code"><p>However, the best thing a developer can do is to use an appropriate license
  scheme and get the advice of a good lawyer!</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_research">Research</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Motivated by this
+<div class="paragraph" id="php-protect-the-code"><p>Motivated by this
 <a href="http://stackoverflow.com/questions/7008804/problem-in-encrypt-php-code-for-intellectual-property/7009992">question</a>
 I have been wondering how someone can secure his PHP code.</p></div>
-<div class="paragraph"><p>After a little research in the interwebz I&#8217;ve found that there are two
+<div class="paragraph" id="php-protect-the-code"><p>After a little research in the interwebz I&#8217;ve found that there are two
 possible solutions:</p></div>
-<div class="quoteblock">
+<div class="quoteblock" id="php-protect-the-code">
 <div class="title">Source Code Obfuscators</div>
 <div class="content">
-<div class="paragraph"><p>Source code is obfucated to make it hard to understand and make any changes.
+<div class="paragraph" id="php-protect-the-code"><p>Source code is obfucated to make it hard to understand and make any changes.
 Example of obfuscation can be removing line breaks, spaces, comments, renaming variables,
 function names, etc. where applicable, as well as very simple source code encoding.
 Restoring obfuscated source code is trivial. These solutions are truly insecure, can
@@ -87,16 +87,16 @@ quering search engines for "free php obfuscator".</p></div>
 <em>http://www.zubrag.com/articles/php-source-code-encoders-and-protectors.php</em><br />
 &#8212; zubrag.com
 </div></div>
-<div class="quoteblock">
+<div class="quoteblock" id="php-protect-the-code">
 <div class="title">Encoders</div>
 <div class="content">
-<div class="paragraph"><p>Obfuscate (some can also optimize) PHP source code, compile it to bytecodes,
+<div class="paragraph" id="php-protect-the-code"><p>Obfuscate (some can also optimize) PHP source code, compile it to bytecodes,
 and eliminate the source code. Such solutions are stable and extremely hard
 to reverse-engineer. Depending on the solution price these will provide you
 with options to manage licenses, generate files to expire on a given date or
 after a time period (trial period).</p></div>
-<div class="paragraph"><p>Roughly saying solutions of this type consist of two main parts:</p></div>
-<div class="ulist"><ul>
+<div class="paragraph" id="php-protect-the-code"><p>Roughly saying solutions of this type consist of two main parts:</p></div>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 Encoder - program which obfuscates, encodes/encrypts source files
@@ -116,22 +116,23 @@ Loaders are available for free download.
 <em>http://www.zubrag.com/articles/php-source-code-encoders-and-protectors.php</em><br />
 &#8212; zubrag.com
 </div></div>
-<div class="paragraph"><p>So, in other words an <strong>obfuscator</strong> changes many things regarding the
+<div class="paragraph" id="php-protect-the-code"><p>So, in other words an <strong>obfuscator</strong> changes many things regarding the
 formatting of the program, making it unreadble at first glance. However,
 the program can still become readable if someone put some effort into it.</p></div>
-<div class="paragraph"><p>The <strong>encoders</strong> actually encrypt the program by using an encryption
+<div class="paragraph" id="php-protect-the-code"><p>The <strong>encoders</strong> actually encrypt the program by using an encryption
 algorithm. In order to execute the PHP code a decryptor (loader) has
 to be installed to the target maschine and the appropriate
 <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">public key</a> be in place.</p></div>
-<div class="paragraph"><p>Above I&#8217;ll demonstrate you both concepts and later I&#8217;ll present you some
+<div class="paragraph" id="php-protect-the-code"><p>Above I&#8217;ll demonstrate you both concepts and later I&#8217;ll present you some
 real world solutions!</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_let_8217_s_have_a_look">Let&#8217;s have a look</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>For the above demos I&#8217;ll use this pretty cool PHP code:</p></div>
+<div class="paragraph" id="php-protect-the-code"><p>For the above demos I&#8217;ll use this pretty cool PHP code:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="title">CoolCode</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -167,12 +168,13 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
 <div class="sect2">
 <h3 id="_obfuscators">Obfuscators</h3>
-<div class="paragraph"><p>In order to demonstrate how a simple obfuscator works I&#8217;ll cook a small
+<div class="paragraph" id="php-protect-the-code"><p>In order to demonstrate how a simple obfuscator works I&#8217;ll cook a small
 java application that uses the power of regex to obfuscate our code!</p></div>
-<div class="paragraph"><p><a href="https://gist.github.com/1171816#file_coolphpobfuscator.java">Here</a> you can
+<div class="paragraph" id="php-protect-the-code"><p><a href="https://gist.github.com/1171816#file_coolphpobfuscator.java">Here</a> you can
 find the gist with the whole code.</p></div>
-<div class="paragraph"><p>I&#8217;ll just go directly to the interesting part:</p></div>
+<div class="paragraph" id="php-protect-the-code"><p>I&#8217;ll just go directly to the interesting part:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -202,8 +204,8 @@ code <span style="color: #990000">=</span> code<span style="color: #990000">.</s
         code <span style="color: #990000">=</span> code<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">replaceAll</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"</span><span style="color: #CC33CC">\\</span><span style="color: #FF0000">"</span> <span style="color: #990000">+</span> variablename<span style="color: #990000">,</span>
         <span style="color: #FF0000">"</span><span style="color: #CC33CC">\\</span><span style="color: #FF0000">$a"</span> <span style="color: #990000">+</span> Coolphpobfuscator<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">md5</span></span><span style="color: #990000">(</span>variablename<span style="color: #990000">));</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>That what I am doing here are three very simple transformations:</p></div>
-<div class="ulist"><ul>
+<div class="paragraph" id="php-protect-the-code"><p>That what I am doing here are three very simple transformations:</p></div>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 Eliminate any line breaks and tabs
@@ -221,8 +223,9 @@ Rename the variables
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>So after all these transformations our very <strong>coolcode</strong> will look like that:</p></div>
+<div class="paragraph" id="php-protect-the-code"><p>So after all these transformations our very <strong>coolcode</strong> will look like that:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="title">ObfuscatedCoolCode</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -240,13 +243,14 @@ b1dd07bb281<span style="color: #990000">[</span><span style="font-weight: bold">
 ad490419709e2e8f3f8176b1dd07bb281 <span style="font-weight: bold"><span style="color: #0000FF">as</span></span> <span style="color: #990000">&amp;</span><span style="color: #009900">$a9b6dfdb0fc4e83a29530c5166ed7907f</span><span style="color: #990000">)</span><span style="color: #FF0000">{</span>k
 <span style="font-weight: bold"><span style="color: #000000">sort</span></span><span style="color: #990000">(</span><span style="color: #009900">$a9b6dfdb0fc4e83a29530c5166ed7907f</span><span style="color: #990000">);</span><span style="color: #FF0000">}</span><span style="font-weight: bold"><span style="color: #000000">print_r</span></span><span style="color: #990000">(</span><span style="color: #009900">$ad490419709e2e8f3f8176</span>
 b1dd07bb281<span style="color: #990000">);?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>Actaully, I have introduced some line breaks so you can see the whole code
+<div class="paragraph" id="php-protect-the-code"><p>Actaully, I have introduced some line breaks so you can see the whole code
 without scrolling but think of it as being a single line.</p></div>
-<div class="paragraph"><p>As you can see this code is obviously <em>not</em> so cool anymore!</p></div>
-<div class="paragraph"><p>So I hope now you get the point! The obfuscation may go on to a higher level,
+<div class="paragraph" id="php-protect-the-code"><p>As you can see this code is obviously <em>not</em> so cool anymore!</p></div>
+<div class="paragraph" id="php-protect-the-code"><p>So I hope now you get the point! The obfuscation may go on to a higher level,
 for example you can alter string letters with their
 <a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/index.php">numerical code</a>:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -256,8 +260,8 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;"</span><span style="color: #990000">;</span>
 <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"\x68\x65\x6c\x6c\x6f"</span><span style="color: #990000">;</span>
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>All the previous lines are echoing <strong>hello</strong>.</p></div>
-<div class="admonitionblock">
+<div class="paragraph" id="php-protect-the-code"><p>All the previous lines are echoing <strong>hello</strong>.</p></div>
+<div class="admonitionblock" id="php-protect-the-code">
 <table><tr>
 <td class="icon">
 <img src="../../../../images/icons/important.png" alt="Important" />
@@ -270,21 +274,21 @@ some "<em>deciphering</em>"!</td>
 </div>
 <div class="sect2">
 <h3 id="_encoders">Encoders</h3>
-<div class="paragraph"><p>I have write again some java code in order to give you the basic idea behind
+<div class="paragraph" id="php-protect-the-code"><p>I have write again some java code in order to give you the basic idea behind
 PHP encoding. The code can be found <a href="https://gist.github.com/1173762">here</a>.</p></div>
-<div class="paragraph"><p>So let&#8217;s see the <strong>encoding</strong> process:</p></div>
-<div class="imageblock">
+<div class="paragraph" id="php-protect-the-code"><p>So let&#8217;s see the <strong>encoding</strong> process:</p></div>
+<div class="imageblock" id="php-protect-the-code">
 <div class="content">
 <img src="img1.png" alt="Encryption" />
 </div>
 <div class="title">Figure 1. Encoding Process</div>
 </div>
-<div class="paragraph"><p>If you are a little familiar with <a href="http://en.wikipedia.org/wiki/Cryptography">cryptography</a>
+<div class="paragraph" id="php-protect-the-code"><p>If you are a little familiar with <a href="http://en.wikipedia.org/wiki/Cryptography">cryptography</a>
 then you&#8217;ll have already figure out what&#8217;s happening. We create an encrpytion key
 and then we use it and an encryption algorithm to encrypt the source code.</p></div>
-<div class="paragraph"><p>In the particular case I have used the <em>DES</em> algorithm to do that. The
+<div class="paragraph" id="php-protect-the-code"><p>In the particular case I have used the <em>DES</em> algorithm to do that. The
 cipher text that was generated was the above:</p></div>
-<div class="listingblock">
+<div class="listingblock" id="php-protect-the-code">
 <div class="content">
 <pre><code>w4P0PI0T9jf6059bbRIAlPqz77hlj5CRmZ4Gz/c3ZSETU3bLO/+WbDYTx9YW3RXkUWjnglCXBIIr
 QwnqUpsDfPkhCx2Fg9lNBJyN5cGkKCCMud5+BBB8sTwNFpPUsH2OVPUfhmKjdFea7q2SX0PcThJC
@@ -296,20 +300,21 @@ qusHmJS+Env0+V6scgDZ9p8odDL66776CTJBn3z4rL6laxdtlm76HGiw0QjULVCFcAmrc7i9Gxrs
 l2vhMhKYH3AvBGmKOlFlf8kwvWqokfGmRtPMTiZ9dSa+MaivRUxJUD10MvrrvvoJMkxmLFUa7NJf
 foobOb33hDbSyPl8i8GMSw==</code></pre>
 </div></div>
-<div class="paragraph"><p>As you can see it is not possible for someone to decipher this without any
+<div class="paragraph" id="php-protect-the-code"><p>As you can see it is not possible for someone to decipher this without any
 help.</p></div>
-<div class="paragraph"><p>Now let&#8217;s see the <strong>decryption</strong> process:</p></div>
-<div class="imageblock">
+<div class="paragraph" id="php-protect-the-code"><p>Now let&#8217;s see the <strong>decryption</strong> process:</p></div>
+<div class="imageblock" id="php-protect-the-code">
 <div class="content">
 <img src="img2.png" alt="Decryption" />
 </div>
 <div class="title">Figure 2. Decryption Process</div>
 </div>
-<div class="paragraph"><p>As you could guess decryption is the opposite process that will produce
+<div class="paragraph" id="php-protect-the-code"><p>As you could guess decryption is the opposite process that will produce
 the original source code.</p></div>
-<div class="paragraph"><p>The <em>PHP wrapper</em> in the figure 2 is just a PHP script that will execute
+<div class="paragraph" id="php-protect-the-code"><p>The <em>PHP wrapper</em> in the figure 2 is just a PHP script that will execute
 the deciphered code. This could be something like that:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -317,29 +322,30 @@ http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&lt;?php</span>
         <span style="font-weight: bold"><span style="color: #0000FF">eval</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">shell_exec</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"java -jar Coder.jar -de encoded.txt key"</span><span style="color: #990000">));</span>
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>However, if you take a look in my code and think the whole process you will
+<div class="paragraph" id="php-protect-the-code"><p>However, if you take a look in my code and think the whole process you will
 spot some problems there.</p></div>
-<div class="paragraph"><p>Firstly, the way I am encrypting the source code I am using a
+<div class="paragraph" id="php-protect-the-code"><p>Firstly, the way I am encrypting the source code I am using a
 <a href="http://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key
 algorithm</a>. So, I can decrypt the code with the same key that I am
 encrypting it. In that way, someone who knows or can asume the encryption
 algorithm that has been used could easily find the original code.</p></div>
-<div class="paragraph"><p>Secondly, the <em>PHP wrapper</em> is pretty trivial and someone could easily
+<div class="paragraph" id="php-protect-the-code"><p>Secondly, the <em>PHP wrapper</em> is pretty trivial and someone could easily
 execute the above code to get the original source code:</p></div>
 <div class="listingblock">
+<a id="php-protect-the-code"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>java <span style="color: #990000">-</span><span style="color: #008080">jar</span> Coder<span style="color: #990000">.</span>jar <span style="color: #990000">-</span><span style="color: #008080">de</span> encoded<span style="color: #990000">.</span>txt key</tt></pre></div></div>
-<div class="paragraph"><p>The most common solution in the encryption systems that I have checked
+<div class="paragraph" id="php-protect-the-code"><p>The most common solution in the encryption systems that I have checked
 is to create a PHP extension that will act as both the <strong>decryption mechanism</strong>
 and the <strong>php wrapper</strong>. This php extension should be installed in the
 server maschine.</p></div>
-<div class="paragraph"><p>The benefit of doing so is that PHP extensions may be compiled and so
+<div class="paragraph" id="php-protect-the-code"><p>The benefit of doing so is that PHP extensions may be compiled and so
 the user won&#8217;t know which encryption algorithm has been used and
 wouldn&#8217;t be able to intervene and print the code instead of executing it.</p></div>
-<div class="admonitionblock">
+<div class="admonitionblock" id="php-protect-the-code">
 <table><tr>
 <td class="icon">
 <img src="../../../../images/icons/warning.png" alt="Warning" />
@@ -355,14 +361,14 @@ trivial and have been created <strong>only</strong> for demonstration purposes.<
 <div class="sect1">
 <h2 id="_real_world_solutions">Real World Solutions</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>I haven&#8217;t searched a lot out there but I have spotted some solutions
+<div class="paragraph" id="php-protect-the-code"><p>I haven&#8217;t searched a lot out there but I have spotted some solutions
 both free software/open source and commercial. I will list them in case
 you are interested.</p></div>
 <div class="sect2">
 <h3 id="_obfuscators_2">Obfuscators</h3>
 <div class="sect3">
 <h4 id="_f_o_s_s">F.O.S.S.</h4>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://pobs.mywalhalla.net/">POBS</a> - PHP - 2003
@@ -377,7 +383,7 @@ you are interested.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_free_online">Free Online</h4>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://www.codeeclipse.com/">CodeEclipse</a>
@@ -392,24 +398,24 @@ you are interested.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_commercial">Commercial</h4>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://obfusc.com/">Obfusc</a>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>From these I have only tested the <strong>CodeEclipse</strong>. It seems OK to me.</p></div>
+<div class="paragraph" id="php-protect-the-code"><p>From these I have only tested the <strong>CodeEclipse</strong>. It seems OK to me.</p></div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_encoders_2">Encoders</h3>
-<div class="paragraph"><p>Some PHP encoders are also "compiling" the source code in order to
+<div class="paragraph" id="php-protect-the-code"><p>Some PHP encoders are also "compiling" the source code in order to
 gain better execution times. You can find a list with these
 <em>PHP accelarators</em> in <a href="http://en.wikipedia.org/wiki/List_of_PHP_accelerators">wikipedia</a>.</p></div>
 <div class="sect3">
 <h4 id="_f_o_s_s_2">F.O.S.S.</h4>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://turck-mmcache.sourceforge.net/index_old.html">Turck MMCache for PHP</a> - discontinued
@@ -419,7 +425,7 @@ gain better execution times. You can find a list with these
 </div>
 <div class="sect3">
 <h4 id="_commercial_2">Commercial</h4>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://www.phpshadow.com/">PHPshadow</a> - free with limitations
@@ -441,13 +447,13 @@ gain better execution times. You can find a list with these
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>From my little expiriense I can surely advise you not to use the
+<div class="paragraph" id="php-protect-the-code"><p>From my little expiriense I can surely advise you not to use the
 <strong>Turck MMCache for PHP</strong>. I have tried installing it without luck (I was
 getting compilation errors) until I figured out that it is <strong>discontinued</strong>
 and forked into <a href="http://eaccelerator.net/">eAccelarator</a>.</p></div>
-<div class="paragraph"><p>However, eAccelarator removed the <a href="http://turck-mmcache.sourceforge.net/index_old.html#encoder">encoder</a>
+<div class="paragraph" id="php-protect-the-code"><p>However, eAccelarator removed the <a href="http://turck-mmcache.sourceforge.net/index_old.html#encoder">encoder</a>
 and now that feature is not supported.</p></div>
-<div class="paragraph"><p>Other than that I have tested the PHPshadow and you can read about that
+<div class="paragraph" id="php-protect-the-code"><p>Other than that I have tested the PHPshadow and you can read about that
 <a href="http://stackoverflow.com/questions/7008804/problem-in-encrypt-php-code-for-intellectual-property/7009992#7009992">here</a>.</p></div>
 </div>
 </div>
@@ -456,20 +462,20 @@ and now that feature is not supported.</p></div>
 <div class="sect1">
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Obfuscators can&#8217;t protect the code from the experienced developers. They
+<div class="paragraph" id="php-protect-the-code"><p>Obfuscators can&#8217;t protect the code from the experienced developers. They
 can only slow them down.</p></div>
-<div class="paragraph"><p>Encoders seems to be more effective but they need to install additional software
+<div class="paragraph" id="php-protect-the-code"><p>Encoders seems to be more effective but they need to install additional software
 in the webserver. This isn&#8217;t always acceptable. Furthermore they are very expensive.
 However, the speed gain by the compilation that offer the most encryption
 applications is a plus.</p></div>
-<div class="paragraph"><p>In my opinion, as I have said already in my introduction protecting the
+<div class="paragraph" id="php-protect-the-code"><p>In my opinion, as I have said already in my introduction protecting the
 PHP source code shouldn&#8217;t bother the developer. However, if someone
 wants to protect her/his code then I guess this would be for the money
 and not for the pride so I would go for a commercial well tested encryption/acceleration
 system.</p></div>
 <div class="sect2">
 <h3 id="_more_links">More Links</h3>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="http://stackoverflow.com/questions/232736/code-obfuscator-for-php">Stack Overflows - Code obfuscator for php?</a>
@@ -494,10 +500,10 @@ system.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_update">Update</h3>
-<div class="paragraph"><p>Here are the jar&#8217;s of the code mentioned above. These programs exist only as
+<div class="paragraph" id="php-protect-the-code"><p>Here are the jar&#8217;s of the code mentioned above. These programs exist only as
 a proof of concept and aren&#8217;t created for production use. So use them wisely and
 at your own risk.</p></div>
-<div class="ulist"><ul>
+<div class="ulist" id="php-protect-the-code"><ul>
 <li>
 <p>
 <a href="coolphpobfuscator.jar">Cool PHP Obfuscator</a>
@@ -512,13 +518,13 @@ at your own risk.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_update_2">Update 2</h3>
-<div class="paragraph"><p>Dan was kind enough to take my naive php obfuscator a step further and implement
+<div class="paragraph" id="php-protect-the-code"><p>Dan was kind enough to take my naive php obfuscator a step further and implement
 more advanced functionality. His implementation can be found in this <a href="https://gist.github.com/MasterEx/5309265">gist</a>
 and a precombiled jar can be downloaded
 from <a href="coolphpobfuscator2.jar">here</a>.</p></div>
-<div class="paragraph"><p>You can use this obfuscator like that:</p></div>
-<div class="paragraph"><p><span class="green">java -jar coolphpobfuscator2.jar path_to_input_directory path_to_output_directory</span></p></div>
-<div class="paragraph"><p>Where <strong>path_to_input_directory</strong> is the path to the directory which contains the php
+<div class="paragraph" id="php-protect-the-code"><p>You can use this obfuscator like that:</p></div>
+<div class="paragraph" id="php-protect-the-code"><p><span class="green">java -jar coolphpobfuscator2.jar path_to_input_directory path_to_output_directory</span></p></div>
+<div class="paragraph" id="php-protect-the-code"><p>Where <strong>path_to_input_directory</strong> is the path to the directory which contains the php
 files to be obfuscated and <strong>path_to_output_directory</strong> is the directory where
 the obfuscated files will be placed. Note that <strong>path_to_output_directory</strong> should
 already exist before running the program.</p></div>
@@ -528,8 +534,11 @@ already exist before running the program.</p></div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2011/08/27/php-protect-the-code.html';
+        this.page.identifier = 'php-protect-the-code';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -539,7 +548,6 @@ already exist before running the program.</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

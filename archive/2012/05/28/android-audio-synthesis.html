@@ -50,30 +50,30 @@
 <div class="sect1">
 <h2 id="_where_is_the_source_code">Where is the source code</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Currently I am working on a project for my uni where I need to extend a metronome
+<div class="paragraph" id="android-audio-synthesis"><p>Currently I am working on a project for my uni where I need to extend a metronome
 for android with some additional functionalities. At first I thought that it
 would be very easy to find plenty of open source metronomes out there.</p></div>
-<div class="paragraph"><p>As it seems I was wrong. The only code I found was <a href="http://code.google.com/p/android-metronome/">android-metronome</a>
+<div class="paragraph" id="android-audio-synthesis"><p>As it seems I was wrong. The only code I found was <a href="http://code.google.com/p/android-metronome/">android-metronome</a>
 by Akshat Aranya. After compiling and running the project with my colleague
 we saw that the beat wasn&#8217;t stable. For my disappointment <a href="http://stackoverflow.com/questions/6018824/play-a-sound-every-n-milliseconds">this</a>
 stackoverflow thread confirmed that.</p></div>
-<div class="paragraph"><p>Funny thing is that the google play version of it seems stable, but anyway
+<div class="paragraph" id="android-audio-synthesis"><p>Funny thing is that the google play version of it seems stable, but anyway
 we weren&#8217;t able to produce a stable version from the source code.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_crafting_a_metronome_day_0">Crafting a Metronome day 0</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Amazed how the code for such a <em>trivial</em> thing wasn&#8217;t available we started
+<div class="paragraph" id="android-audio-synthesis"><p>Amazed how the code for such a <em>trivial</em> thing wasn&#8217;t available we started
 our own implementation.</p></div>
-<div class="paragraph"><p>In the beginning we used timers to play a sound every x seconds. It was
+<div class="paragraph" id="android-audio-synthesis"><p>In the beginning we used timers to play a sound every x seconds. It was
 a great a failure!</p></div>
-<div class="paragraph"><p>We used threads and the like but the <em>metronome</em> was far from accurate.
+<div class="paragraph" id="android-audio-synthesis"><p>We used threads and the like but the <em>metronome</em> was far from accurate.
 Again after a
 <a href="http://stackoverflow.com/questions/4035971/metronome-timer-slowdown-via-handler-or-threads-too">stackoverflow search</a>
 we saw that this path was wrong.</p></div>
-<div class="paragraph"><p>Just for the story, it was about then when my colleague had to quit for personal matters.</p></div>
-<div class="paragraph"><p>So, convinced by the <a href="http://stackoverflow.com/questions/6018824/play-a-sound-every-n-milliseconds">first</a>
+<div class="paragraph" id="android-audio-synthesis"><p>Just for the story, it was about then when my colleague had to quit for personal matters.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>So, convinced by the <a href="http://stackoverflow.com/questions/6018824/play-a-sound-every-n-milliseconds">first</a>
 stackoverflow thread that the android <strong>AudioTrack</strong> was the right way to go I started
 to implement a metronome with that.</p></div>
 </div>
@@ -81,9 +81,10 @@ to implement a metronome with that.</p></div>
 <div class="sect1">
 <h2 id="_at_last_a_metronome">At last a Metronome!</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>So, here we are now with a working metronome :D</p></div>
-<div class="paragraph"><p>Let&#8217;s see the core metronome class.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>So, here we are now with a working metronome :D</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>Let&#8217;s see the core metronome class.</p></div>
 <div class="listingblock">
+<a id="android-audio-synthesis"></a>
 <div class="title">AudioGenerator</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -146,44 +147,45 @@ http://www.gnu.org/software/src-highlite -->
     <span style="color: #FF0000">}</span>
 
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>Here we create an AudioTrack object and set the options for streaming
+<div class="paragraph" id="android-audio-synthesis"><p>Here we create an AudioTrack object and set the options for streaming
 audio, using mono sound and 16bit PCM audio format.</p></div>
 <div class="sect2">
 <h3 id="_audio_101">Audio 101</h3>
-<div class="paragraph"><p>Sound is actually a wave. We call it soundwave. There are many
+<div class="paragraph" id="android-audio-synthesis"><p>Sound is actually a wave. We call it soundwave. There are many
 different soundwaves named from their form such as sine wave, sawtooth wave,
 square wave etc.</p></div>
-<div class="paragraph"><p>Soundwaves have a frequency just as all the kind of waves. That is the circle or repeat rate.</p></div>
-<div class="paragraph"><p>So, different sounds are produced by different frequencies. For example <strong>C</strong> note
+<div class="paragraph" id="android-audio-synthesis"><p>Soundwaves have a frequency just as all the kind of waves. That is the circle or repeat rate.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>So, different sounds are produced by different frequencies. For example <strong>C</strong> note
 may be produced by <strong>16.35</strong> Hz frequency and <strong>D</strong> by <strong>18.35</strong> Hz.</p></div>
-<div class="paragraph"><p>Something else important when capturing or creating sound from a digital
+<div class="paragraph" id="android-audio-synthesis"><p>Something else important when capturing or creating sound from a digital
 device is the sample rate. This is how many samples we capture per second.</p></div>
-<div class="paragraph"><p>A sample is the value of the sound (in the waveform) at a specific moment.</p></div>
-<div class="paragraph"><p>The sample rate has to be 2 times more than the max frequency.</p></div>
-<div class="paragraph"><p>Anyway, enough with the theory.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>A sample is the value of the sound (in the waveform) at a specific moment.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>The sample rate has to be 2 times more than the max frequency.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>Anyway, enough with the theory.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_back_to_the_code">Back to the code</h3>
-<div class="paragraph"><p>The <span class="green">getSineWave()</span> method returns an array with samples
+<div class="paragraph" id="android-audio-synthesis"><p>The <span class="green">getSineWave()</span> method returns an array with samples
 of a sine wave with the given frequency and sample rate.</p></div>
-<div class="paragraph"><p>The <span class="green">get16BitPcm()</span> gets the samples and returns a PCM byte array.
+<div class="paragraph" id="android-audio-synthesis"><p>The <span class="green">get16BitPcm()</span> gets the samples and returns a PCM byte array.
 PCM is a method used to digitally represent sampled analog signals. It
 stands for Pulse Code Modulation.</p></div>
-<div class="paragraph"><p>Notice that every sample is represented by a double and in order to encode
+<div class="paragraph" id="android-audio-synthesis"><p>Notice that every sample is represented by a double and in order to encode
 it to 16bit PCM we have to use only <strong>16bits</strong> aka <strong>2</strong> bytes. So we get the max
 integer (short: 2^15-1 or 32767) nearest to the double sample value and then
 we convert it to <strong>2</strong> bytes.</p></div>
-<div class="paragraph"><p>To do that we perform a bitwise AND with the bitmask <strong>0x00ff</strong> to get the
+<div class="paragraph" id="android-audio-synthesis"><p>To do that we perform a bitwise AND with the bitmask <strong>0x00ff</strong> to get the
 little end bits and then a bitwise AND with the bitmask <strong>0xff00</strong> and shift
 the bits <strong>8</strong> positions (bits) to the right.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="android-audio-synthesis"><p><span class="image">
 <img src="sampleBitmask.png" alt="samples and bitmasks" />
 </span></p></div>
-<div class="paragraph"><p>So we populate an array of bytes that contains the waveform in PCM.</p></div>
-<div class="paragraph"><p>Other than that we write the sound <em>directly</em> to the audio device buffer
+<div class="paragraph" id="android-audio-synthesis"><p>So we populate an array of bytes that contains the waveform in PCM.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>Other than that we write the sound <em>directly</em> to the audio device buffer
 with the <span class="green">writeSound()</span> method.</p></div>
-<div class="paragraph"><p>The other important class of our metronome is the <strong>Metronome</strong> class. Here it is:</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>The other important class of our metronome is the <strong>Metronome</strong> class. Here it is:</p></div>
 <div class="listingblock">
+<a id="android-audio-synthesis"></a>
 <div class="title">Metronome</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -256,15 +258,15 @@ http://www.gnu.org/software/src-highlite -->
 
         <span style="font-style: italic"><span style="color: #9A1900">/* Getters and Setters ... */</span></span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>In a nutshell it creates <strong>2</strong> sounds or better <strong>2</strong> arrays of samples, one for
+<div class="paragraph" id="android-audio-synthesis"><p>In a nutshell it creates <strong>2</strong> sounds or better <strong>2</strong> arrays of samples, one for
 the first beat and one for the others and it sends them to the audio device
 by the <span class="green">writeSound()</span> method. Between the sounds it writes a <em>zero
 waveform</em> which is actually silence.</p></div>
-<div class="paragraph"><p>So we produce sound all the time in a loop but this sound may be silence.</p></div>
-<div class="paragraph"><p>The only significant thing I should say is that the beat sound lasts as long as
+<div class="paragraph" id="android-audio-synthesis"><p>So we produce sound all the time in a loop but this sound may be silence.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>The only significant thing I should say is that the beat sound lasts as long as
 <strong>1000</strong> samples, which is <strong>1/8</strong> of a second beacause a second consists of <strong>8000</strong>
 samples (or another sample rate of our choice).</p></div>
-<div class="paragraph"><p>So, the remaining space between tho beats is filled with "silence" by the formula
+<div class="paragraph" id="android-audio-synthesis"><p>So, the remaining space between tho beats is filled with "silence" by the formula
 <span class="green">silence = 60/bpm * 8000 - tick</span>.</p></div>
 </div>
 </div>
@@ -272,17 +274,18 @@ samples (or another sample rate of our choice).</p></div>
 <div class="sect1">
 <h2 id="_some_more_audio_synthesis_magic">Some more Audio Synthesis Magic</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>As you have noticed I don&#8217;t load any sound for the metronome but I create
+<div class="paragraph" id="android-audio-synthesis"><p>As you have noticed I don&#8217;t load any sound for the metronome but I create
 one programmatisticaly.</p></div>
-<div class="paragraph"><p>In such a way one could synthesize a song. As a proof of concept I used
+<div class="paragraph" id="android-audio-synthesis"><p>In such a way one could synthesize a song. As a proof of concept I used
 my fine AudioGenerator Class to play the first few note of the traditional
 song <strong>Oh, Susanna</strong>.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="android-audio-synthesis"><p><span class="image">
 <img src="susana.png" alt="susana partiture" />
 </span></p></div>
-<div class="paragraph"><p>This partitura was created with <a href="http://tuxguitar.herac.com.ar/">TuxGuitar</a>.</p></div>
-<div class="paragraph"><p>Here is my first attempt:</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>This partitura was created with <a href="http://tuxguitar.herac.com.ar/">TuxGuitar</a>.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>Here is my first attempt:</p></div>
 <div class="listingblock">
+<a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -386,8 +389,9 @@ http://www.gnu.org/software/src-highlite -->
 
     <span style="color: #FF0000">}</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>And here is my hopefully more <strong>human</strong> readable version:</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>And here is my hopefully more <strong>human</strong> readable version:</p></div>
 <div class="listingblock">
+<a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -451,35 +455,35 @@ http://www.gnu.org/software/src-highlite -->
 
     <span style="color: #FF0000">}</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>The signature of the play method is <span class="green">play(Note0 note,int octave,double duration)</span>.</p></div>
-<div class="paragraph"><p>In both cases I used the frequencies corresponding to notes that I found
+<div class="paragraph" id="android-audio-synthesis"><p>The signature of the play method is <span class="green">play(Note0 note,int octave,double duration)</span>.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>In both cases I used the frequencies corresponding to notes that I found
 in the website <a href="http://www.phy.mtu.edu/~suits/notefreqs.html">Physics of Music Notes</a> of
 MTU.</p></div>
-<div class="paragraph"><p>The code of the above snippets is available <a href="https://gist.github.com/2784265">here</a>.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>The code of the above snippets is available <a href="https://gist.github.com/2784265">here</a>.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_path_of_illumination">Path of Illumination</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>To sum up the trick was to use an ever lasting while loop to write sound
+<div class="paragraph" id="android-audio-synthesis"><p>To sum up the trick was to use an ever lasting while loop to write sound
 to the audio device all the time and not to try to play sound every x seconds
 with timers and the like.</p></div>
-<div class="paragraph"><p>I speculate that this happens because the android os cannot guarantee a process
+<div class="paragraph" id="android-audio-synthesis"><p>I speculate that this happens because the android os cannot guarantee a process
 to start in a specified time. However, when a process starts the system will
 split the resources equally.</p></div>
-<div class="paragraph"><p>Note that if we stop write data to the audio device buffer we&#8217;ll get an
+<div class="paragraph" id="android-audio-synthesis"><p>Note that if we stop write data to the audio device buffer we&#8217;ll get an
 empty buffer warning.</p></div>
-<div class="paragraph"><p>If you don&#8217;t like that just release the device when you don&#8217;t need it.</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>If you don&#8217;t like that just release the device when you don&#8217;t need it.</p></div>
 <div class="sect2">
 <h3 id="_share_love">Share love</h3>
-<div class="paragraph"><p>I am relatively new to android and to multimedia stuff so I may very likely
+<div class="paragraph" id="android-audio-synthesis"><p>I am relatively new to android and to multimedia stuff so I may very likely
 be wrong here or there.</p></div>
-<div class="paragraph"><p>Feel free to correct me or share your thoughts :)</p></div>
-<div class="paragraph"><p>cheers xD</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>Feel free to correct me or share your thoughts :)</p></div>
+<div class="paragraph" id="android-audio-synthesis"><p>cheers xD</p></div>
 </div>
 <div class="sect2">
 <h3 id="_see_also">See Also</h3>
-<div class="ulist"><ul>
+<div class="ulist" id="android-audio-synthesis"><ul>
 <li>
 <p>
 <a href="https://github.com/MasterEx/BeatKeeper">Beat Keeper Unlisensed Android Metronome</a>
@@ -542,8 +546,11 @@ be wrong here or there.</p></div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html';
+        this.page.identifier = 'android-audio-synthesis';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -553,7 +560,6 @@ be wrong here or there.</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

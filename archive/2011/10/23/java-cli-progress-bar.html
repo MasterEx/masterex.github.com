@@ -45,11 +45,11 @@
 <div class="sect1">
 <h2 id="_java_a_simple_and_neat_cli_progress_bar">Java: A simple and neat cli Progress Bar</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Back on June c00kiemon5ter wrote a cli progress bar in java. As it seems
+<div class="paragraph" id="java-cli-progress-bar"><p>Back on June c00kiemon5ter wrote a cli progress bar in java. As it seems
 it isn&#8217;t something difficult but I find it pretty usefull and worth to
 be mentioned. The progress bar was originally written as part of F.I.C.</p></div>
-<div class="paragraph"><p>Here is how it looks like:</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="java-cli-progress-bar"><p>Here is how it looks like:</p></div>
+<div class="paragraph" id="java-cli-progress-bar"><p><span class="image">
 <img src="progressbar.gif" alt="Progress Bar Demo" />
 </span></p></div>
 </div>
@@ -57,9 +57,10 @@ be mentioned. The progress bar was originally written as part of F.I.C.</p></div
 <div class="sect1">
 <h2 id="_usage">Usage</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Let&#8217;s see how you can use it in your own project. The ProgressBar Class
+<div class="paragraph" id="java-cli-progress-bar"><p>Let&#8217;s see how you can use it in your own project. The ProgressBar Class
 is the following one:</p></div>
 <div class="listingblock">
+<a id="java-cli-progress-bar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -112,12 +113,13 @@ http://www.gnu.org/software/src-highlite -->
         <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>progress <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">StringBuilder</span></span><span style="color: #990000">(</span><span style="color: #993399">60</span><span style="color: #990000">);</span>
     <span style="color: #FF0000">}</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>Just copy it in a ProgressBar.java file or something in your desired package
+<div class="paragraph" id="java-cli-progress-bar"><p>Just copy it in a ProgressBar.java file or something in your desired package
 (and add the appropriate package name).</p></div>
-<div class="paragraph"><p>Then you have to initialize it and call manually the update method. The
+<div class="paragraph" id="java-cli-progress-bar"><p>Then you have to initialize it and call manually the update method. The
 update method takes the done work units so far and the total work units.</p></div>
-<div class="paragraph"><p>Here is an example:</p></div>
+<div class="paragraph" id="java-cli-progress-bar"><p>Here is an example:</p></div>
 <div class="listingblock">
+<a id="java-cli-progress-bar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -142,11 +144,11 @@ http://www.gnu.org/software/src-highlite -->
         System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Process Completed!"</span><span style="color: #990000">);</span>
     <span style="color: #FF0000">}</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>As you can see the total work units can be changed during the program
+<div class="paragraph" id="java-cli-progress-bar"><p>As you can see the total work units can be changed during the program
 execution. So, if we have a program that copies files and has copied
 X of Y we use <span class="green">bar.update(X,Y);</span> but if suddenly we have to copy
 K more files then we use <span class="green">bar.update(X',Y+K);</span> , on the fly.</p></div>
-<div class="admonitionblock">
+<div class="admonitionblock" id="java-cli-progress-bar">
 <table><tr>
 <td class="icon">
 <img src="../../../../images/icons/warning.png" alt="Warning" />
@@ -156,7 +158,7 @@ process terminates quickly it is meaningless and furthermore the symbols are
 drawn way too fast and not smoothly!</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>You can find the Progress Bar original code <a href="https://github.com/c00kiemon5ter/Fractal-Image-Compression/blob/master/src/lib/io/ProgressBar.java">here</a>.
+<div class="paragraph" id="java-cli-progress-bar"><p>You can find the Progress Bar original code <a href="https://github.com/c00kiemon5ter/Fractal-Image-Compression/blob/master/src/lib/io/ProgressBar.java">here</a>.
 You can also check the <a href="https://github.com/c00kiemon5ter/Fractal-Image-Compression">F.I.C. project</a>
 to see how it was used there.</p></div>
 </div>
@@ -164,12 +166,13 @@ to see how it was used there.</p></div>
 <div class="sect1">
 <h2 id="_how_it_works">How it works</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Let&#8217;s have a look in the code and understand how the magic works.</p></div>
-<div class="paragraph"><p>First of all c00kiemon5ter creates a <span class="red">StringBuilder</span> object of 60 characters
+<div class="paragraph" id="java-cli-progress-bar"><p>Let&#8217;s have a look in the code and understand how the magic works.</p></div>
+<div class="paragraph" id="java-cli-progress-bar"><p>First of all c00kiemon5ter creates a <span class="red">StringBuilder</span> object of 60 characters
 long. This is obviously the progress bar!</p></div>
-<div class="paragraph"><p>So let&#8217;s see the <span class="blue">update</span> method. I&#8217;ll introduce it again with extra
+<div class="paragraph" id="java-cli-progress-bar"><p>So let&#8217;s see the <span class="blue">update</span> method. I&#8217;ll introduce it again with extra
 comments that explain what&#8217;s happening.</p></div>
 <div class="listingblock">
+<a id="java-cli-progress-bar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -221,11 +224,11 @@ http://www.gnu.org/software/src-highlite -->
         <span style="font-weight: bold"><span style="color: #000000">init</span></span><span style="color: #990000">();</span>
     <span style="color: #FF0000">}</span>
  <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>That was <a href="http://c00kiemon5ter.github.com/">c00kiemon5ter&#8217;s</a> simple but
+<div class="paragraph" id="java-cli-progress-bar"><p>That was <a href="http://c00kiemon5ter.github.com/">c00kiemon5ter&#8217;s</a> simple but
 pretty cli progress bar. Thank you dude! :)</p></div>
 <div class="sect2">
 <h3 id="_see_also">See Also</h3>
-<div class="ulist"><ul>
+<div class="ulist" id="java-cli-progress-bar"><ul>
 <li>
 <p>
 <a href="https://github.com/c00kiemon5ter/Fractal-Image-Compression">Fractal Image Compression code</a>
@@ -258,8 +261,11 @@ pretty cli progress bar. Thank you dude! :)</p></div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2011/10/23/java-cli-progress-bar.html';
+        this.page.identifier = 'java-cli-progress-bar';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -269,7 +275,6 @@ pretty cli progress bar. Thank you dude! :)</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

@@ -45,30 +45,31 @@
 <div class="sect1">
 <h2 id="_the_pitfalls_of_learning_by_example">The pitfalls of learning by example</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Usually when I am writing code in an unfamiliar environment
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Usually when I am writing code in an unfamiliar environment
 (language,IDE, framework etc.) I tend to search
 and study examples and if I am not satisfied, I then check the documentation/manual.</p></div>
-<div class="paragraph"><p>I am doing this because it seems easier and quicker to understand something in this way and
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>I am doing this because it seems easier and quicker to understand something in this way and
 because I am usually more concerned to get the expected result than understand in depth how
 I got it.</p></div>
-<div class="paragraph"><p>However, some times this may produce some nasty bugs.</p></div>
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>However, some times this may produce some nasty bugs.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_my_case">My Case</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Here, I would like to introduce you to my short experience with <strong>pycrypto</strong>
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Here, I would like to introduce you to my short experience with <strong>pycrypto</strong>
 library&#8217;s hashing functions and how my habit to learn by example has failed me.</p></div>
-<div class="paragraph"><p>A couple of months before I was
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>A couple of months before I was
 enrolled in courseras' crypto class offered by Standford&#8217;s Dan Boneh.</p></div>
-<div class="paragraph"><p>Most programming assigments included code snippets in <strong>python</strong> and suggested
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Most programming assigments included code snippets in <strong>python</strong> and suggested
 a python or c++ library to use. Regardless <a href="https://github.com/MasterEx/letsrpg-social-network">my small experience with python</a>
 I choose it to implement the majority of the assignments.</p></div>
-<div class="paragraph"><p>So, in a programming assignment I had to consecutively hash different
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, in a programming assignment I had to consecutively hash different
 data chunks to check if any transmission errors took place.</p></div>
-<div class="paragraph"><p>As I was unfamiliar with <strong>pycrypto</strong>, I searched for <strong>how to sha128 in pycrypto</strong>.
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>As I was unfamiliar with <strong>pycrypto</strong>, I searched for <strong>how to sha128 in pycrypto</strong>.
 This got me to the library&#8217;s pydoc and I show this example <a href="https://www.dlitz.net/software/pycrypto/api/current/toc-Crypto.Hash.SHA-module.html">here</a></p></div>
 <div class="listingblock">
+<a id="pycrypto-hash-learning-by-example"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -78,9 +79,10 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #990000">&gt;&gt;&gt;</span> h <span style="color: #990000">=</span> SHA<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">new</span></span><span style="color: #990000">()</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> h<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">update</span></span><span style="color: #990000">(</span>b<span style="color: #FF0000">'Hello'</span><span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> h<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">hexdigest</span></span><span style="color: #990000">()</span></tt></pre></div></div>
-<div class="paragraph"><p>So, this seemed pretty straight forward and so I did something like that
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, this seemed pretty straight forward and so I did something like that
 in my program:</p></div>
 <div class="listingblock">
+<a id="pycrypto-hash-learning-by-example"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -91,25 +93,26 @@ h <span style="color: #990000">=</span> SHA<span style="color: #990000">.</span>
 <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> chunk <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> data<span style="color: #990000">:</span>
         h<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">update</span></span><span style="color: #990000">(</span>chunk<span style="color: #990000">)</span>
         <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> h<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">hexdigest</span></span><span style="color: #990000">()</span></tt></pre></div></div>
-<div class="paragraph"><p>This was a total disaster. The program runned smoothly but I was getting
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>This was a total disaster. The program runned smoothly but I was getting
 the wrong result.</p></div>
-<div class="paragraph"><p>I was lucky enough to test the update method shortly after I spotted the issue and
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>I was lucky enough to test the update method shortly after I spotted the issue and
 realised that consecutive
 <span class="green">update()</span> calls on the same data produced different hashes.</p></div>
-<div class="paragraph"><p>Puzzled by that, I just included <span class="red">h = SHA.new()</span> in the loop. However, If
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Puzzled by that, I just included <span class="red">h = SHA.new()</span> in the loop. However, If
 I have read the documentation a little bit sooner, it could have saved me some time.</p></div>
-<div class="paragraph"><p>The <span class="green">new()</span> function of SHA says <code>Return a fresh instance of the hash object</code>.
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>The <span class="green">new()</span> function of SHA says <code>Return a fresh instance of the hash object</code>.
 The <strong>fresh</strong> word was the key to my problem. Later, it says
 <code>It is equivalent to an early call to SHA1Hash.update()</code>. So, clearly there
 is a difference between the <span class="green">update()</span> calls.</p></div>
-<div class="paragraph"><p>Problem was that the <span class="green">update()</span> concatenates every given argument with
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Problem was that the <span class="green">update()</span> concatenates every given argument with
 the previous result. This becomes clear if you
 read the  <a href="https://github.com/dlitz/pycrypto/blob/master/lib/Crypto/Hash/hashalgo.py#L53">pycryptos&#8217;s source code</a>
 comments.</p></div>
-<div class="paragraph"><p>In other words this <span class="red">m.update(a); m.update(b)</span> is the same with this
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>In other words this <span class="red">m.update(a); m.update(b)</span> is the same with this
 <span class="red">m.update(a+b)</span>.</p></div>
-<div class="paragraph"><p>So, in my case I should have done the following:</p></div>
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, in my case I should have done the following:</p></div>
 <div class="listingblock">
+<a id="pycrypto-hash-learning-by-example"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -118,18 +121,21 @@ http://www.gnu.org/software/src-highlite -->
 
 <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> chunk <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> data<span style="color: #990000">:</span>
         <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> SHA<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">new</span></span><span style="color: #990000">(</span>chunk<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">hexdigest</span></span><span style="color: #990000">()</span></tt></pre></div></div>
-<div class="paragraph"><p>Sadly, there wasn&#8217;t a <strong>BIG</strong> warning sign in the SHA&#8217;s doc page. However,
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>Sadly, there wasn&#8217;t a <strong>BIG</strong> warning sign in the SHA&#8217;s doc page. However,
 I assume that if there was I would ignore it as long as my eye have spotted the
 example.</p></div>
-<div class="paragraph"><p>So, at the end of the day if everything else fails remember
+<div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, at the end of the day if everything else fails remember
 to <strong>read the f*cking manual</strong>.</p></div>
 </div>
 </div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2013/04/15/pycrypto-hash-learning-by-example.html';
+        this.page.identifier = 'pycrypto-hash-learning-by-example';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -139,7 +145,6 @@ to <strong>read the f*cking manual</strong>.</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

@@ -45,31 +45,31 @@
 <div class="sect1">
 <h2 id="_wrong_system_time_is_bad_for_your_pc_health">Wrong system time is bad for your pc health</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Recently I have encountered 2 cases where the wrong system time caused
+<div class="paragraph" id="clock-related-security-concerns"><p>Recently I have encountered 2 cases where the wrong system time caused
 serious problems regarding the windows and antivirus updates.</p></div>
-<div class="paragraph"><p>Both systems are old and the mobo battery has runned out, so every time they
+<div class="paragraph" id="clock-related-security-concerns"><p>Both systems are old and the mobo battery has runned out, so every time they
 are unplugged or there is a power failure the system time is lost.</p></div>
-<div class="paragraph"><p>In the first case, this happened to a windows vista laptop. This had as a result for
+<div class="paragraph" id="clock-related-security-concerns"><p>In the first case, this happened to a windows vista laptop. This had as a result for
 the antivirus - microsoft security essentials (<strong>MSE</strong>) - definitions to be several months old,
 and the computer to catch the infamous
 <a href="http://removal-tool.blogspot.gr/2012/04/remove-malware-that-pretends-to-be.html">police virus</a>.</p></div>
-<div class="paragraph"><p>Virus removal was easy but the question <em>why a protected computer cathed a virus</em> arised.</p></div>
-<div class="paragraph"><p>The answer is that the wrong time made <strong>MSE</strong> to think that it has already
+<div class="paragraph" id="clock-related-security-concerns"><p>Virus removal was easy but the question <em>why a protected computer cathed a virus</em> arised.</p></div>
+<div class="paragraph" id="clock-related-security-concerns"><p>The answer is that the wrong time made <strong>MSE</strong> to think that it has already
 the latest virus definitions installed.</p></div>
-<div class="paragraph"><p>In the second case, an old P4 that I have just installed windows 7 couldn&#8217;t perform windows
+<div class="paragraph" id="clock-related-security-concerns"><p>In the second case, an old P4 that I have just installed windows 7 couldn&#8217;t perform windows
 updates because of the wrong time. I have spent quite some time reviewing the
 network configuration before I notice that.</p></div>
-<div class="paragraph"><p>In most linux systems, the update mechanism checks only the versions of the local
+<div class="paragraph" id="clock-related-security-concerns"><p>In most linux systems, the update mechanism checks only the versions of the local
 packages, so the local time wouldn&#8217;t affect that.</p></div>
-<div class="paragraph"><p>However, there are other functions like authentication and stuff like that,
+<div class="paragraph" id="clock-related-security-concerns"><p>However, there are other functions like authentication and stuff like that,
 that require the correct local time.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_what_8217_s_the_solution">What&#8217;s the Solution?</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The solution is definitely to buy a new battery for your motherboard!</p></div>
-<div class="paragraph"><p>One could say that synchronising the clock via <a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">ntp</a>
+<div class="paragraph" id="clock-related-security-concerns"><p>The solution is definitely to buy a new battery for your motherboard!</p></div>
+<div class="paragraph" id="clock-related-security-concerns"><p>One could say that synchronising the clock via <a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">ntp</a>
 would work bur unfortunately
 ntp syncing isn&#8217;t working for large differences between the local and the
 remote clock. Syncing is going to work only for <strong>~4 minute</strong> differences.</p></div>
@@ -78,7 +78,7 @@ remote clock. Syncing is going to work only for <strong>~4 minute</strong> diffe
 <div class="sect1">
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Every computer and exceptionally windows should have correct local time, especially if they are
+<div class="paragraph" id="clock-related-security-concerns"><p>Every computer and exceptionally windows should have correct local time, especially if they are
 communicating with other systems. Doing otherwise could cause communication failures
 and security threats.</p></div>
 </div>
@@ -86,8 +86,11 @@ and security threats.</p></div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2013/01/17/clock-related-security-concerns.html';
+        this.page.identifier = 'clock-related-security-concerns';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -97,7 +100,6 @@ and security threats.</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

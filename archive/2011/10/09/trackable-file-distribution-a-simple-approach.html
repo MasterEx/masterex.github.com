@@ -50,36 +50,36 @@
 <div class="sect1">
 <h2 id="_scenario">Scenario</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Let&#8217;s asume that we have a community or something that distributes
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Let&#8217;s asume that we have a community or something that distributes
 material such as pictures, pdf&#8217;s e.t.c. by a website to it&#8217;s registered only
 users. If the <em>management</em> wants only the registered members to download
 the material is it possible to somehow track a member who leaks
 something in another public mean such as uploading it to a public place
 or redistributing it via torrents?</p></div>
-<div class="paragraph"><p>The solution I came up is pretty simple and it&#8217;s called
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The solution I came up is pretty simple and it&#8217;s called
 <a href="http://en.wikipedia.org/wiki/Steganography">steganography</a>.</p></div>
-<div class="paragraph"><p>Before I continue let me state that this method isn&#8217;t <em>bulletproof</em>.</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Before I continue let me state that this method isn&#8217;t <em>bulletproof</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_steganography">Steganography</h2>
 <div class="sectionbody">
-<div class="quoteblock">
+<div class="quoteblock" id="trackable-file-distribution-a-simple-approach">
 <div class="content">
-<div class="paragraph"><p>Steganography is the art and science of writing hidden messages in such
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Steganography is the art and science of writing hidden messages in such
 a way that no one, apart from the sender and intended recipient, suspects
 the existence of the message, a form of security through obscurity.</p></div>
 </div>
 <div class="attribution">
 &#8212; wikipedia
 </div></div>
-<div class="paragraph"><p>So, in general steaganography is a process where you are hiding something inside
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>So, in general steaganography is a process where you are hiding something inside
 something else! Usually hiding it in plain sight.</p></div>
-<div class="paragraph"><p>The trick is that no one knows that something exists in there. As wikipedia
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The trick is that no one knows that something exists in there. As wikipedia
 states that&#8217;s <strong>a form of security through obscurity</strong>.</p></div>
 <div class="sect2">
 <h3 id="_so_how_steganography_fits_in_our_case">So how steganography fits in our case?</h3>
-<div class="paragraph"><p>That we are going to do is hide a unique identifier inside
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>That we are going to do is hide a unique identifier inside
 each downloaded file that will connect it to a specific user.</p></div>
 </div>
 </div>
@@ -87,21 +87,22 @@ each downloaded file that will connect it to a specific user.</p></div>
 <div class="sect1">
 <h2 id="_let_8217_s_see_how">Let&#8217;s see how!</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>In the above example I am going to show you that concept with some PHP code.
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>In the above example I am going to show you that concept with some PHP code.
 Note that I just choose PHP because I feel more familiar with but this can
 be done in any language of your choise.</p></div>
-<div class="paragraph"><p>Let&#8217;s asume that we are going to distribute a GIF file.</p></div>
-<div class="paragraph"><p>First of all let&#8217;s construct the identifier.</p></div>
-<div class="paragraph"><p>You can construct the identifier any way you like but here it is the first
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Let&#8217;s asume that we are going to distribute a GIF file.</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>First of all let&#8217;s construct the identifier.</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>You can construct the identifier any way you like but here it is the first
 thing that poped into my head.</p></div>
-<div class="paragraph"><p>If we have a user with username <strong>master</strong> and with password <strong>pass</strong> we can create
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we have a user with username <strong>master</strong> and with password <strong>pass</strong> we can create
 a unique identifier that will be the first 7 digits of the user name plus
 password hash (md5 will do). This is md5("masterpass") = ab1e5cb87bca828b54a4a24c2b37ea8f
 and the first 7 digits are <strong>ab1e5cb</strong>. This pattern can identify 36^7 unique
 users.</p></div>
-<div class="paragraph"><p>So now that we have our unique identifier we can serve the file to the
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>So now that we have our unique identifier we can serve the file to the
 user like that:</p></div>
 <div class="listingblock">
+<a id="trackable-file-distribution-a-simple-approach"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -133,25 +134,27 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #000000">sendfile</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"image.gif"</span><span style="color: #990000">,</span><span style="color: #FF0000">"ab1e5cb"</span><span style="color: #990000">,</span><span style="color: #993399">7</span><span style="color: #990000">);</span>
 
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p><a href="https://gist.github.com/1273109">Here</a> is the gist with the code.</p></div>
-<div class="paragraph"><p>The <strong>sendfile</strong> function takes the files name/location, the identifier and
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p><a href="https://gist.github.com/1273109">Here</a> is the gist with the code.</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The <strong>sendfile</strong> function takes the files name/location, the identifier and
 the identifiers length(in bytes) and returns the trackable file to the user.</p></div>
-<div class="paragraph"><p>If we run <em>diff</em> to the original GIF and the one our user downloaded we&#8217;ll
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we run <em>diff</em> to the original GIF and the one our user downloaded we&#8217;ll
 see that they differ.</p></div>
-<div class="paragraph"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
 <div class="listingblock">
+<a id="trackable-file-distribution-a-simple-approach"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #993399">0002710</span> <span style="color: #993399">0000</span> 003b
 000271a</tt></pre></div></div>
-<div class="paragraph"><p><a href="http://www.forensicswiki.org/wiki/GIF">The 3B hex value is the GIF footer</a>.
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p><a href="http://www.forensicswiki.org/wiki/GIF">The 3B hex value is the GIF footer</a>.
 However <em>most</em> programs use only the
 header to identify the file so most image viewers will display our GIF just as
 the original.</p></div>
-<div class="paragraph"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
 <div class="listingblock">
+<a id="trackable-file-distribution-a-simple-approach"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -160,30 +163,32 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #993399">10010</span>  image1<span style="color: #990000">.</span>gif
 $ du -b image<span style="color: #990000">.</span>gif
 <span style="color: #993399">10003</span>  image<span style="color: #990000">.</span>gif</tt></pre></div></div>
-<div class="paragraph"><p>If we hexdump it the last line will be:</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we hexdump it the last line will be:</p></div>
 <div class="listingblock">
+<a id="trackable-file-distribution-a-simple-approach"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #993399">0002710</span> <span style="color: #993399">0000</span> 613b <span style="color: #993399">3162</span> <span style="color: #993399">3565</span> <span style="color: #993399">6263</span>
 000271a</tt></pre></div></div>
-<div class="paragraph"><p>As we can see there are 7 more bytes which are our unique identifier.
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>As we can see there are 7 more bytes which are our unique identifier.
 You can check that if you check the hex values in an <a href="http://www.asciitable.com/">ascii
 character table</a>.</p></div>
-<div class="paragraph"><p>Further more <em>hexdump</em> can dump a file in ascii with the <strong>-C</strong> switch. So
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Further more <em>hexdump</em> can dump a file in ascii with the <strong>-C</strong> switch. So
 the downloaded file last line is:</p></div>
 <div class="listingblock">
+<a id="trackable-file-distribution-a-simple-approach"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #993399">00002710</span>  <span style="color: #993399">00</span> <span style="color: #993399">00</span> 3b <span style="color: #993399">61</span> <span style="color: #993399">62</span> <span style="color: #993399">31</span> <span style="color: #993399">65</span> <span style="color: #993399">35</span>  <span style="color: #993399">63</span> <span style="color: #993399">62</span>                    <span style="color: #990000">|..;</span>ab1e5cb<span style="color: #990000">|</span>
 0000271a</tt></pre></div></div>
-<div class="paragraph"><p>Here we can see our identifier pretty clearly.</p></div>
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Here we can see our identifier pretty clearly.</p></div>
 <div class="sect2">
 <h3 id="_sum_up">Sum up</h3>
-<div class="paragraph"><p>To sum up if a user had leaked the file image.gif we can easily associate
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>To sum up if a user had leaked the file image.gif we can easily associate
 that file with him!</p></div>
 </div>
 </div>
@@ -191,23 +196,23 @@ that file with him!</p></div>
 <div class="sect1">
 <h2 id="_why_not_bulletproof">Why not bulletproof</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>That&#8217;s pretty obvious! As easily as we inserted the identifier someone can
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>That&#8217;s pretty obvious! As easily as we inserted the identifier someone can
 remove it.</p></div>
-<div class="paragraph"><p>Also some programs may check the file footer before they open the file.
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Also some programs may check the file footer before they open the file.
 That may result to a failure.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>There are other means that can achieve the same result such as
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>There are other means that can achieve the same result such as
 a visual watermark introduced in a picture. However, those that aren&#8217;t alert/destroy
 the file can be reversed with some basic skills.</p></div>
-<div class="paragraph"><p>Furthermore there are staganography methods that can mark a file in a
+<div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>Furthermore there are staganography methods that can mark a file in a
 less profound way. Those methods are more advanced and complex and as I
 implied earlier they may alter/destroy the original&#8217;s file data and have
 as a result a copy with lesser quality.</p></div>
-<div class="ulist"><div class="title">See Also</div><ul>
+<div class="ulist" id="trackable-file-distribution-a-simple-approach"><div class="title">See Also</div><ul>
 <li>
 <p>
 <a href="http://www.forensicswiki.org/wiki/Category:File_Formats">File Formats</a>
@@ -234,8 +239,11 @@ as a result a copy with lesser quality.</p></div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html';
+        this.page.identifier = 'trackable-file-distribution-a-simple-approach';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -245,7 +253,6 @@ as a result a copy with lesser quality.</p></div>
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

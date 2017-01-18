@@ -45,17 +45,18 @@
 <div class="sect1">
 <h2 id="_beatkeeper_adding_a_visual_tick">BeatKeeper: Adding a visual tick</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Previous week
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Previous week
 <a href="http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html#comment-821509194">Chris from Berlin asked me how to visualize the metronome</a>.</p></div>
-<div class="paragraph"><p>So I have tried the obvious, which is to simply print the current beat without success.</p></div>
-<div class="paragraph"><p>Printing the current beat before or after writing to the audio buffer resulted
+<div class="paragraph" id="beatkeeper-visual-tick"><p>So I have tried the obvious, which is to simply print the current beat without success.</p></div>
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Printing the current beat before or after writing to the audio buffer resulted
 the current beat not to change in sync with the sound.</p></div>
-<div class="paragraph"><p>However, thinking a little bit about it, it seemed pretty reasonable because each
+<div class="paragraph" id="beatkeeper-visual-tick"><p>However, thinking a little bit about it, it seemed pretty reasonable because each
 time I wrote to the audio buffer I wasn&#8217;t writing a single tick but instead a
 group of ticks and gaps(silence).</p></div>
-<div class="paragraph"><p>So, the first thing I did was to write only a pair of tick and gap each time to the audio buffer.</p></div>
-<div class="paragraph"><p>Here is the updated code:</p></div>
+<div class="paragraph" id="beatkeeper-visual-tick"><p>So, the first thing I did was to write only a pair of tick and gap each time to the audio buffer.</p></div>
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Here is the updated code:</p></div>
 <div class="listingblock">
+<a id="beatkeeper-visual-tick"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -111,24 +112,24 @@ http://www.gnu.org/software/src-highlite -->
                                 currentBeat <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">;</span>
                 <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">while</span></span><span style="color: #990000">(</span>play<span style="color: #990000">);</span>
         <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>As you can see the trick is to calculate the buffer size each time the
+<div class="paragraph" id="beatkeeper-visual-tick"><p>As you can see the trick is to calculate the buffer size each time the
 beats per minute (<strong>bpm</strong>) change.</p></div>
-<div class="paragraph"><p>Some times I am printing the current beat number before writing to the audio
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Some times I am printing the current beat number before writing to the audio
 buffer and some times after, because the <strong>bpm</strong> is low or high and the user
 has to see the current beat as he is listening to the sound. Doing otherwise
 would give a false sense to the user about the number of the current beat.</p></div>
-<div class="paragraph"><p>The number of <strong>100 bpm</strong> that I am using to decide whether to print before or
+<div class="paragraph" id="beatkeeper-visual-tick"><p>The number of <strong>100 bpm</strong> that I am using to decide whether to print before or
 after was picked after some experimentation.</p></div>
-<div class="paragraph"><p>Here is a pic about this in action:</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Here is a pic about this in action:</p></div>
+<div class="paragraph" id="beatkeeper-visual-tick"><p><span class="image">
 <img src="current-beat.png" alt="current beat in action" />
 </span></p></div>
-<div class="paragraph"><p>Current beat is the <strong>third</strong> value.</p></div>
-<div class="paragraph"><p>I have updated BeatKeeper repo so full code about this can be found
+<div class="paragraph" id="beatkeeper-visual-tick"><p>Current beat is the <strong>third</strong> value.</p></div>
+<div class="paragraph" id="beatkeeper-visual-tick"><p>I have updated BeatKeeper repo so full code about this can be found
 <a href="https://github.com/MasterEx/BeatKeeper">here</a>.</p></div>
-<div class="paragraph"><p>The metronome visualization that I have implemented is very simple. If one
+<div class="paragraph" id="beatkeeper-visual-tick"><p>The metronome visualization that I have implemented is very simple. If one
 implements another one, more eye candy, feel free to leave a comment about it.</p></div>
-<div class="ulist"><div class="title">See also:</div><ul>
+<div class="ulist" id="beatkeeper-visual-tick"><div class="title">See also:</div><ul>
 <li>
 <p>
 <a href="http://masterex.github.com/archive/2012/05/28/android-audio-synthesis.html">Android: Crafting a Metronome with Audio Synthesis</a>
@@ -140,8 +141,11 @@ implements another one, more eye candy, feel free to leave a comment about it.</
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2013/03/11/beatkeeper-visual-tick.html';
+        this.page.identifier = 'beatkeeper-visual-tick';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -151,7 +155,6 @@ implements another one, more eye candy, feel free to leave a comment about it.</
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

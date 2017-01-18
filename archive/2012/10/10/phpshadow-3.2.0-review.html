@@ -50,22 +50,22 @@
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Back in August of 2011 I&#8217;ve written a <a href="http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html">post</a>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Back in August of 2011 I&#8217;ve written a <a href="http://masterex.github.com/archive/2011/08/27/php-protect-the-code.html">post</a>
 about PHP code obfuscation and encryption.</p></div>
-<div class="paragraph"><p>As I had wrote, one could use these two methods to keep his php <em>source</em>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As I had wrote, one could use these two methods to keep his php <em>source</em>
 code <em>more or less</em> secret.</p></div>
-<div class="paragraph"><p>In this article I am going to review one particular commercial PHP encryption
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>In this article I am going to review one particular commercial PHP encryption
 solution, <strong><a href="http://www.phpshadow.com/">PHPShadow</a></strong>.</p></div>
-<div class="paragraph"><p>I was lucky enough to get a free license of PHPShadow by PHPShadow&#8217;s Edwin
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I was lucky enough to get a free license of PHPShadow by PHPShadow&#8217;s Edwin
 Hermann <em>back in January</em> in order to evaluate the -then- <em>new</em> version of it (<strong>3.2.0</strong>).</p></div>
-<div class="paragraph"><p>However, somehow I got busy and I wasn&#8217;t able to publish it. I had reviewed
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>However, somehow I got busy and I wasn&#8217;t able to publish it. I had reviewed
 PHPShadow 3.2.0 and almost finished my article but then I got busy and now
 PHPShadow is in version <strong>4</strong> with significant changes.</p></div>
-<div class="paragraph"><p>To be honest Edwin was kind enough to send me a license for PHPShadow version 4
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>To be honest Edwin was kind enough to send me a license for PHPShadow version 4
 but it lasted for a month and I wasn&#8217;t able to review it back then.</p></div>
-<div class="paragraph"><p><em>Just to keep my word to Edwin I am going to publish this article which refers mostly
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><em>Just to keep my word to Edwin I am going to publish this article which refers mostly
 to PHPShadow version 3.2.0 and has some notices about version 4.</em></p></div>
-<div class="paragraph"><p>So here I go. In the beginning I am going to analyze PHPShadow from some
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>So here I go. In the beginning I am going to analyze PHPShadow from some
 different viewpoints and in the end I&#8217;ll share with you my conclusions about it. If you
 are looking just for a quick PHPShadow overview jump to the conclusion
 instead. I&#8217;ll have a special paragraph in the end for PHPShadow 4, <strong>everything else is for
@@ -75,14 +75,15 @@ instead. I&#8217;ll have a special paragraph in the end for PHPShadow 4, <strong
 <div class="sect1">
 <h2 id="_phpshadow_in_a_nutshell">PHPShadow in a nutshell</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>For those of you not familiar with PHPShadow, it is an encryption mechanism
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>For those of you not familiar with PHPShadow, it is an encryption mechanism
 for PHP.</p></div>
-<div class="paragraph"><p>The current workflow is pretty simple. Just use the encryption tool to
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The current workflow is pretty simple. Just use the encryption tool to
 encrypt your PHP files and you are done.</p></div>
-<div class="paragraph"><p>However, a webserver should have the <strong>phpshadow.so</strong> PHP extension installed
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>However, a webserver should have the <strong>phpshadow.so</strong> PHP extension installed
 in order to execute the encrypted file.</p></div>
-<div class="paragraph"><p>Here is a quick and straightforward code example:</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is a quick and straightforward code example:</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="title">Original Code</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -90,6 +91,7 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&lt;?php</span> <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">;</span> <span style="color: #990000">?&gt;</span></tt></pre></div></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="title">Encrypted Code</div>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -100,18 +102,18 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #000000">phpshadow_exec</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="font-weight: bold"><span style="color: #0000FF">__FILE__</span></span><span style="color: #990000">,</span><span style="color: #FF0000">"</span>
 <span style="color: #FF0000">ECQAGMWTWIOIVTRKACVFNHIAVNJEECUT</span>
 <span style="color: #FF0000">"</span><span style="color: #990000">);</span> <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>Let&#8217;s dive into more details</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Let&#8217;s dive into more details</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_user_guide">User Guide</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>PHPShadow comes with a user guide that can be downloaded from the <a href="http://www.phpshadow.com/download.php">download</a>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>PHPShadow comes with a user guide that can be downloaded from the <a href="http://www.phpshadow.com/download.php">download</a>
 section.</p></div>
-<div class="paragraph"><p>As I am writing this post the current version is <strong>3.2.0</strong>.</p></div>
-<div class="paragraph"><p>I found it very detailed and easy to read. There are step by step instructions
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As I am writing this post the current version is <strong>3.2.0</strong>.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I found it very detailed and easy to read. There are step by step instructions
 that even a very inexperienced developer can easily understand.</p></div>
-<div class="paragraph"><p>The guide includes topics as phpshadow extension installation, installation on
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The guide includes topics as phpshadow extension installation, installation on
 shared hosting, the phpshadow encoder&#8217;s usage, usage examples, best practice guidelines
 etc.</p></div>
 </div>
@@ -119,18 +121,18 @@ etc.</p></div>
 <div class="sect1">
 <h2 id="_encryption_workflow">Encryption Workflow</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>There are two possible ways to encrypt a file. The online encoder that
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>There are two possible ways to encrypt a file. The online encoder that
 encrypts only one file for 0.99 euro (or for free in trial mode) and the encoder tool.</p></div>
-<div class="paragraph"><p>The online tool is pretty straightforward, however I&#8217;ve only tested the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The online tool is pretty straightforward, however I&#8217;ve only tested the
 free encryption. Let&#8217;s just say that it can be very painfull to encrypt
 large or multiple files in this way. The reasons are obvious.</p></div>
-<div class="paragraph"><p>The encoder tool can be downloaded from the <a href="http://www.phpshadow.com/download.php">download</a>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The encoder tool can be downloaded from the <a href="http://www.phpshadow.com/download.php">download</a>
 section for free. It is available for <strong>Linux</strong>, <strong>FreeBSD</strong> and <strong>Mac OS X Lion</strong>.</p></div>
-<div class="paragraph"><p>It says that is available for <strong>Linux kernel 2.6</strong> but I have used it with <strong>3.x</strong> series with no
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>It says that is available for <strong>Linux kernel 2.6</strong> but I have used it with <strong>3.x</strong> series with no
 problem.</p></div>
-<div class="paragraph"><p>If you run the encoder with no options you&#8217;ll get the available options.
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>If you run the encoder with no options you&#8217;ll get the available options.
 Let me quote them and explain some of them.</p></div>
-<div class="listingblock">
+<div class="listingblock" id="phpshadow-3.2.0-review">
 <div class="content">
 <pre><code>OPTIONS
      -d               do not include the dynamic extension loader
@@ -144,9 +146,10 @@ Let me quote them and explain some of them.</p></div>
      -x extension     encodes files ending in ".extension"  (in addition to
                       the default ".php")</code></pre>
 </div></div>
-<div class="paragraph"><p>Without the -d option the dynamic loader will be included and executed before our code.
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Without the -d option the dynamic loader will be included and executed before our code.
 This looks like this:</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -164,9 +167,10 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #FF0000">b3J5LlxuIik7fWlmKGRsKCdwaHBzaGFkb3cuc28nKT09PWZhbHNlKXtleGl0KCJFeHRlbnNpb24g</span>
 <span style="color: #FF0000">ZmFpbGVkIHRvIGxvYWQuXG4iKTt9fQ=='</span><span style="color: #990000">));</span>
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>This is actually PHP code in <strong>base64</strong> format that will be executed by calling the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This is actually PHP code in <strong>base64</strong> format that will be executed by calling the
 PHP&#8217;s <span class="green">eval()</span> method. If we decode it, it looks like this:</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -192,30 +196,30 @@ http://www.gnu.org/software/src-highlite -->
         <span style="color: #FF0000">}</span>
 <span style="color: #FF0000">}</span>
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>As you can understand in case we know the <strong>phpshadow</strong> extension is on and working,
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As you can understand in case we know the <strong>phpshadow</strong> extension is on and working,
 this is a needless check that will slow our code execution, especially if we use multiple
 inclusions of encrypted files, with no reason.</p></div>
-<div class="paragraph"><p>So, as it is indicated in the guide one should use this only if she isn&#8217;t
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>So, as it is indicated in the guide one should use this only if she isn&#8217;t
 sure about her phpshadow installation.</p></div>
-<div class="paragraph"><p>Other than that there isn&#8217;t any other option that needs further explanation.</p></div>
-<div class="paragraph"><p>To encrypt a file you have to be connected to the internet in order for
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Other than that there isn&#8217;t any other option that needs further explanation.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>To encrypt a file you have to be connected to the internet in order for
 the encoder to be able to check if your license is valid.</p></div>
-<div class="paragraph"><p>In conclusion, I found the encoder easy to use and surprisingly fast!</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>In conclusion, I found the encoder easy to use and surprisingly fast!</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_installing_the_phpshadow_extension">Installing the PHPShadow extension</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Installing <strong>phpshadow.so</strong> PHP extension isn&#8217;t any different from installing any
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Installing <strong>phpshadow.so</strong> PHP extension isn&#8217;t any different from installing any
 other PHP extension. Just place <strong>phpshadow.so</strong> in the web server&#8217;s extension
 directory and add the <span class="green">extension=phpshadow.so</span> line in your <strong>php.ini</strong> file.</p></div>
-<div class="paragraph"><p>Once again there are details in the user guide. Nothing tricky here.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Once again there are details in the user guide. Nothing tricky here.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_free_phpshadow_version">Free PHPShadow Version</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The free version introduces a <strong>10 second delay</strong>. This delay is in any case
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The free version introduces a <strong>10 second delay</strong>. This delay is in any case
 unacceptable. I wouldn&#8217;t recommend anyone to use it for any case other than
 getting familiar with PHPShadow&#8217;s workflow.</p></div>
 </div>
@@ -223,14 +227,14 @@ getting familiar with PHPShadow&#8217;s workflow.</p></div>
 <div class="sect1">
 <h2 id="_performance">Performance</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>I have benchmarked PHPShadow&#8217;s encrypted code and here are my findings.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I have benchmarked PHPShadow&#8217;s encrypted code and here are my findings.</p></div>
 <div class="sect2">
 <h3 id="_part_1_apachebench">Part 1 - ApacheBench</h3>
-<div class="paragraph"><p>For the first part of my benchmark I&#8217;ve used <strong>Apache Benchmark</strong> version <strong>2.3</strong> (Revision 655654),
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>For the first part of my benchmark I&#8217;ve used <strong>Apache Benchmark</strong> version <strong>2.3</strong> (Revision 655654),
 and in the figures above I&#8217;ve compared the requests per second which demonstrates
 the average time a page has to load. I have run the test in the same enviroment for
 about 3-5 times and I&#8217;ve kept the best average run.</p></div>
-<div class="admonitionblock">
+<div class="admonitionblock" id="phpshadow-3.2.0-review">
 <table><tr>
 <td class="icon">
 <img src="../../../../images/icons/note.png" alt="Note" />
@@ -239,65 +243,65 @@ about 3-5 times and I&#8217;ve kept the best average run.</p></div>
 a.k.a. just one request.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>At first I&#8217;ve tested a simple Hello World PHP script. As you can see in the chart below
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>At first I&#8217;ve tested a simple Hello World PHP script. As you can see in the chart below
 all the script variations (unencrypted,encrypted without dynamic loader, encrypted with
 dynamic loader, encrypted by the free encoder) are
 almost similar for a project of that scale. However, even for a webpage as
 simple as this the online encoder ir out of the question.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats1.png" alt="stats figure 1" />
 </span></p></div>
-<div class="paragraph"><p>After that I wanted to test only the dynamic loader to see how much overhead adds
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>After that I wanted to test only the dynamic loader to see how much overhead adds
 to the whole process.</p></div>
-<div class="paragraph"><p>As shown in the next chart, calling the dynamic encoder code unformatted can
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As shown in the next chart, calling the dynamic encoder code unformatted can
 serve up to 300 requests more than the base64 one, that is included
 by the phpshadow encryption tool.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats2.png" alt="stats figure 2" />
 </span></p></div>
-<div class="paragraph"><p>This means that if you have to include the dynamic loader you should better use
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This means that if you have to include the dynamic loader you should better use
 the non base64 format. However, as I&#8217;ve said before it&#8217;s really better to
 not use it at all.</p></div>
-<div class="paragraph"><p>Continuing my tests I&#8217;ve benchmarked two real world projects, the first is the <strong>manuf.php</strong>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Continuing my tests I&#8217;ve benchmarked two real world projects, the first is the <strong>manuf.php</strong>
 that can be found <a href="https://raw.github.com/uberspot/OpenWifiStatistics-web/master/manuf.php">here</a>.
 It&#8217;s actually a 20k lines PHP array with MAC vendor prefixes taken from the
 <a href="http://anonsvn.wireshark.org/wireshark/trunk/manuf">wireshark project</a>. The other
 is <strong>arq</strong>, a custom MVC project I wrote some months back for a university project
 and implements multiple file inclusions.</p></div>
-<div class="paragraph"><p>Here are the charts.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Here are the charts.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats3.png" alt="stats figure 3" />
 </span></p></div>
-<div class="paragraph"><p>In these cases as we can see unencrypted code can run significantly faster
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>In these cases as we can see unencrypted code can run significantly faster
 than the encrypted one. Note that in this chart the encrypted code doesn&#8217;t use
 the dynamic loader.</p></div>
-<div class="paragraph"><p>Also, I&#8217;d like to mention that the original&#8217;s <strong>manuf.php</strong> code is <strong>20023</strong> lines, <strong>2105628</strong> chars
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Also, I&#8217;d like to mention that the original&#8217;s <strong>manuf.php</strong> code is <strong>20023</strong> lines, <strong>2105628</strong> chars
 and the encrypted&#8217;s <strong>manuf_le.php</strong> code is <strong>85765</strong> lines, <strong>6603460</strong> chars. Ofcourse this is an extreme
 case but however this is why I choose it.</p></div>
-<div class="paragraph"><p>Anyway, I have kept playing with the concurrency level and the number of
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Anyway, I have kept playing with the concurrency level and the number of
 requests with <strong>arq</strong> (my custom project) until I&#8217;ve reached to a peak!</p></div>
-<div class="paragraph"><p>In <strong>10000</strong> requests and concurrency level <strong>25</strong> the arq scored <strong>295.62</strong>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>In <strong>10000</strong> requests and concurrency level <strong>25</strong> the arq scored <strong>295.62</strong>
 requests per second while the encoded version scored <strong>67.67</strong>.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats4.png" alt="stats figure 4" />
 </span></p></div>
-<div class="paragraph"><p>This is pretty significant and shows that the encoded code scales poorly.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This is pretty significant and shows that the encoded code scales poorly.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_part_2_memory_management">Part 2 - Memory Management</h3>
-<div class="paragraph"><p>I&#8217;ve also conducted some tests to find the maximum memory used. To find
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I&#8217;ve also conducted some tests to find the maximum memory used. To find
 this I used the PHP&#8217;s <span class="green">memory_get_peak_usage()</span> function.</p></div>
-<div class="paragraph"><p>The unencrypted manuf.php peaked <strong>26921244</strong> or <strong>26.92</strong> MB max memory usage,
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The unencrypted manuf.php peaked <strong>26921244</strong> or <strong>26.92</strong> MB max memory usage,
 while the encrypted peaked <strong>42244396</strong> or <strong>42.24</strong> MB.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats5.png" alt=""stats figure 5" />
 </span></p></div>
-<div class="paragraph"><p>The unencrypted arq project peaked <strong>1245692</strong> or <strong>1.246</strong> MB max memory usage,
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The unencrypted arq project peaked <strong>1245692</strong> or <strong>1.246</strong> MB max memory usage,
 while the encrypted peaked <strong>1325184</strong> or <strong>1.325</strong> MB</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="stats6.png" alt="stats figure 6" />
 </span></p></div>
-<div class="paragraph"><p>As we can see in some extreme cases there can be nearly twice the normal
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As we can see in some extreme cases there can be nearly twice the normal
 maximum memory usage.</p></div>
 </div>
 </div>
@@ -305,50 +309,51 @@ maximum memory usage.</p></div>
 <div class="sect1">
 <h2 id="_security">Security</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Security would be my main concern if I would like to use an encryption mechanism
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Security would be my main concern if I would like to use an encryption mechanism
 to hide my code. I may not be the best to answer if PHPShadow is totaly secure
 but as far as I can say, I find it pretty
 secure.</p></div>
-<div class="paragraph"><p>PHPShadow website claims that:</p></div>
-<div class="listingblock">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>PHPShadow website claims that:</p></div>
+<div class="listingblock" id="phpshadow-3.2.0-review">
 <div class="content">
 <pre><code>Decryption is performed on-the-fly and entirely in memory. This means that
 data is never saved, shown or stored anywhere - not even temporarily.</code></pre>
 </div></div>
-<div class="paragraph"><p>Let me waffle a bit before I get to my conclusion.</p></div>
-<div class="paragraph"><p>In the beginning, I tried to analyze the produced code to understand where the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Let me waffle a bit before I get to my conclusion.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>In the beginning, I tried to analyze the produced code to understand where the
 encryption key is stored and what is the connection between the original
 code (plain text) and the produced one (cipher text).</p></div>
-<div class="paragraph"><p>I had no luck on that and the most interesting findings
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I had no luck on that and the most interesting findings
 are that unicode characters produce more encrypted text than the ascii ones.
 Actually, they produce almost <strong>2</strong> times more code which is pretty logical if
 you consider that <strong>UTF-8</strong> requires more bytes to represent the characters.</p></div>
-<div class="paragraph"><p>Another interesting finding is that free encoder produces different ciphertext
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Another interesting finding is that free encoder produces different ciphertext
 from the paid one and decoder determines what kind of encoder was used by the first
 argument of <span class="green">phpshadow_eval()</span> and the first <strong>22bit</strong> (I think :P) of
 the ciphertext.</p></div>
-<div class="paragraph"><p>Finally, when I started analyzing the ciphertext I thought that it was a pattern
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Finally, when I started analyzing the ciphertext I thought that it was a pattern
 of keys and ciphertext i.e. qfesAFSD where qfes is the key that decrypts
 AFSD but as I found out  both previous and next ciphertext characters define
 the decryption product.</p></div>
-<div class="paragraph"><p>This is good because otherwise one could create a pool (something like rainbow tables)
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This is good because otherwise one could create a pool (something like rainbow tables)
 of keys and ciphertext and use it to decrypt other ciphertexts with it.</p></div>
-<div class="paragraph"><p>Also, one could use a pool like this to produce a phpshadow encrypted text
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Also, one could use a pool like this to produce a phpshadow encrypted text
 without a license!</p></div>
-<div class="paragraph"><p>However, I wasn&#8217;t able to find out such a relation between encryption key and
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>However, I wasn&#8217;t able to find out such a relation between encryption key and
 ciphertext which is rather good or I am noob. I am afraid that the second is more
 likely but at least I tried :D</p></div>
-<div class="paragraph"><p>A security expert, which I am not, could have another opinion.</p></div>
-<div class="paragraph"><p>After my shot to analyze the ciphertext I wondered if it was possible to run
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>A security expert, which I am not, could have another opinion.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>After my shot to analyze the ciphertext I wondered if it was possible to run
 apache in debug mode through gdb and get a glimpse on what is going on behind
 the scenes, but it seemed a long shot and too much trouble
 to bother with.</p></div>
-<div class="paragraph"><p>Just from curiosity I would like to hear if that&#8217;s possible and if someone
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Just from curiosity I would like to hear if that&#8217;s possible and if someone
 had checked it out.</p></div>
-<div class="paragraph"><p>Finally, I tried to see what information I could deduct by using a set of
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Finally, I tried to see what information I could deduct by using a set of
 available PHP functions.</p></div>
-<div class="paragraph"><p>Here is my magic code:</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is my magic code:</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -364,49 +369,50 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-style: italic"><span style="color: #9A1900">// or echo var_dump(debug_backtrace());</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">echo</span></span> <span style="color: #FF0000">'&lt;/pre&gt;'</span><span style="color: #990000">;</span>
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>This is important because it means that if for example one had an encrypted
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This is important because it means that if for example one had an encrypted
 configuration file another one could just add the <span class="green">get_defined_vars()</span> function
 at the end of the encrypted code and get all the sensitive information such as database
 usernames and passwords etc.</p></div>
-<div class="paragraph"><p>This cancels the usage of PHPShadow for protecting configuration files and the like.</p></div>
-<div class="paragraph"><p>One could just unset the variables inside her encrypted block to ensure that
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This cancels the usage of PHPShadow for protecting configuration files and the like.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>One could just unset the variables inside her encrypted block to ensure that
 noone gets them but that may be impossible in some cases and break dependencies of global
 variables, especially in large projects.</p></div>
-<div class="paragraph"><p>That&#8217;s all about security I think. In general PHPShadow succeeds to protect/hide
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>That&#8217;s all about security I think. In general PHPShadow succeeds to protect/hide
 the code, however a <strong>3rd</strong> person could still deduct many important information.
 I think in combination with the encryption, obfuscation
 could partially solve this problem.</p></div>
-<div class="paragraph"><p>The best solution however, that I am not aware how doable is, is for
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The best solution however, that I am not aware how doable is, is for
 PHPShadow to handle this by itself.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_pricing_scheme">Pricing Scheme</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>When I first spotted PHPShadow, it was selling the server extension and
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>When I first spotted PHPShadow, it was selling the server extension and
 offered the encryption tool for free.</p></div>
-<div class="paragraph"><p>This was a big mistake in my opinion because it made very difficult and especially
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This was a big mistake in my opinion because it made very difficult and especially
 expensive to install the extension in many servers. Now one can use her
 encrypted code everywhere as long as the extension is loaded.</p></div>
-<div class="paragraph"><p>Also, this makes the extension more appealing for hosting providers to
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Also, this makes the extension more appealing for hosting providers to
 provide it by default in their hosting packages. This is a win-win situation
 for both the hosting providers and the PHPShadow.</p></div>
-<div class="paragraph"><p>Now, the <a href="http://www.phpshadow.com/purchase.php">price scheme</a> is much better.</p></div>
-<div class="paragraph"><p>However some packages are doomed to fail, or at list they should! Currently the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Now, the <a href="http://www.phpshadow.com/purchase.php">price scheme</a> is much better.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>However some packages are doomed to fail, or at list they should! Currently the
 <strong>cheaper</strong> package offers a <strong>48hours</strong> license for <strong>5 EUR</strong> and the most expensive
 a <strong>12 months</strong> one for <strong>100 EUR</strong>.</p></div>
-<div class="paragraph"><p>If I was going to use PHPShadow in a project of mine I would use the cheapest
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>If I was going to use PHPShadow in a project of mine I would use the cheapest
 license. If I wanted to publish a new version in a usual basis I would publish one
 every 1 month and so I would only had to paid 5x12=<strong>60 EUR</strong> which is <strong>40 EUR</strong> less
 that the <strong>1 year license</strong>.</p></div>
-<div class="paragraph"><p>Ok, I understand that this is a great pressure especially if your product is
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Ok, I understand that this is a great pressure especially if your product is
 immature and new bugs pop out all the time. However, with some careful planning
 this is a very promising tactic, especially for low budget projects.</p></div>
-<div class="paragraph"><p>Other than that one who doesn&#8217;t want to spent any money and is a little bold
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Other than that one who doesn&#8217;t want to spent any money and is a little bold
 could try to implement another encryption mechanism on top of PHPShadow.</p></div>
-<div class="paragraph"><p>Here I&#8217;ll introduce some code snippets that implement this concept. They
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Here I&#8217;ll introduce some code snippets that implement this concept. They
 are pretty naive but they serve our purpose really nicely.</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -427,9 +433,10 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #000000">file_put_contents</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'publickey.txt'</span><span style="color: #990000">,</span><span style="color: #009900">$publickey</span><span style="color: #990000">);</span>
 
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>This generates an openssl key pair. We&#8217;ll use the public key for the encryption
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This generates an openssl key pair. We&#8217;ll use the public key for the encryption
 and the private for the decryption.</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -451,16 +458,17 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #000000">file_put_contents</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'hello-enc'</span><span style="color: #990000">,</span><span style="color: #009900">$crypttext</span><span style="color: #990000">);</span>
 
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>This gets a stored public key and encrypts a file with it. A couple of lines
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This gets a stored public key and encrypts a file with it. A couple of lines
 there remove the <span class="green">&lt;?php</span> and <span class="green">?&gt;</span> tags.
 Then it puts the the ciphertext into a new file. In that case the original file
 was a "Hello World" one and the ciphertext was the above:</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="phpshadow-3.2.0-review"><p><span class="image">
 <img src="ciphertext.png" alt="Cipher Text" />
 </span></p></div>
-<div class="paragraph"><p>The critical part is the one that we&#8217;ll execute the encypted file. Here
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The critical part is the one that we&#8217;ll execute the encypted file. Here
 is our precious decoder</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -496,28 +504,28 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #0000FF">unset</span></span><span style="color: #990000">(</span><span style="color: #009900">$decrypted</span><span style="color: #990000">);</span>
 
 <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>I get the ciphertext and use the private key to get the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I get the ciphertext and use the private key to get the
 plain text. Then, PHP&#8217;s function <span class="green">eval()</span> executes the
 code. Please note here that I had removed the PHP tags that contained the
 PHP code during the encryption.</p></div>
-<div class="paragraph"><p>After executing the code I unset the variables that contain the sensitive
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>After executing the code I unset the variables that contain the sensitive
 information.</p></div>
-<div class="paragraph"><p>Also, here I use the encrypted file name <em>hello_enc</em> hardcoded into the
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Also, here I use the encrypted file name <em>hello_enc</em> hardcoded into the
 decoder but we could easily craft a function to pass it dynamically.</p></div>
-<div class="paragraph"><p>So, now just PHPEncode it and you&#8217;ll have your own encoding/decoding
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>So, now just PHPEncode it and you&#8217;ll have your own encoding/decoding
 mechanism.</p></div>
-<div class="paragraph"><p>Let me just say to you that this is not as trivial as it may seems and
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Let me just say to you that this is not as trivial as it may seems and
 in the best case it&#8217;s performance and security is equivelant of PHPShadow&#8217;s.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>PHPShadow is easy to use and well documented. It is also really cheap. Spending
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>PHPShadow is easy to use and well documented. It is also really cheap. Spending
 <strong>5 EUR</strong> in order to protect a commercial project that makes you earn  money
 is a really insignificant amount of money. It is also useful for distributing
 demos of your app or code components that you don&#8217;t want your client to mess with.</p></div>
-<div class="paragraph"><p>The security is pretty good. I guess the weak part of PHPShadow is the performance
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>The security is pretty good. I guess the weak part of PHPShadow is the performance
 and especially memory usage. This makes it good only for small to medium
 applications. However, I guess this is good enough for most of the cases.</p></div>
 </div>
@@ -525,14 +533,15 @@ applications. However, I guess this is good enough for most of the cases.</p></d
 <div class="sect1">
 <h2 id="_phpshadow_4">PHPShadow 4</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>I&#8217;ll try to be brief about PHPShadow version 4.</p></div>
-<div class="paragraph"><p>I really can&#8217;t comment the performance but I find it very reasonable to be
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I&#8217;ll try to be brief about PHPShadow version 4.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>I really can&#8217;t comment the performance but I find it very reasonable to be
 worse than the unencrypted code, both in memory usage and execution time.
 However, I strongly believe that it will be ok for small to medium projects.</p></div>
-<div class="paragraph"><p>As for the security I can only tell that PHPShadow 4 uses both letters and
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>As for the security I can only tell that PHPShadow 4 uses both letters and
 numbers for the cipher-text.</p></div>
-<div class="paragraph"><p>Here is an example:</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is an example:</p></div>
 <div class="listingblock">
+<a id="phpshadow-3.2.0-review"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -545,13 +554,13 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #FF0000">92f9489e711898324620984e1ad46037acf02944ed5815b75610899a2fd6867ac9aa0b50821f</span>
 <span style="color: #FF0000">a1fd7df1f8a2afa26149</span>
 <span style="color: #FF0000">"</span><span style="color: #990000">);</span> <span style="color: #990000">?&gt;</span></tt></pre></div></div>
-<div class="paragraph"><p>This makes me believe that it&#8217;s harder to get cracked by brute force than
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>This makes me believe that it&#8217;s harder to get cracked by brute force than
 the previous version.</p></div>
-<div class="paragraph"><p>Also, note that the 64bit key is more distinguished in this version.</p></div>
-<div class="paragraph"><p>Now for the things that I can comment:</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Also, note that the 64bit key is more distinguished in this version.</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Now for the things that I can comment:</p></div>
 <div class="sect2">
 <h3 id="_pros">Pros</h3>
-<div class="ulist"><ul>
+<div class="ulist" id="phpshadow-3.2.0-review"><ul>
 <li>
 <p>
 Easy to use
@@ -598,7 +607,7 @@ Free email support
 </div>
 <div class="sect2">
 <h3 id="_cons">Cons</h3>
-<div class="ulist"><ul>
+<div class="ulist" id="phpshadow-3.2.0-review"><ul>
 <li>
 <p>
 Server extension is not backward compatible with version 3.2.0
@@ -618,16 +627,19 @@ a previous PHPShadow version to the latest would be nice :)
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>That&#8217;s all I can really tell about PHPShadow 4. Try it for yourself and let me know if you liked it :)</p></div>
-<div class="paragraph"><p>Keep coding!</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>That&#8217;s all I can really tell about PHPShadow 4. Try it for yourself and let me know if you liked it :)</p></div>
+<div class="paragraph" id="phpshadow-3.2.0-review"><p>Keep coding!</p></div>
 </div>
 </div>
 </div>
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2012/10/10/phpshadow-3.2.0-review.html';
+        this.page.identifier = 'phpshadow-3.2.0-review';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -637,7 +649,6 @@ a previous PHPShadow version to the latest would be nice :)
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>

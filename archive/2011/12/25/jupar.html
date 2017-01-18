@@ -50,40 +50,40 @@
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>A neat feature for a desktop application is to automatically notify
+<div class="paragraph" id="jupar"><p>A neat feature for a desktop application is to automatically notify
 the user for available updates or even provide automatic updating functionality.</p></div>
-<div class="paragraph"><p>Building such an architecture seemed interesting to me, so out of curiosity
+<div class="paragraph" id="jupar"><p>Building such an architecture seemed interesting to me, so out of curiosity
 I&#8217;ve decided to implement a library and an architecture that can provide that
 kind of functionality.</p></div>
-<div class="paragraph"><p>I&#8217;ve created JUPAR wihch stands up for Java Updates Architecture! It is pretty simple
+<div class="paragraph" id="jupar"><p>I&#8217;ve created JUPAR wihch stands up for Java Updates Architecture! It is pretty simple
 and it&#8217;s main purpose is to act as a proof of concept for how
 this functionality could be implemented but one could easily use it in
 a real world application as well.</p></div>
-<div class="paragraph"><p>As you can easily assume I have implemented this concept to work with Java
+<div class="paragraph" id="jupar"><p>As you can easily assume I have implemented this concept to work with Java
 desktop applications <strong>but the same concept could easily be implemented in
 any other language too</strong>.</p></div>
-<div class="paragraph"><p>Below I&#8217;ll explain how this architecture works and later there will be
+<div class="paragraph" id="jupar"><p>Below I&#8217;ll explain how this architecture works and later there will be
 a demostration.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>First of all the application checks if there is a newer version available.</p></div>
-<div class="paragraph"><p>It is doing this by checking an xml file located somewhere in a remote
+<div class="paragraph" id="jupar"><p>First of all the application checks if there is a newer version available.</p></div>
+<div class="paragraph" id="jupar"><p>It is doing this by checking an xml file located somewhere in a remote
 server. I am using xml files because they are easily configurable and Java
 has a built in API for parsing them.</p></div>
-<div class="paragraph"><p>So, when this is done we can notify the user that a new version is available
+<div class="paragraph" id="jupar"><p>So, when this is done we can notify the user that a new version is available
 and prompt him to manually download and install it or allow the application
 to perfom an automatic update.</p></div>
-<div class="paragraph"><p>Let&#8217;s assume now that an automatic update takes place. The application parses
+<div class="paragraph" id="jupar"><p>Let&#8217;s assume now that an automatic update takes place. The application parses
 another xml file which contains links with all the files that we are going to need for
 the update.</p></div>
-<div class="paragraph"><p>Then all the needed files are downloaded and stored in a temporary directory.
+<div class="paragraph" id="jupar"><p>Then all the needed files are downloaded and stored in a temporary directory.
 There, there is also an xml file with the instructions. Instructions are the steps
 that our application needs to follow in order to be updated.</p></div>
-<div class="paragraph"><p>There are 3 kind of instructions.</p></div>
-<div class="ulist"><ul>
+<div class="paragraph" id="jupar"><p>There are 3 kind of instructions.</p></div>
+<div class="ulist" id="jupar"><ul>
 <li>
 <p>
 <strong>MOVE</strong>: Moves a new file in the place of an old one
@@ -100,11 +100,11 @@ that our application needs to follow in order to be updated.</p></div>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>The purpose of <strong>MOVE</strong> and <strong>DELETE</strong> is pretty obvious. The purpose of <strong>EXECUTE</strong> is
+<div class="paragraph" id="jupar"><p>The purpose of <strong>MOVE</strong> and <strong>DELETE</strong> is pretty obvious. The purpose of <strong>EXECUTE</strong> is
 to perform advanced operations such as updating a database scheme. This
 keeps JUPAR complexity low and provides more flexibility to the developer.</p></div>
-<div class="paragraph"><p>The hole procedure is described to the next figure.</p></div>
-<div class="paragraph"><p><span class="image">
+<div class="paragraph" id="jupar"><p>The hole procedure is described to the next figure.</p></div>
+<div class="paragraph" id="jupar"><p><span class="image">
 <img src="jupar.png" alt="JUPAR Architecture" />
 </span></p></div>
 </div>
@@ -112,12 +112,13 @@ keeps JUPAR complexity low and provides more flexibility to the developer.</p></
 <div class="sect1">
 <h2 id="_demonstration">Demonstration</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Ok, let&#8217;s now see it in action!</p></div>
-<div class="paragraph"><p>I have built a dump application that displays the application version.
+<div class="paragraph" id="jupar"><p>Ok, let&#8217;s now see it in action!</p></div>
+<div class="paragraph" id="jupar"><p>I have built a dump application that displays the application version.
 We are going to see both the code that we should include in our application
 and the xml files that we should create!</p></div>
-<div class="paragraph"><p>Here is the relevant code:</p></div>
+<div class="paragraph" id="jupar"><p>Here is the relevant code:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -207,13 +208,14 @@ release<span style="color: #990000">.</span><span style="font-weight: bold"><spa
   <span style="color: #FF0000">}</span>
   tmp<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delete</span></span><span style="color: #990000">();</span>
 <span style="color: #FF0000">}</span></tt></pre></div></div>
-<div class="paragraph"><p>Let&#8217;s see the highlights!</p></div>
+<div class="paragraph" id="jupar"><p>Let&#8217;s see the highlights!</p></div>
 <div class="sect2">
 <h3 id="_check_for_new_version">Check for new version</h3>
-<div class="paragraph"><p>We set this applications version and release number. So version is a float number
+<div class="paragraph" id="jupar"><p>We set this applications version and release number. So version is a float number
 such as 1.0 , 1.1 etc and release is an integer starting from 1 and counting.</p></div>
-<div class="paragraph"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
+<div class="paragraph" id="jupar"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -228,18 +230,19 @@ http://www.gnu.org/software/src-highlite -->
                 <span style="font-weight: bold"><span style="color: #0000FF">&lt;message&gt;&lt;/message&gt;</span></span>
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/extra&gt;</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/information&gt;</span></span></tt></pre></div></div>
-<div class="paragraph"><p>Message can be a short description of the update that you can display to
+<div class="paragraph" id="jupar"><p>Message can be a short description of the update that you can display to
 the user or something like that.</p></div>
-<div class="paragraph"><p>Severity can be used as you wish. You may for example perform automatic
+<div class="paragraph" id="jupar"><p>Severity can be used as you wish. You may for example perform automatic
 updates only when severity is high or whatever you like.</p></div>
-<div class="paragraph"><p>Back to the code, the Release Class implements the comparable interface
+<div class="paragraph" id="jupar"><p>Back to the code, the Release Class implements the comparable interface
 so we can directly compare two different releases.</p></div>
-<div class="paragraph"><p>In this demo, if a new release is available an option dialog is displayed
+<div class="paragraph" id="jupar"><p>In this demo, if a new release is available an option dialog is displayed
 asking the user if he wants to update or not. As I said before one could just
 notify the user for the new version and don&#8217;t perform an automatic update.</p></div>
-<div class="paragraph"><p>Anyway, if the answer is positive we parse the <span class="red">files.xml</span> file and download
+<div class="paragraph" id="jupar"><p>Anyway, if the answer is positive we parse the <span class="red">files.xml</span> file and download
 the needed files. Here how <span class="red">files.xml</span> looks like:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -249,14 +252,15 @@ http://www.gnu.org/software/src-highlite -->
         <span style="font-weight: bold"><span style="color: #0000FF">&lt;file&gt;</span></span>http://niovi.aueb.gr/~p3070130/update.xml<span style="font-weight: bold"><span style="color: #0000FF">&lt;/file&gt;</span></span>
         <span style="font-weight: bold"><span style="color: #0000FF">&lt;file&gt;</span></span>http://niovi.aueb.gr/~p3070130/JUPARDemo.jar<span style="font-weight: bold"><span style="color: #0000FF">&lt;/file&gt;</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/download&gt;</span></span></tt></pre></div></div>
-<div class="paragraph"><p>All the files are stored in a temporary directory.</p></div>
+<div class="paragraph" id="jupar"><p>All the files are stored in a temporary directory.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_automatic_update">Automatic Update</h3>
-<div class="paragraph"><p>When the update starts we parse the instructions file which is by then stored
+<div class="paragraph" id="jupar"><p>When the update starts we parse the instructions file which is by then stored
  localy.
 This is the last xml file and looks like this:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -269,10 +273,10 @@ http://www.gnu.org/software/src-highlite -->
         <span style="font-weight: bold"><span style="color: #0000FF">&lt;destination&gt;</span></span>JUPARDemo.jar<span style="font-weight: bold"><span style="color: #0000FF">&lt;/destination&gt;</span></span>
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/instruction&gt;</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/update&gt;</span></span></tt></pre></div></div>
-<div class="paragraph"><p>The above xml file contains an instruction that moves the new file JUPARDemo.jar
+<div class="paragraph" id="jupar"><p>The above xml file contains an instruction that moves the new file JUPARDemo.jar
 from the temporary directory to the current working directory (see below)
 in the place of the old JUPARDemo.jar.</p></div>
-<div class="paragraph"><p>Finally we delete the temporary directory.</p></div>
+<div class="paragraph" id="jupar"><p>Finally we delete the temporary directory.</p></div>
 </div>
 </div>
 </div>
@@ -281,52 +285,54 @@ in the place of the old JUPARDemo.jar.</p></div>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_advantages">Advantages</h3>
-<div class="paragraph"><p>JUPAR is pretty small and simple. Everyone could easily hack its code
+<div class="paragraph" id="jupar"><p>JUPAR is pretty small and simple. Everyone could easily hack its code
 and add the kind of functionality that she needs. It&#8217;s pretty flexible, developer
 handles all the exceptions as she wants. It doesn&#8217;t require any server
 side software installed, it just needs some xml files in the right place!</p></div>
 </div>
 <div class="sect2">
 <h3 id="_disadvantages">Disadvantages</h3>
-<div class="paragraph"><p>Lack of documentation.</p></div>
-<div class="paragraph"><p>All the exceptions are thrown for the developer to handle them.
+<div class="paragraph" id="jupar"><p>Lack of documentation.</p></div>
+<div class="paragraph" id="jupar"><p>All the exceptions are thrown for the developer to handle them.
 However, some times it&#8217;s not clear where the exception occurred. For example
 a method may throw IOException both when a file isn&#8217;t accessible through
 network or it hasn&#8217;t permissions to write a file locally. Most of the times
 this isn&#8217;t important as the developer will log the error and get the
 exact line where the exception occurred, however if we care to show an
 appropriate message to the user this is a problem.</p></div>
-<div class="paragraph"><p>Temporary files are stored to the <strong>current working directory</strong> and files are
+<div class="paragraph" id="jupar"><p>Temporary files are stored to the <strong>current working directory</strong> and files are
 copied/deleted to/from the <strong>current working directory</strong>.</p></div>
-<div class="paragraph"><p>For example if our working directory is curdir and we execute our application
+<div class="paragraph" id="jupar"><p>For example if our working directory is curdir and we execute our application
 like <span class="blue">java -jar dist/JUPARDemo.jar</span> the
 <span class="green">tmp</span> file will be created in the <span class="green">curdir</span> directory and then the new JUPARDemo.jar file
 will be copied to <span class="green">curdir</span> too.</p></div>
-<div class="paragraph"><p>After some though Java doesn&#8217;t provides a clear way of finding the executable&#8217;s
+<div class="paragraph" id="jupar"><p>After some though Java doesn&#8217;t provides a clear way of finding the executable&#8217;s
 path. So, I have included an update method that takes also the executable&#8217;s
 path as an argument and let&#8217;s up to the developer how to handle this.</p></div>
-<div class="paragraph"><p>In my account there are 3 possible ways to do this.</p></div>
+<div class="paragraph" id="jupar"><p>In my account there are 3 possible ways to do this.</p></div>
 <div class="sect3">
 <h4 id="_find_the_executable_path_with_java">Find the executable path with Java</h4>
-<div class="paragraph"><p>You can try to find the executables path with a command like:</p></div>
+<div class="paragraph" id="jupar"><p>You can try to find the executables path with a command like:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span>MyClass<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getProtectionDomain</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getCodeSource</span></span><span style="color: #990000">()</span>
 <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getLocation</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toURI</span></span><span style="color: #990000">().</span>g‌​<span style="font-weight: bold"><span style="color: #000000">etPath</span></span><span style="color: #990000">());</span></tt></pre></div></div>
-<div class="paragraph"><p>However I am not sure if this works in every case and as far as I know it
+<div class="paragraph" id="jupar"><p>However I am not sure if this works in every case and as far as I know it
 doesn&#8217;t works for JVMs previous to 1.5.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_use_a_predefined_path">Use a predefined path</h4>
-<div class="paragraph"><p>It is possible to use a predefined path in your Java application.</p></div>
-<div class="paragraph"><p>There are 2 supported ways to accomplish this.</p></div>
+<div class="paragraph" id="jupar"><p>It is possible to use a predefined path in your Java application.</p></div>
+<div class="paragraph" id="jupar"><p>There are 2 supported ways to accomplish this.</p></div>
 <div class="sect4">
 <h5 id="_first_way">First way</h5>
-<div class="paragraph"><p>Use a full path to set the temporary directory:</p></div>
+<div class="paragraph" id="jupar"><p>Use a full path to set the temporary directory:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -338,8 +344,9 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist/tmp"</span><span style="color: #990000">,</span> Modes<span style="color: #990000">.</span>FILE<span style="color: #990000">);</span>
 <span style="color: #990000">...</span>
 <span style="color: #008080">File</span> tmp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist/tmp"</span><span style="color: #990000">);</span></tt></pre></div></div>
-<div class="paragraph"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
+<div class="paragraph" id="jupar"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -352,15 +359,16 @@ http://www.gnu.org/software/src-highlite -->
    <span style="font-weight: bold"><span style="color: #0000FF">&lt;destination&gt;</span></span>/home/periklis/Workspace/JUPARDEMO/dist/JUPARDemo.jar<span style="font-weight: bold"><span style="color: #0000FF">&lt;/destination&gt;</span></span>
   <span style="font-weight: bold"><span style="color: #0000FF">&lt;/instruction&gt;</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/update&gt;</span></span></tt></pre></div></div>
-<div class="paragraph"><p>This is how demo fullv1 and fullv2 that comes with JUPAR is implemented.</p></div>
+<div class="paragraph" id="jupar"><p>This is how demo fullv1 and fullv2 that comes with JUPAR is implemented.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_second_way">Second way</h5>
-<div class="paragraph"><p>This way is actually like the first one but it doesn&#8217;t need a modified
+<div class="paragraph" id="jupar"><p>This way is actually like the first one but it doesn&#8217;t need a modified
 <span class="red">updates.xml</span>. As I mentioned before, after some consideration I decided
 to provide an update method that takes the executable&#8217;s full path as an argument.</p></div>
-<div class="paragraph"><p>So we only need to have something like that:</p></div>
+<div class="paragraph" id="jupar"><p>So we only need to have something like that:</p></div>
 <div class="listingblock">
+<a id="jupar"></a>
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
@@ -373,7 +381,7 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist"</span><span style="color: #990000">,</span> Modes<span style="color: #990000">.</span>FILE<span style="color: #990000">);</span>
 <span style="color: #990000">...</span>
 <span style="color: #008080">File</span> tmp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"/home/periklis/Workspace/JUPARDEMO/dist/tmp"</span><span style="color: #990000">);</span></tt></pre></div></div>
-<div class="paragraph"><p>Both first and second way work but comes with a great limitation. The
+<div class="paragraph" id="jupar"><p>Both first and second way work but comes with a great limitation. The
 developer should maintain different versions of the executable for
 every different system that she wants to deploy it.
 Ok, in a way this is how things work in the linux world where the package
@@ -384,17 +392,17 @@ that I think is the most smooth.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_use_a_predefined_path_from_local_configuration">Use a predefined path from local configuration</h4>
-<div class="paragraph"><p>This way is actually like the above with the difference that the developer
+<div class="paragraph" id="jupar"><p>This way is actually like the above with the difference that the developer
 will read the executable&#8217;s path from a configuration file. This has the
 avantage that the package maintainer doesn&#8217;t need to recompile the application
 to add the full path.</p></div>
-<div class="paragraph"><p>By convention the configuration file could be in <span class="green">/home/user/.appname</span> in
+<div class="paragraph" id="jupar"><p>By convention the configuration file could be in <span class="green">/home/user/.appname</span> in
 linux systems and to the corresponding in Windows.</p></div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_disadvantages_conclusion">Disadvantages Conclusion</h3>
-<div class="paragraph"><p>There are some problems into JUPAR but the developer can easily overcome them
+<div class="paragraph" id="jupar"><p>There are some problems into JUPAR but the developer can easily overcome them
 and that is due to JUPAR&#8217;s flexibility. If there is a best way to overcome
 a problem one could easily implement it into JUPAR and share some love :)</p></div>
 </div>
@@ -403,8 +411,8 @@ a problem one could easily implement it into JUPAR and share some love :)</p></d
 <div class="sect1">
 <h2 id="_todo_list">Todo List</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Here are some thoughts that I may look into the future:</p></div>
-<div class="ulist"><ul>
+<div class="paragraph" id="jupar"><p>Here are some thoughts that I may look into the future:</p></div>
+<div class="ulist" id="jupar"><ul>
 <li>
 <p>
 Store the file/filepaths as File objects and not as Strings
@@ -436,7 +444,7 @@ Test it!
 </p>
 </li>
 </ul></div>
-<div class="ulist"><div class="title">See Also</div><ul>
+<div class="ulist" id="jupar"><div class="title">See Also</div><ul>
 <li>
 <p>
 <a href="https://github.com/MasterEx/jupar/tree/master/src/jupar">JUPAR source code and demos</a>
@@ -458,8 +466,11 @@ Test it!
 <!-- MAIN_BODY_END -->
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<div id="disqus_thread"></div>
 <script>
+        var disqus_config = function () {
+        this.page.url = 'http://masterex.github.io/archive/2011/12/25/jupar.html';
+        this.page.identifier = 'jupar';
+    };
     (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
 
@@ -469,7 +480,6 @@ Test it!
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 <p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
                 </div>
