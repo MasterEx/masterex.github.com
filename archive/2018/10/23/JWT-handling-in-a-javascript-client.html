@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="description" content="Reflections on JWT" />
+<meta name="keywords" content="JWT, json web tokens, angular athens, innovathens, JWS, JWE" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>JWT handling in a Javascript client</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_jwt_handling_in_a_javascript_client">JWT handling in a Javascript client</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>On <strong>Tuesday 18 of September</strong> my coleague <strong>Christos</strong> and I decided to attend the
+<a href="https://www.meetup.com/en-AU/Angular-Athens/events/254403394/">Angular Athens #3 meeting</a>.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>There were <strong>2</strong> topics presented. An introductory presentation on angular <strong>navigation</strong>
+and <strong>routing</strong>
+and an intermidiate prestantation on <strong>authentication</strong> and <strong>authorization</strong> using
+<strong>JWT</strong>.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>This post is inspired by the second presentation on <strong>JWT</strong>. The specific
+presentation in my opinion was very well presented by <strong>Fanis Prodromou</strong>
+and I really liked it.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>This article is based on something that the presenter said during that
+talk.
+When the speaker was explaining how the <strong>JWT</strong> works, he mentioned that all angular libraries that he knows
+of require the secret key in order to decode the <strong>JWT</strong>.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>He claimed that storing the secret key inside the client
+seems like a bad idea to him and so he justs (<strong>base64</strong>) decodes the <strong>JWT</strong> "manually",
+in order to get the contained information (claims).</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>The particular part is mentioned in <a href="https://youtu.be/xTqa9r5FHl8">this video</a>
+in <a href="https://youtu.be/xTqa9r5FHl8?t=3530">~58:50</a> (in Greek).</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>So, the speaker gave us as a homework assignment to research why the libraries require the
+secret key.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Here I am, having made my research <strong>:-)</strong></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_jwt_works">How JWT works</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>First of all let me quote the abstract of <a href="https://tools.ietf.org/html/rfc7519"><strong>RFC 7519</strong></a>.</p></div>
+<div class="quoteblock" id="JWT-handling-in-a-javascript-client">
+<div class="content">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>JSON Web Token (JWT) is a compact, URL-safe means of representing
+claims to be transferred between two parties.  The claims in a JWT
+are encoded as a JSON object that is used as the payload of a JSON
+Web Signature (JWS) structure or as the plaintext of a JSON Web
+Encryption (JWE) structure, enabling the claims to be digitally
+signed or integrity protected with a Message Authentication Code
+(MAC) and/or encrypted.</p></div>
+</div>
+<div class="attribution">
+<em>RFC 7519</em><br />
+&#8212; IETF
+</div></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>In other words, this means that a <strong>JWT</strong> is the medium of transportation, a <strong>JWS</strong> has the ability
+to validate that the <strong>JWT</strong> is not tampered by one who has not access to
+the signature key and the <strong>JWE</strong> has the ability to not reveal the <strong>JWT</strong> content
+to the parties that have not access to the decryption key.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Let me also quote the paragraph <strong>12</strong> from the RFC that is relevant.</p></div>
+<div class="quoteblock" id="JWT-handling-in-a-javascript-client">
+<div class="title">12.  Privacy Considerations</div>
+<div class="content">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>A JWT may contain privacy-sensitive information.  When this is the
+case, measures MUST be taken to prevent disclosure of this
+information to unintended parties.  One way to achieve this is to use
+an encrypted JWT and authenticate the recipient.  Another way is to
+ensure that JWTs containing unencrypted privacy-sensitive information
+are only transmitted using protocols utilizing encryption that
+support endpoint authentication, such as Transport Layer Security
+(TLS).  Omitting privacy-sensitive information from a JWT is the
+simplest way of minimizing privacy issues.</p></div>
+</div>
+<div class="attribution">
+<em>RFC 7519</em><br />
+&#8212; IETF
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jwt_and_the_browser">JWT and the browser</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>So, what should we do in an angular application which lives in the browser?</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>The <strong>JWT</strong> that <strong>Fanis</strong> used was actually a <strong>JWS</strong> and in that case we should do what
+he did and just <strong>base64</strong> decode it. Of course to be sure that the content is
+trusted and there isn&#8217;t a <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle attack</a>
+taking place, the server should serve the content over <a href="https://en.wikipedia.org/wiki/HTTPS">HTTPS</a>.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>A web application shouldn&#8217;t store the signature or encryption key because
+the key would be exposed to everyone making it useless and actually the client do not need to
+validate the token as it knows that it comes from the trusted server, because of the HTTPS/TLS.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_when_to_use_and_validate_the_jws">When to use and validate the JWS</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>I&#8217;ll oversimplify some things for the sake of brevity
+and because I believe that there is no need for more detail and accuracy
+for the topic that we are discussing.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>In the case of <strong>JWS</strong> the key should be used by the web service/issuer to validate that the tokens that receives
+back from the client are the one that were issued by it originally.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>This may work as an alternative to the traditional sessions. The server however do not
+have the task of maintaining the table of active sessions. It just has to validate the token and
+check the expiration date to see if it is valid.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>In case we are talking about multiple web services that are communicating
+together, all may follow the previous procedure and in practice "share the user session".</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Also, the token may contain (not sensitive) information that is accessed often by the server
+in order to avoid making pricey calls to the db.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Of course the token may contain information that is required by the client too.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>However, storing too many information in the <strong>JWT</strong> introduces a
+bandwidth overhead, as the <strong>JWT</strong> has to be included in <em>all</em> the requests
+made by the client.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_when_to_use_jwe">When to use JWE</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>A <strong>JWE</strong> may contain sensitive information that the server retrieved from the database
+and wants to avoid making the retrieval again in the future,
+in order to reply to a following request made by the client.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>The server of course do not want to share all these private information
+with the client and that is achieved through the encryption.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Enough about all that JW*.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_about_the_javascript_libraries">What about the Javascript libraries?</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>In the past things were simpler. Javascript was living only in the browser.
+Today this is no longer true. Javascript is everywhere and people are building web services in Javasctipt
+all the time with <strong>nodejs</strong>.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>I do not remember what were the libraries mentioned by the speaker and I
+cannot see them clearly in the video, but I guess these libraries were supposed to
+be used by web service authors.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Making a search I was able to find a couple of libraries that do not
+required a secret key in order to decode the <strong>JWS</strong> payload:</p></div>
+<div class="ulist" id="JWT-handling-in-a-javascript-client"><ul>
+<li>
+<p>
+<a href="https://github.com/auth0/angular-JWT">https://github.com/auth0/angular-JWT</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/auth0/JWT-decode">https://github.com/auth0/JWT-decode</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>The second one mentions pretty clearly that it is intented for client use:</p></div>
+<div class="admonitionblock" id="JWT-handling-in-a-javascript-client">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content">This library doesn&#8217;t validate the token, any well formed JWT
+can be decoded. You should validate the token in your server-side logic
+by using something like express-JWT, koa-JWT, Owin Bearer JWT, etc.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_epilogue">Epilogue</h2>
+<div class="sectionbody">
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>The motivation behind my research wasn&#8217;t of course the speakers' request.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>I have used <strong>JWTs</strong> just like that in the past. So, hearing that all
+the known libraries were requiring the key made me wonder if I was doing something
+wrong.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>You see, the fact that all the well known libraries were using the key
+made me consider that this should be the right way.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Also, none from the audiense objected or volunteered to clarify after hearing this. I guess some may knew
+about it but were unsure at the moment or didn&#8217;t want to disrupt
+the presentation.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>Anyway, I was happy
+to validate through my research that the way that the presenter demonstrated (and I use) doesn&#8217;t
+have any flaw.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p>I applaud the work of <a href="https://www.meetup.com/en-AU/Angular-Athens/"><strong>Angular Athens</strong></a> who try to organize events,
+create a network of front-end professionals and host interesting talks.
+All this requires precious time and effort. I also
+enjoyed <strong>Fanis'</strong> presentation.
+It requires very much effort to prepare a nice talk and speaking to
+an audience with many persons that you don&#8217;t know is often very intimidating.</p></div>
+<div class="paragraph" id="JWT-handling-in-a-javascript-client"><p><strong>Thank you for reading!</strong></p></div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+        this.page.identifier = 'JWT-handling-in-a-javascript-client';
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
