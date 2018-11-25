@@ -1,0 +1,430 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="description" content="Tip and tricks for successfully debugging your software" />
+<meta name="keywords" content="debugging, software engineering, programming, programming techniques" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Debugging like a boss</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_debugging_like_a_boss">Debugging like a boss</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This article is about debugging.</p></div>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Debugging is the process of finding and resolving defects or
+problems within a computer program that prevent correct
+operation of computer software or a system.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>I&#8217;ll focus on the first part of the above definition, <strong>finding a bug</strong>.
+Most methods or tips discussed may be considered simple or common but my experience
+had taught me that many developers, especially the more
+inexperienced ones, may struggle when facing such situations.</p></div>
+<div class="paragraph"><p>I&#8217;ll try to present you the most common ones first which
+are the ones that you will most probably use more often.
+The techniques are not bounded to a specific programming language or technology but occasionally
+I may refer to specific examples.</p></div>
+<div class="paragraph"><p>So, let&#8217;s start!</p></div>
+<div class="sect2">
+<h3 id="_trust_no_one">Trust no one</h3>
+<div class="paragraph"><p>Yes, I know&#8230; but it has to be said.</p></div>
+<div class="paragraph"><p>To do proper debugging you have to <em>doubt everything</em>!</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+You have to doubt your code (written by you/your colleagues/whoever)
+</p>
+</li>
+<li>
+<p>
+You have to doubt your logs
+</p>
+</li>
+<li>
+<p>
+You have to doubt the libraries that you have used
+</p>
+</li>
+<li>
+<p>
+You have to doubt the language implementation that you are using
+</p>
+</li>
+<li>
+<p>
+You have to doubt the OS that you are using
+</p>
+</li>
+<li>
+<p>
+You have to doubt the whole infrastructure and external dependencies
+</p>
+</li>
+<li>
+<p>
+And finally you have to doubt <strong>YOUR CODE</strong>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>99.99999%</strong> (see? 5 nines!) OF THE TIME THE BUG IS IN "YOUR" CODE!</p></div>
+<div class="paragraph"><p>Now, having said that we may proceed :-)</p></div>
+</div>
+<div class="sect2">
+<h3 id="_listen_to_your_users_ask_questions">Listen to your users, ask questions</h3>
+<div class="paragraph"><p>Many times your production system users will find the bug first. Other times
+the manual testers will find the bug while testing. In any case someone else will
+find that nasty bug before you do.</p></div>
+<div class="paragraph"><p>Asking the right questions will save you much time and frustration. The most favorable
+outcome is to establish specific reproduction steps.</p></div>
+<div class="paragraph"><p>Then the problem could be crystal clear or at worst you will know where to start and continue
+your search from there.</p></div>
+<div class="paragraph"><p>However, if establishing the reproduction steps isn&#8217;t easy then there are
+still some questions that may worth asking:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+When the incident took place. (This will help you especially in checking the logs)
+</p>
+</li>
+<li>
+<p>
+If it is about an existing application that was
+ functioning without issues ask the user if she had
+ performed any unusual action.
+</p>
+</li>
+<li>
+<p>
+Ask the user to perform the same actions and watch
+ her while doing so.
+</p>
+</li>
+<li>
+<p>
+Ask if this is an issue that has happened again
+ before or if it is the first time. If possible
+ establish how often the issue appears.
+</p>
+</li>
+<li>
+<p>
+If you cannot establish the reproduction steps
+ then ask the questions required to at least
+ exclude some scenarios that definetily won&#8217;t lead to the bug.
+</p>
+</li>
+<li>
+<p>
+If the issue was introduced after a new version
+ check a diff between your releases. If you are using <strong>git</strong>, <a href="https://git-scm.com/docs/git-diff">git diff</a> is
+ especially useful for doing so (other <a href="https://en.wikipedia.org/wiki/Version_control">VCS</a>s have similar functionality).
+ Also tagging your releases is extremely handy in that case (see <a href="https://git-scm.com/docs/git-tag">git tag</a>).
+ If not, check if something else in the system has changed.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>However, do not forget, <strong>TRUST NO ONE</strong>! The users may unintentionally report
+something wrong.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_check_the_logs">Check the logs</h3>
+<div class="paragraph"><p>If you are reading this and you have not logs then you should have!
+Go now and add logging to your application! However, don&#8217;t overdo it!
+Try to keep the essential logging only!</p></div>
+<div class="paragraph"><p>So, checking the logs may give the exact information about the error that
+happened. An error status or exception stack trace may lead you at once
+to the faulty line of code and give you a very good understanding of the problem.
+This most of the times should be enough to get
+you going.</p></div>
+<div class="paragraph"><p>In case there is an error that doesn&#8217;t make sense, additional logging
+before or even after the incident may give you a better understanding of
+why it happened. For example, a race condition is obvious if you see an unexpected
+order of log messages.</p></div>
+<div class="paragraph"><p>Finally, even if there is not an entry in the logs that points to the problem,
+you may verify the reproduction
+steps acquired by the users or deduct them yourself and that is a pretty good
+start.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">Usually there are also other logs except that of your application worth checking.
+Get familiar with your infrastructure and don&#8217;t forget to gather every bit
+of useful information while you can.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fire_up_the_debugger">Fire up the debugger</h3>
+<div class="paragraph"><p>I know many people who aren&#8217;t fan of using the debugger or even considering
+it lame. However, I thing the debugger is the most handy tool in order to
+understand and validate the flow of the program or inspect that the state is the expected
+in all the given points in time.</p></div>
+<div class="paragraph"><p>Of course, it is not top in my list because it would probably require to
+have establish <em>somewhat</em> clear reproduction steps in order to use it and
+I think is more time consuming - especially for a larger application - to
+use compare to the previous methodologies.</p></div>
+<div class="paragraph"><p>However, definetily invest some time at least to learn the basics of using
+the debugger. It pays off.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_review_that_code">Review that code</h3>
+<div class="paragraph"><p>If you don&#8217;t have any other hint about what is the problem then a fast
+approach is to start reading the code <em>if you are familiar with the code-base</em>.</p></div>
+<div class="paragraph"><p>The <strong><a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber dug technique</a></strong> is very useful in that case. Try to verify the
+correctness of your code while reading it. Pairing with a colleague instead of
+a <strong>rubber duck</strong> may be even faster.</p></div>
+<div class="paragraph"><p>If the bug isn&#8217;t obvious until now, things got more tricky.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_add_extra_logging">Add extra logging</h3>
+<div class="paragraph"><p>In order to trace the root of the evil you may add extra logging in places
+where you suspect to be the culprit.</p></div>
+<div class="paragraph"><p>I know many people who prefer to add extra traces instead of using the debugger.
+I actually disapprove that usage.</p></div>
+<div class="paragraph"><p>Add the extra logs and send your program for testing (if your are into that)
+or release it in the production in case that you absolutely cannot reproduce
+the problem.</p></div>
+<div class="paragraph"><p>Just make sure to add all the essential logging, so the next time the bug
+happens will be the last.</p></div>
+<div class="paragraph"><p>I faced once a bug in a process that was consuming RabbitMQ messages.
+The exact system was running in dozen different similar installations but it was
+one particular that was demonstrating strange behavior. My colleagues and I couldn&#8217;t
+figure out why this was happening.</p></div>
+<div class="paragraph"><p>Adding some extra logs just for this case showed us that there were two
+antagonizing instances of the consumer process that were running where
+conventionally should be only one.</p></div>
+<div class="paragraph"><p>The fault in that case has happened because at some point there was
+an undocumented manual intervention in the init script that was
+starting this process.</p></div>
+<div class="paragraph"><p>This was a very special kind of bug that couldn&#8217;t be reproduced in our development or
+testing environment.</p></div>
+<div class="paragraph"><p>The point is if you cannot reproduce the bug do not get despair. Add extra logging
+wherever you think will help you. Fill free to add unnecessary logging, you can always - and
+probably should - remove it later. Don&#8217;t overdo it though, extra logging adds
+a tiny overhead that may
+<a href="https://stackoverflow.com/questions/48780081/inserting-system-out-println-calls-affects-race-conditions-how-to-debug">spawn new nightmares to a badly designed piece of software</a>&#8230;</p></div>
+<div class="paragraph"><p>Also, there are some cases where working with the debugger may be bothersome.</p></div>
+<div class="paragraph"><p>There are two case that come into my mind.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Trying to find slow code. Running in debugger often is slow. To properly benchmark
+your code a fast way is to add many time tracking traces in the code (i.e. <a href="https://google.github.io/guava/releases/18.0/api/docs/com/google/common/base/Stopwatch.html">Stopwatch</a>)
+and work your way to the source of the problem. In some cases you may achieve
+the same result with a profiler but I find usually easier and faster to
+place some time tracking code into specific places.
+</p>
+</li>
+<li>
+<p>
+Working with many threads. Usually working with the debugger is OK but
+there are some cases that properly inspecting the flow of the program etc.
+becomes challenging.
+</p>
+</li>
+</ol></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">All production logging should be written consistently in a file.
+Permanent messages sent to standard output should be avoided except if they
+should be displayed to the user. However, you may add
+temporary messages to the standard output in the dev/test environment
+during debugging but do not forget to remove them later!</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_moar_logs">Moar logs</h3>
+<div class="paragraph"><p>If your system communicates with other systems or services, many times the answer
+could be to a foreign log file.</p></div>
+<div class="paragraph"><p>For example if your application talks with the database and it is slow
+checking your database for table locks or slow queries may give you
+a valuable hint for you to continue your search.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">Sometimes you may need to explicitly enable logging for such systems and try
+to reproduce the problem or wait until the problem happens again.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_real_data">Get real data</h3>
+<div class="paragraph"><p>Often, the demon hides in the data. If a bug has been spotted and is
+reproducible in a foreign system but not in the development/testing environment
+then try to replicate it with the specific data.</p></div>
+<div class="paragraph"><p>This may be as easy as getting an SQL dump from a remote machine and import
+it locally or very tricky i.e. the database is way too big or there
+are essential information you are not permitted to get locally.</p></div>
+<div class="paragraph"><p>Sometimes, if it is tricky may be it is reasonable to create a custom
+mechanism for making this process easier. It will save you time in the
+future.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_it_8217_s_never_too_late_to_write_a_test">It&#8217;s never too late to write a test</h3>
+<div class="paragraph"><p>This point is not about testing as a precaution to avoid bugs in the first place.</p></div>
+<div class="paragraph"><p>What I am suggesting is to write some kind of test in order to reproduce the bug.</p></div>
+<div class="paragraph"><p>There are three relevant scenarios that this is very useful.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+The specific part that the bug is happening is too deep in the program flaw and/or
+requires many actions by you to reproduce it locally. In that case writing a
+test in any form, from a separate <strong>main()</strong> to a well written unit test, will probably
+speed up the whole process.
+</p>
+</li>
+<li>
+<p>
+When the bug happens <strong>randomly</strong>. This could be a race condition bug that
+happens only if the machine is under stress or a bug that is influenced by other
+factors.
+Once, I had faced a strange bug that was causing the whole <strong>JVM</strong> to crash
+and it was relevant to the graphics acceleration in the specific machines.
+I wrote a simple script that was repeating some mouse clicks with <a href="https://github.com/jordansissel/xdotool">xdotool</a>
+and I found that the error was happening randomly once every some dozen actions. The
+solution was simply to disable the hardware acceleration by passing the
+<strong>-Dprism.order=sw</strong> to the <strong>JVM</strong>.
+</p>
+</li>
+<li>
+<p>
+Production systems may have other load than the one in the development
+or testing environment. This may affect the presence of a bug. Writing
+simple stress tests, custom or by using various tools such as <strong>JMeter</strong>, may
+make the bug come to the surface sooner.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>As an added bonus writing such a test makes the validation of the fixed bug
+piece of cake.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_trust_no_one_2">Trust no one</h3>
+<div class="paragraph"><p>I cannot stress that enough! You have to doubt yourself, your code and everything
+else in order to effectively hunt bugs.</p></div>
+<div class="paragraph"><p>There will be some rare times that the bug is not in your code. It may be a rare
+bug in the language or <strong>JVM</strong>, in the browser or even in the desktop environment
+that you are using. It may also be a different configuration in one of that
+components that triggers the different behavior.</p></div>
+<div class="paragraph"><p>In the first case start by searching the interwebz for the problem. There
+may be a reported issue or a stack overflow question that describes your issue
+and if you are lucky enough it would be accompanied by a solution or a work around.</p></div>
+<div class="paragraph"><p>Checking the change-logs of your dependencies and/or trying out different versions
+(usually newer versions but you never know!) is something worth trying. Desperate times
+call for desperate measures after all!</p></div>
+<div class="paragraph"><p>In case of different configurations mind that the same software may have different default
+configuration in different operating systems. In Linux <strong><a href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a></strong> is pretty handy
+for comparing configuration files. Also, if the files are under git
+<strong><a href="https://git-scm.com/docs/git-status">git status</a></strong> and <strong><a href="https://git-scm.com/docs/git-log">git log</a></strong> are your friend.</p></div>
+<div class="paragraph"><p>Finally, make sure that your application was built correctly and the file permissions are
+the expected. Check the dependencies too. Having a standardized build procedure,
+being a simple bash script or a CI/CD system would save you
+from much frustration and I find it pretty time saving in the long run.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I have introduced many methods to find a bug ordered by which I think you
+should follow first.</p></div>
+<div class="paragraph"><p>Of course one has to be methodological and pick the most appropriate
+first.</p></div>
+<div class="paragraph"><p>In any case, if the code is our own it is very important to actually <strong>own</strong> it.
+I mean to know it pretty good so when facing a new problem be able to jump to
+the appropriate place in code and also have a pretty good opinion about
+what parts are likely to produce problems.</p></div>
+<div class="paragraph"><p>I hope you found my suggestions useful. I see many people struggling to
+find a bug and usually without clear reproduction steps they stuck.
+In such cases one of the above tips might get them going.</p></div>
+<div class="paragraph"><p>Do you have any other methodology that you find yourself often applying? Do
+you think that my ordering could be improved? Have a specific real life example
+that demonstrates debugging in action? Please feel free to share a comment,
+I would love to read your thoughts!</p></div>
+<div class="paragraph"><p>Cheers and have a successful debugging!</p></div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
