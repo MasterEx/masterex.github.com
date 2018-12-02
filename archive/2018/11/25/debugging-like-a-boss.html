@@ -206,6 +206,22 @@ I think is more time consuming - especially for a larger application - to
 use compare to the previous methodologies.</p></div>
 <div class="paragraph"><p>However, definetily invest some time at least to learn the basics of using
 the debugger. It pays off.</p></div>
+<div class="sect3">
+<h4 id="_debugging_in_the_browser">Debugging in the browser</h4>
+<div class="paragraph"><p>I have decided to add a separate section specific to Javascript because I
+have observed that many times people are under-utilizing their
+browser debugging capabilities.</p></div>
+<div class="paragraph"><p>Modern browsers have some kind of developer tools built-in, often invoked by pressing
+<strong>F12</strong>, that include a debugger.</p></div>
+<div class="paragraph"><p>You may add break points in your Javascript code and inspect the state of
+your program at any point.</p></div>
+<div class="paragraph"><p>Also, you may inspect other insightful things such as the raw headers of your
+requests and responses, the status codes returned, the body of the responses,
+Javascript errors etc.</p></div>
+<div class="paragraph"><p>Again as before, master these tools. Writing code for either side of the
+wire, having a good command of client side debugging techniques is extremely
+useful.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_review_that_code">Review that code</h3>
@@ -346,6 +362,51 @@ make the bug come to the surface sooner.
 piece of cake.</p></div>
 </div>
 <div class="sect2">
+<h3 id="_write_an_mcve">Write an MCVE</h3>
+<div class="paragraph"><p>An <a href="https://stackoverflow.com/help/mcve">MCVE</a> is a Minimal, Complete, and Verifiable example.</p></div>
+<div class="paragraph"><p>In forums or answer/question sites like Stack Overflow an <strong>MCVE</strong> is often required
+by the people interested to answer the question. This is because it demonstrates
+clearly a very specific problem and is easily reproducible.</p></div>
+<div class="paragraph"><p>In case you are facing a bug in a large and complex code-base where even
+yourself are not sure where exactly the bug lives then you may create
+a separate program with just the essentials parts.</p></div>
+<div class="paragraph"><p>This is a bit similar to the previous section, but the point of this process
+is mostly to make you understand better the nature of the problem, by actually
+removing unrelated parts that could possibly confuse you.</p></div>
+<div class="paragraph"><p>Then by having the minimum required code you may try solutions until you
+find the right one. Then integrate back the changes in your more complex code-base.</p></div>
+<div class="paragraph"><p>Be sure to document well the approaches you are trying preferably by using
+the <strong>VCS</strong> of your choice to avoid repeating yourself. You may think this process as
+a more simplified variation of <a href="https://en.wikipedia.org/wiki/Genetic_programming">genetic programming</a>.</p></div>
+<div class="paragraph"><p>As an added bonus you&#8217;ll have in your hands an <strong>MCVE</strong> that likely won&#8217;t contain
+any intellectual property or private information, which you may share in
+forums, <a href="https://stackoverflow.com/">SO</a>, etc. in case your are stuck.</p></div>
+<div class="paragraph"><p><strong>Don&#8217;t be afraid to ask strangers publicly, but do it as a last resort after
+you have exhausted all the other means in your arsenal. Be kind, be thankful,
+provide the right amount of details in your original question - no more/no less,
+response to other people in a timely manner and be ready to never receive a
+response back.</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">In case you are writing client code and there is a problem in the communication
+between the client and the server try to repeat the request by using an external
+tool such as <strong><a href="https://www.getpostman.com/">Postman</a></strong>,
+<strong><a href="https://www.soapui.org/">SoapUI</a></strong>, <strong><a href="https://curl.haxx.se/">curl</a></strong> or a similar tool.
+In case you are consuming messages from a message queue and you face a problem,
+use an external tool to inspect the queue such as <strong>rabbitmqadmin</strong> or <strong>rabbitmqctl</strong> for
+<strong><a href="https://www.rabbitmq.com/management-cli.html">RabbitMQ</a></strong>. In general when there
+is communication between yours and another piece of software try to validate
+with an external <em>reliable</em> tool that you send and receive the expected
+data. There are times where the bug lies in ill-defined specs or in
+obsolete documentation etc. This mentioned process is actually a more generic <strong>MCVE</strong>,
+not bounded to your specific language, framework or libraries.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_trust_no_one_2">Trust no one</h3>
 <div class="paragraph"><p>I cannot stress that enough! You have to doubt yourself, your code and everything
 else in order to effectively hunt bugs.</p></div>
@@ -368,6 +429,25 @@ the expected. Check the dependencies too. Having a standardized build procedure,
 being a simple bash script or a CI/CD system would save you
 from much frustration and I find it pretty time saving in the long run.</p></div>
 </div>
+<div class="sect2">
+<h3 id="_honorary_mentions">Honorary mentions</h3>
+<div class="paragraph"><p>There are various debugging tools that may be worth knowing and using.</p></div>
+<div class="paragraph"><p>Some such tools are mentioned in <strong>Write an MCVE</strong> section before.</p></div>
+<div class="paragraph"><p>There are also other cases of communication between systems such as when
+your application communicates with a database. If there is a problem there
+try to run the query manually. Mind that when using tools such as
+<a href="https://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a>
+the underlying SQL may not be the one that you expect. Log the query and repeat
+it manually to validate the expected results. Many times the bug may be that
+there are unexpected entries in the database.</p></div>
+<div class="paragraph"><p>Also, there are tools such as various kind of <a href="https://en.wikipedia.org/wiki/Proxy_server">proxies</a>
+ that may let you intercept the communication
+and validate that the requests and responses are the expected. Some tools may
+let you interfere and change the original request or response for testing or debugging purposes.</p></div>
+<div class="paragraph"><p>Some examples include the <strong><a href="https://github.com/mysql/mysql-proxy">mysql-proxy</a></strong> for <strong>MySQL</strong> and
+the <a href="https://www.telerik.com/fiddler">Fiddler</a> for HTTP communication.</p></div>
+<div class="paragraph"><p>Per case and ecosystem <strong>being aware of</strong> the available tools may be a game changer :-)</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -389,6 +469,15 @@ you think that my ordering could be improved? Have a specific real life example
 that demonstrates debugging in action? Please feel free to share a comment,
 I would love to read your thoughts!</p></div>
 <div class="paragraph"><p>Cheers and have a successful debugging!</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/caution.png" alt="Caution" />
+</td>
+<td class="content">Update 2018-12-02: Added the <strong>Write an MCVE</strong> and <strong>Honorary mentions</strong> section.
+Added the sub-section <strong>Debugging in the browser</strong>.</td>
+</tr></table>
+</div>
 </div>
 </div>
 <!-- MAIN_BODY_END -->
