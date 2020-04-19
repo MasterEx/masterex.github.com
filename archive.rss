@@ -8,9 +8,79 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
-        <title>Debugging like a boss</title>
+        <title>Collaborative distance in git contributors...</title>
+        <link>https://masterex.github.io/archive/2020/04/19/erdos-bacon-git.html</link>
+        <description>Collaborative distance in git contributors...</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_collaborative_distance_in_git_contributors_8230">Collaborative distance in git contributors&#8230;</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Some time ago I was checking my LinkedIn connection recommendations and I realized once again that the word is small. There are people who we may have never talked to but as we change jobs or projects we may write to the same codebases they used to contribute to or vice versa.</p></div>
+<div class="paragraph"><p>And of course I am not talking about open source contributors who of course one way or the other we could argue that have contributed to our codebase by providing their open source code. I am talking about colleagues who are working on something else now or they have moved to a different job or people who contributed as external consultants etc.</p></div>
+<div class="paragraph"><p><strong>The world is definitely small</strong>.</p></div>
+<div class="paragraph"><p>This made me thinking about the <a href="https://en.wikipedia.org/wiki/Erdős_number">Erdős number</a>.</p></div>
+<div class="sect2">
+<h3 id="_erdős_number">Erdős number</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>The Erdős number (Hungarian: [ˈɛrdøːʃ]) describes the "collaborative distance" between mathematician Paul Erdős and another person, as measured by authorship of mathematical papers. The same principle has been applied in other fields where a particular individual has collaborated with a large and broad number of peers.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>There are <a href="https://en.wikipedia.org/wiki/Erd%C5%91s_number#Variations">variations</a> applied to other fields, one of the most known is the <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">Bacon number</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_six_degrees_of_separation">Six degrees of separation</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Six degrees of separation is the idea that all people are six, or fewer, social connections away from each other. Also known as the 6 Handshakes rule.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>In a sense the Six degrees of separation idea is similar to the <strong>Erdős</strong> number but <strong>Erdős</strong> number is actually stricter. A person does not have only to be acquainted to <strong>Paul</strong> <strong>Erdős</strong> but in action to be a scientist who has co-authored a paper. Even this definition is not strict enough.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_collaborative_distance">Code Collaborative Distance</h3>
+<div class="paragraph"><p>Going back to what made me think of all that, I made the thought that possibly most of the software engineers in a region or in a specific field are connected between them according to their code contributions.</p></div>
+<div class="paragraph"><p>When saying code contributions consider mainly git commits which is the most common. Of course this could be any other <a href="https://en.wikipedia.org/wiki/Version_control_system">VCS</a> or equivalent.</p></div>
+<div class="paragraph"><p>Of course the number of "hops" between <strong>2</strong> persons to be connected may vary and be big but I guess that in most cases if we could query all the private and public VCS&#8217;s then for specific geographical region and/or field  and/or business domain then the number would be usually pretty small. In that case the <strong>Six degrees of separation</strong> could actually stand true.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_collaborative_distance_in_open_source">Collaborative Distance in Open Source</h3>
+<div class="paragraph"><p>As you understand searching the contributors inside private VCS&#8217;s of companies to find the inter-connections between different contributors is impossible.</p></div>
+<div class="paragraph"><p>However, how easy would this be for open source software? Wouldn&#8217;t be great to find your distance against giants such as <a href="https://en.wikipedia.org/wiki/Linus_Torvalds">Linus Torvalds</a>?</p></div>
+<div class="paragraph"><p>It turns out that this is not as easy as a pie too.</p></div>
+<div class="paragraph"><p>Undoubtedly, Git is the most popular VCS today and some of the most successful hosting services are built around it. To name a few some of them are <strong>GitHub</strong>, <strong>GitLab</strong> and <strong>Bitbucket</strong>. But this is not everything. Organizations are hosting their own git instances and there are a few other names of hosting services out there. Also, in some cases people are using other VCS and not the king Git.</p></div>
+<div class="paragraph"><p>To make the problem even harder there is not a common API one could use to query each one of the hosting services. Also, the APIs are usually rate limited and probably finding connection between 2 persons results to a nonlinear addition of requests after each hop. This would cause the rate limit to be a blocking issue for many searches.</p></div>
+<div class="paragraph"><p>Another potential problem is that people may have used multiple email addresses in the code they have contributed to different code repositories.</p></div>
+<div class="paragraph"><p>Finally, people may have contributions to repositories they don&#8217;t own.</p></div>
+<div class="paragraph"><p>All the above make finding the connections between <strong>2</strong> persons difficult even in one specific public hosting provider such as <strong>GitHub</strong>.</p></div>
+<div class="paragraph"><p>I certainly after putting some thought in it I won&#8217;t attempt trying to write a program about it! If someone builds something drop me a line in the comments! :-)</p></div>
+</div>
+<div class="sect2">
+<h3 id="_center_of_the_open_source_software">Center of the Open Source software</h3>
+<div class="paragraph"><p>The magic of the <strong>Erdős</strong> or Bacon numbers is that they measure the distance away from specific points and people may compare their values based on that.</p></div>
+<div class="paragraph"><p>This makes me wonder, who would be the <strong>Paul</strong> <strong>Erdős</strong> or <strong>Kevin Bacon</strong> of open source software?</p></div>
+<div class="paragraph"><p>Of course, this should be the most <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Center_of_the_Hollywood_Universe">"linkable"</a> open source contributor. This person may change as the time passes. To be a good center this person should have contributions to different projects with many contributors each. This makes me think that there is a possibility this person won&#8217;t be any expected recognizable figure.</p></div>
+<div class="paragraph"><p>What do you think? Who would you like to be the <strong>Paul</strong> <strong>Erdős</strong> of open source software? Leave your comment bellow!</p></div>
+<div class="paragraph"><p>Thank you for reading!
+Take care!</p></div>
+</div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Sun, 19 Apr 2020 15:45:45 +0300</pubDate>
+        <guid>https://masterex.github.io/archive/2020/04/19/erdos-bacon-git.html</guid>
+    </item>
+    <item>
+        <title>Debugging like a boss</title>
         <link>https://masterex.github.io/archive/2018/11/25/debugging-like-a-boss.html</link>
-        <description>Debugging like a boss</description>
+        <description>Debugging like a boss</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -198,7 +268,7 @@ useful.</p></div>
 <h3 id="_review_that_code">Review that code</h3>
 <div class="paragraph"><p>If you don&#8217;t have any other hint about what is the problem then a fast
 approach is to start reading the code <em>if you are familiar with the code-base</em>.</p></div>
-<div class="paragraph"><p>The <strong><a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber dug technique</a></strong> is very useful in that case. Try to verify the
+<div class="paragraph"><p>The <strong><a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber duck technique</a></strong> is very useful in that case. Try to verify the
 correctness of your code while reading it. Pairing with a colleague instead of
 a <strong>rubber duck</strong> may be even faster.</p></div>
 <div class="paragraph"><p>If the bug isn&#8217;t obvious until now, things got more tricky.</p></div>
@@ -458,9 +528,9 @@ Added the sub-section <strong>Debugging in the browser</strong>.</td>
         <guid>https://masterex.github.io/archive/2018/11/25/debugging-like-a-boss.html</guid>
     </item>
     <item>
-        <title>JWT handling in a Javascript client</title>
+        <title>JWT handling in a Javascript client</title>
         <link>https://masterex.github.io/archive/2018/10/23/JWT-handling-in-a-javascript-client.html</link>
-        <description>JWT handling in a Javascript client</description>
+        <description>JWT handling in a Javascript client</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -643,9 +713,9 @@ an audience with many persons that you don&#8217;t know is often very intimidati
         <guid>https://masterex.github.io/archive/2018/10/23/JWT-handling-in-a-javascript-client.html</guid>
     </item>
     <item>
-        <title>Choosing a programming language</title>
+        <title>Choosing a programming language</title>
         <link>https://masterex.github.io/archive/2017/01/18/fosscomm2014-thoughts-on-programming-languages.html</link>
-        <description>Choosing a programming language</description>
+        <description>Choosing a programming language</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -763,7 +833,7 @@ using the types in a not desired way.</p></div>
 <div class="paragraph" id="fosscomm2014-thoughts-on-programming-languages"><p><strong>Java</strong> is such a language. Here is an example.</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -780,7 +850,7 @@ curve of such a language quicker as the syntax tends to be simpler.</p></div>
 <div class="paragraph" id="fosscomm2014-thoughts-on-programming-languages"><p>Such a language is <strong>Javascript</strong>. Here is an example:</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -831,7 +901,7 @@ developer to be more expressive.</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
 <div class="title">Lua</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -839,7 +909,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
 <div class="title">C</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -947,9 +1017,9 @@ the subject.</p></div>
         <guid>https://masterex.github.io/archive/2017/01/18/fosscomm2014-thoughts-on-programming-languages.html</guid>
     </item>
     <item>
-        <title>Popcorn time VS the torrent community</title>
+        <title>Popcorn time VS the torrent community</title>
         <link>https://masterex.github.io/archive/2014/03/31/popcorn-time-maybe-harmful.html</link>
-        <description>Popcorn time VS the torrent community</description>
+        <description>Popcorn time VS the torrent community</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1077,9 +1147,9 @@ Fill free if you have any comments on my thoughts to leave them below!</p></div>
         <guid>https://masterex.github.io/archive/2014/03/31/popcorn-time-maybe-harmful.html</guid>
     </item>
     <item>
-        <title>Cryptolexo, playing with string arrays</title>
+        <title>Cryptolexo, playing with string arrays</title>
         <link>https://masterex.github.io/archive/2014/01/31/cryptolexo.html</link>
-        <description>Cryptolexo, playing with string arrays</description>
+        <description>Cryptolexo, playing with string arrays</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1179,7 +1249,7 @@ describe my approach.</p></div>
 <h3 id="_add_word_to_row_algorithm">Add Word to Row Algorithm</h3>
 <div class="listingblock">
 <a id="cryptolexo"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1247,9 +1317,9 @@ licensed under <strong>GPLv3</strong>.</p></div>
         <guid>https://masterex.github.io/archive/2014/01/31/cryptolexo.html</guid>
     </item>
     <item>
-        <title>The pitfalls of learning by example</title>
+        <title>The pitfalls of learning by example</title>
         <link>https://masterex.github.io/archive/2013/04/15/pycrypto-hash-learning-by-example.html</link>
-        <description>The pitfalls of learning by example</description>
+        <description>The pitfalls of learning by example</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1280,7 +1350,7 @@ data chunks to check if any transmission errors took place.</p></div>
 This got me to the library&#8217;s pydoc and I show this example <a href="https://www.dlitz.net/software/pycrypto/api/current/toc-Crypto.Hash.SHA-module.html">here</a></p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1293,7 +1363,7 @@ http://www.gnu.org/software/src-highlite -->
 in my program:</p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1323,7 +1393,7 @@ comments.</p></div>
 <div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, in my case I should have done the following:</p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1345,9 +1415,9 @@ to <strong>read the f*cking manual</strong>.</p></div>
         <guid>https://masterex.github.io/archive/2013/04/15/pycrypto-hash-learning-by-example.html</guid>
     </item>
     <item>
-        <title>BeatKeeper: Adding a visual tick</title>
+        <title>BeatKeeper: Adding a visual tick</title>
         <link>https://masterex.github.io/archive/2013/03/11/beatkeeper-visual-tick.html</link>
-        <description>BeatKeeper: Adding a visual tick</description>
+        <description>BeatKeeper: Adding a visual tick</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1365,7 +1435,7 @@ group of ticks and gaps(silence).</p></div>
 <div class="paragraph" id="beatkeeper-visual-tick"><p>Here is the updated code:</p></div>
 <div class="listingblock">
 <a id="beatkeeper-visual-tick"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1453,9 +1523,9 @@ implements another one, more eye candy, feel free to leave a comment about it.</
         <guid>https://masterex.github.io/archive/2013/03/11/beatkeeper-visual-tick.html</guid>
     </item>
     <item>
-        <title>Wrong system time is bad for your pc health</title>
+        <title>Wrong system time is bad for your pc health</title>
         <link>https://masterex.github.io/archive/2013/01/17/clock-related-security-concerns.html</link>
-        <description>Wrong system time is bad for your pc health</description>
+        <description>Wrong system time is bad for your pc health</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1506,9 +1576,9 @@ and security threats.</p></div>
         <guid>https://masterex.github.io/archive/2013/01/17/clock-related-security-concerns.html</guid>
     </item>
     <item>
-        <title>AsciiBlog is Evolving</title>
+        <title>AsciiBlog is Evolving</title>
         <link>https://masterex.github.io/archive/2013/01/16/asciiblog-is-evolving.html</link>
-        <description>AsciiBlog is Evolving</description>
+        <description>AsciiBlog is Evolving</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1546,7 +1616,7 @@ Install it in /usr/bin or something like that
 <div class="paragraph" id="asciiblog-is-evolving"><p>Command set resembles the git one. I&#8217;ll list it here:</p></div>
 <div class="listingblock">
 <a id="asciiblog-is-evolving"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1604,9 +1674,9 @@ backed up and for reference.a</p></div>
         <guid>https://masterex.github.io/archive/2013/01/16/asciiblog-is-evolving.html</guid>
     </item>
     <item>
-        <title>Monimix: A picture is worth a thousand words</title>
+        <title>Monimix: A picture is worth a thousand words</title>
         <link>https://masterex.github.io/archive/2012/11/08/monimix-combination-of-monochrome-images.html</link>
-        <description>Monimix: A picture is worth a thousand words</description>
+        <description>Monimix: A picture is worth a thousand words</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1853,9 +1923,9 @@ leave a comment below.</p></div>
         <guid>https://masterex.github.io/archive/2012/11/08/monimix-combination-of-monochrome-images.html</guid>
     </item>
     <item>
-        <title>A deep look into PHPShadow 3.2</title>
+        <title>A deep look into PHPShadow 3.2</title>
         <link>https://masterex.github.io/archive/2012/10/10/phpshadow-3.2.0-review.html</link>
-        <description>A deep look into PHPShadow 3.2</description>
+        <description>A deep look into PHPShadow 3.2</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -1901,7 +1971,7 @@ in order to execute the encrypted file.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
 <div class="title">Original Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1909,7 +1979,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
 <div class="title">Encrypted Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1966,7 +2036,7 @@ Let me quote them and explain some of them.</p></div>
 This looks like this:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1987,7 +2057,7 @@ http://www.gnu.org/software/src-highlite -->
 PHP&#8217;s <span class="green">eval()</span> method. If we decode it, it looks like this:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2170,7 +2240,7 @@ available PHP functions.</p></div>
 <div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is my magic code:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2229,7 +2299,7 @@ could try to implement another encryption mechanism on top of PHPShadow.</p></di
 are pretty naive but they serve our purpose really nicely.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2253,7 +2323,7 @@ http://www.gnu.org/software/src-highlite -->
 and the private for the decryption.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2285,7 +2355,7 @@ was a "Hello World" one and the ciphertext was the above:</p></div>
 is our precious decoder</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2358,7 +2428,7 @@ numbers for the cipher-text.</p></div>
 <div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is an example:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2455,9 +2525,9 @@ a previous PHPShadow version to the latest would be nice :)
         <guid>https://masterex.github.io/archive/2012/10/10/phpshadow-3.2.0-review.html</guid>
     </item>
     <item>
-        <title>Android: Crafting a Metronome with Audio Synthesis</title>
+        <title>Android: Crafting a Metronome with Audio Synthesis</title>
         <link>https://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html</link>
-        <description>Android: Crafting a Metronome with Audio Synthesis</description>
+        <description>Android: Crafting a Metronome with Audio Synthesis</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -2504,7 +2574,7 @@ to implement a metronome with that.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioGenerator</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2605,7 +2675,7 @@ with the <span class="green">writeSound()</span> method.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">Metronome</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2705,7 +2775,7 @@ song <strong>Oh, Susanna</strong>.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2811,7 +2881,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2968,9 +3038,9 @@ be wrong here or there.</p></div>
         <guid>https://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html</guid>
     </item>
     <item>
-        <title>JUPAR: Updating Java desktop applications made easy!</title>
+        <title>JUPAR: Updating Java desktop applications made easy!</title>
         <link>https://masterex.github.io/archive/2011/12/25/jupar.html</link>
-        <description>JUPAR: Updating Java desktop applications made easy!</description>
+        <description>JUPAR: Updating Java desktop applications made easy!</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -3050,7 +3120,7 @@ and the xml files that we should create!</p></div>
 <div class="paragraph" id="jupar"><p>Here is the relevant code:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3147,7 +3217,7 @@ such as 1.0 , 1.1 etc and release is an integer starting from 1 and counting.</p
 <div class="paragraph" id="jupar"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3174,7 +3244,7 @@ notify the user for the new version and don&#8217;t perform an automatic update.
 the needed files. Here how <span class="red">files.xml</span> looks like:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3192,7 +3262,7 @@ http://www.gnu.org/software/src-highlite -->
 This is the last xml file and looks like this:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3246,7 +3316,7 @@ path as an argument and let&#8217;s up to the developer how to handle this.</p><
 <div class="paragraph" id="jupar"><p>You can try to find the executables path with a command like:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3264,7 +3334,7 @@ doesn&#8217;t works for JVMs previous to 1.5.</p></div>
 <div class="paragraph" id="jupar"><p>Use a full path to set the temporary directory:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3278,7 +3348,7 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <div class="paragraph" id="jupar"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3300,7 +3370,7 @@ to provide an update method that takes the executable&#8217;s full path as an ar
 <div class="paragraph" id="jupar"><p>So we only need to have something like that:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3401,9 +3471,9 @@ Test it!
         <guid>https://masterex.github.io/archive/2011/12/25/jupar.html</guid>
     </item>
     <item>
-        <title>Some retro technology! ZX Spectrum</title>
+        <title>Some retro technology! ZX Spectrum</title>
         <link>https://masterex.github.io/archive/2011/11/20/spectrum-zx.html</link>
-        <description>Some retro technology! ZX Spectrum</description>
+        <description>Some retro technology! ZX Spectrum</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -3473,7 +3543,7 @@ Spectrum&#8217;s initial screen with Sinclair&#8217;s copyright note.</p></div>
 So we could directly run:</p></div>
 <div class="listingblock">
 <a id="spectrum-zx"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3485,7 +3555,7 @@ PRINT name$</tt></pre></div></div>
 example:</p></div>
 <div class="listingblock">
 <a id="spectrum-zx"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3550,9 +3620,9 @@ computer will seems as exotic as ZX Spectrum to the future generations!</p></div
         <guid>https://masterex.github.io/archive/2011/11/20/spectrum-zx.html</guid>
     </item>
     <item>
-        <title>Java: A simple and neat cli Progress Bar</title>
+        <title>Java: A simple and neat cli Progress Bar</title>
         <link>https://masterex.github.io/archive/2011/10/23/java-cli-progress-bar.html</link>
-        <description>Java: A simple and neat cli Progress Bar</description>
+        <description>Java: A simple and neat cli Progress Bar</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -3574,7 +3644,7 @@ be mentioned. The progress bar was originally written as part of F.I.C.</p></div
 is the following one:</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3633,7 +3703,7 @@ update method takes the done work units so far and the total work units.</p></di
 <div class="paragraph" id="java-cli-progress-bar"><p>Here is an example:</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3686,7 +3756,7 @@ long. This is obviously the progress bar!</p></div>
 comments that explain what&#8217;s happening.</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3778,9 +3848,9 @@ pretty cli progress bar. Thank you dude! :)</p></div>
         <guid>https://masterex.github.io/archive/2011/10/23/java-cli-progress-bar.html</guid>
     </item>
     <item>
-        <title>Trackable File Distribution: A simple approach</title>
+        <title>Trackable File Distribution: A simple approach</title>
         <link>https://masterex.github.io/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</link>
-        <description>Trackable File Distribution: A simple approach</description>
+        <description>Trackable File Distribution: A simple approach</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -3844,7 +3914,7 @@ users.</p></div>
 user like that:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3883,7 +3953,7 @@ see that they differ.</p></div>
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3896,7 +3966,7 @@ the original.</p></div>
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3907,7 +3977,7 @@ $ du -b image<span style="color: #990000">.</span>gif
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we hexdump it the last line will be:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3920,7 +3990,7 @@ character table</a>.</p></div>
 the downloaded file last line is:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3984,9 +4054,9 @@ as a result a copy with lesser quality.</p></div>
         <guid>https://masterex.github.io/archive/2011/10/09/trackable-file-distribution-a-simple-approach.html</guid>
     </item>
     <item>
-        <title>PHP: Protect the c0d3</title>
+        <title>PHP: Protect the c0d3</title>
         <link>https://masterex.github.io/archive/2011/08/27/php-protect-the-code.html</link>
-        <description>PHP: Protect the c0d3</description>
+        <description>PHP: Protect the c0d3</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -4081,7 +4151,7 @@ real world solutions!</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
 <div class="title">CoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4122,7 +4192,7 @@ find the gist with the whole code.</p></div>
 <div class="paragraph" id="php-protect-the-code"><p>I&#8217;ll just go directly to the interesting part:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4174,7 +4244,7 @@ Rename the variables
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
 <div class="title">ObfuscatedCoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4198,7 +4268,7 @@ for example you can alter string letters with their
 <a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/index.php">numerical code</a>:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4262,7 +4332,7 @@ the original source code.</p></div>
 the deciphered code. This could be something like that:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4280,7 +4350,7 @@ algorithm that has been used could easily find the original code.</p></div>
 execute the above code to get the original source code:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4485,9 +4555,9 @@ already exist before running the program.</p></div>
         <guid>https://masterex.github.io/archive/2011/08/27/php-protect-the-code.html</guid>
     </item>
     <item>
-        <title>Give a smile: Become a blood donor!</title>
+        <title>Give a smile: Become a blood donor!</title>
         <link>https://masterex.github.io/archive/2011/08/22/blood-donation.html</link>
-        <description>Give a smile: Become a blood donor!</description>
+        <description>Give a smile: Become a blood donor!</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -4618,9 +4688,9 @@ blood you are entitled some blood units.</p></div>
         <guid>https://masterex.github.io/archive/2011/08/22/blood-donation.html</guid>
     </item>
     <item>
-        <title>Hello World AsciiBlog :)</title>
+        <title>Hello World AsciiBlog :)</title>
         <link>https://masterex.github.io/archive/2011/08/06/asciiblog.html</link>
-        <description>Hello World AsciiBlog :)</description>
+        <description>Hello World AsciiBlog :)</description>
         <content:encoded>
 <![CDATA[
 		<div class="sect1">
@@ -4652,7 +4722,7 @@ in Asciidoc <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a>.</p></d
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
 <div class="title">Hierarchy</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4698,7 +4768,7 @@ directory/file listing, that look like that:</p></div>
 like that:</p></div>
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4726,7 +4796,7 @@ This RSS file contains the post titles and the publication dates.</p></div>
 <span class="green">archive/2011/08/03/asciiblog.html</span>. I should publish it like</p></div>
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="description" content="Randmom thoughts on collaborative distance of git contributors." />
+<meta name="keywords" content="git, erdos, erdos number, kevin bacon, collaborative distance, github" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Collaborative distance in git contributors...</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_collaborative_distance_in_git_contributors_8230">Collaborative distance in git contributors&#8230;</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Some time ago I was checking my LinkedIn connection recommendations and I realized once again that the word is small. There are people who we may have never talked to but as we change jobs or projects we may write to the same codebases they used to contribute to or vice versa.</p></div>
+<div class="paragraph"><p>And of course I am not talking about open source contributors who of course one way or the other we could argue that have contributed to our codebase by providing their open source code. I am talking about colleagues who are working on something else now or they have moved to a different job or people who contributed as external consultants etc.</p></div>
+<div class="paragraph"><p><strong>The world is definitely small</strong>.</p></div>
+<div class="paragraph"><p>This made me thinking about the <a href="https://en.wikipedia.org/wiki/Erdős_number">Erdős number</a>.</p></div>
+<div class="sect2">
+<h3 id="_erdős_number">Erdős number</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>The Erdős number (Hungarian: [ˈɛrdøːʃ]) describes the "collaborative distance" between mathematician Paul Erdős and another person, as measured by authorship of mathematical papers. The same principle has been applied in other fields where a particular individual has collaborated with a large and broad number of peers.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>There are <a href="https://en.wikipedia.org/wiki/Erd%C5%91s_number#Variations">variations</a> applied to other fields, one of the most known is the <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">Bacon number</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_six_degrees_of_separation">Six degrees of separation</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Six degrees of separation is the idea that all people are six, or fewer, social connections away from each other. Also known as the 6 Handshakes rule.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>In a sense the Six degrees of separation idea is similar to the <strong>Erdős</strong> number but <strong>Erdős</strong> number is actually stricter. A person does not have only to be acquainted to <strong>Paul</strong> <strong>Erdős</strong> but in action to be a scientist who has co-authored a paper. Even this definition is not strict enough.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_collaborative_distance">Code Collaborative Distance</h3>
+<div class="paragraph"><p>Going back to what made me think of all that, I made the thought that possibly most of the software engineers in a region or in a specific field are connected between them according to their code contributions.</p></div>
+<div class="paragraph"><p>When saying code contributions consider mainly git commits which is the most common. Of course this could be any other <a href="https://en.wikipedia.org/wiki/Version_control_system">VCS</a> or equivalent.</p></div>
+<div class="paragraph"><p>Of course the number of "hops" between <strong>2</strong> persons to be connected may vary and be big but I guess that in most cases if we could query all the private and public VCS&#8217;s then for specific geographical region and/or field  and/or business domain then the number would be usually pretty small. In that case the <strong>Six degrees of separation</strong> could actually stand true.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_collaborative_distance_in_open_source">Collaborative Distance in Open Source</h3>
+<div class="paragraph"><p>As you understand searching the contributors inside private VCS&#8217;s of companies to find the inter-connections between different contributors is impossible.</p></div>
+<div class="paragraph"><p>However, how easy would this be for open source software? Wouldn&#8217;t be great to find your distance against giants such as <a href="https://en.wikipedia.org/wiki/Linus_Torvalds">Linus Torvalds</a>?</p></div>
+<div class="paragraph"><p>It turns out that this is not as easy as a pie too.</p></div>
+<div class="paragraph"><p>Undoubtedly, Git is the most popular VCS today and some of the most successful hosting services are built around it. To name a few some of them are <strong>GitHub</strong>, <strong>GitLab</strong> and <strong>Bitbucket</strong>. But this is not everything. Organizations are hosting their own git instances and there are a few other names of hosting services out there. Also, in some cases people are using other VCS and not the king Git.</p></div>
+<div class="paragraph"><p>To make the problem even harder there is not a common API one could use to query each one of the hosting services. Also, the APIs are usually rate limited and probably finding connection between 2 persons results to a nonlinear addition of requests after each hop. This would cause the rate limit to be a blocking issue for many searches.</p></div>
+<div class="paragraph"><p>Another potential problem is that people may have used multiple email addresses in the code they have contributed to different code repositories.</p></div>
+<div class="paragraph"><p>Finally, people may have contributions to repositories they don&#8217;t own.</p></div>
+<div class="paragraph"><p>All the above make finding the connections between <strong>2</strong> persons difficult even in one specific public hosting provider such as <strong>GitHub</strong>.</p></div>
+<div class="paragraph"><p>I certainly after putting some thought in it I won&#8217;t attempt trying to write a program about it! If someone builds something drop me a line in the comments! :-)</p></div>
+</div>
+<div class="sect2">
+<h3 id="_center_of_the_open_source_software">Center of the Open Source software</h3>
+<div class="paragraph"><p>The magic of the <strong>Erdős</strong> or Bacon numbers is that they measure the distance away from specific points and people may compare their values based on that.</p></div>
+<div class="paragraph"><p>This makes me wonder, who would be the <strong>Paul</strong> <strong>Erdős</strong> or <strong>Kevin Bacon</strong> of open source software?</p></div>
+<div class="paragraph"><p>Of course, this should be the most <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Center_of_the_Hollywood_Universe">"linkable"</a> open source contributor. This person may change as the time passes. To be a good center this person should have contributions to different projects with many contributors each. This makes me think that there is a possibility this person won&#8217;t be any expected recognizable figure.</p></div>
+<div class="paragraph"><p>What do you think? Who would you like to be the <strong>Paul</strong> <strong>Erdős</strong> of open source software? Leave your comment bellow!</p></div>
+<div class="paragraph"><p>Thank you for reading!
+Take care!</p></div>
+</div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
