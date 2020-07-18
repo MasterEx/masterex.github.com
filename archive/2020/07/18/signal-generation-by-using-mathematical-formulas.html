@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.1" />
+<meta name="description" content="Explaining generation of graphics or audio by using mathematical formulas." />
+<meta name="keywords" content="pacman, graphics, love2d, lua, audio, compression" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Signal generation by math formulas for the greater good!</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_signal_generation_by_math_formulas_for_the_greater_good">Signal generation by math formulas for the greater good!</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>My first encounter with computers was by playing video games. The first
+video game I remember playing was <strong>pacman</strong> in an <strong>80386</strong> machine maybe somewhere
+around <strong>1994</strong>.</p></div>
+<div class="paragraph"><p>Back then computers were equipped with sacred resources. The smartphones we
+are carrying around in our back pockets would seem like super computers.</p></div>
+<div class="paragraph"><p>Today, we don&#8217;t have such limitations most of the times.</p></div>
+<div class="paragraph"><p><em>Just for fun</em>, let&#8217;s see how we could store and playback audio, animation or other
+media by using <em>as little storage as possible</em>.</p></div>
+<div class="sect2">
+<h3 id="_generation_of_signals_using_mathematical_formulas">Generation of signals using mathematical formulas</h3>
+<div class="paragraph"><p>Before I go to <a href="https://en.wikipedia.org/wiki/Animation">animated images</a> let&#8217;s talk about audio because I think it
+is more straightforward to understand the concept.</p></div>
+<div class="paragraph"><p>Let&#8217;s say you want to write some sound effects or a little soundtrack for
+a game. What options do we have for distributing this audio?</p></div>
+<div class="paragraph"><p>Of course an uncompressed audio clip could be distributed in <strong><a href="https://en.wikipedia.org/wiki/WAV">.wav</a></strong> format but
+this is totally <strong>uncompressed</strong> and would be unnecessary big.</p></div>
+<div class="paragraph"><p>Let&#8217;s talk compression then. <strong><a href="https://en.wikipedia.org/wiki/FLAC">FLAC</a></strong> is a nice option. It is lossless and would
+more or less make the file <strong>3</strong> times smaller. This is still too big.</p></div>
+<div class="paragraph"><p>After some research at the end we would probably find out that <strong>OGG</strong> would produce
+good lossy compression and after some research about the quality and compression
+options we would probably end with something like <strong>10</strong> times smaller than the original
+sound.</p></div>
+<div class="paragraph"><p>This is pretty good and I guess this is what most game developers would
+do nowadays.</p></div>
+<div class="paragraph"><p>What other options are there though? We could produce the audio by <a href="https://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html">code</a> of course!</p></div>
+<div class="paragraph"><p>OK, yes this won&#8217;t do for all the cases but this was more or less how audio was
+created in the <strong>NES</strong> era.</p></div>
+<div class="paragraph"><p>By using an <a href="https://en.wikipedia.org/wiki/Electronic_oscillator">oscillator</a>
+various audio waves could be produced and combined in order to create the
+desired outcome.</p></div>
+<div class="paragraph"><p>Later devices such as <strong>SNES</strong> permitted the playback of <a href="https://en.wikipedia.org/wiki/Sampling_(music)">prerecorded sampled audio</a>.
+Of course the limited RAM of that systems was restricting the artists of the
+time who had to think out of the box in order to produce beautiful songs.</p></div>
+<div class="paragraph"><p>Today, I guess there are a few people who do similar stuff in some extend <em>for fun</em>.
+I can think of <strong>3</strong> main categories where this could be observed:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+People writing emulators for old systems or reverse engineering old video games (think 8/16-bit)
+</p>
+</li>
+<li>
+<p>
+The <a href="https://en.wikipedia.org/wiki/Demoscene">Demoscene</a> community
+</p>
+</li>
+<li>
+<p>
+The <a href="https://en.wikipedia.org/wiki/Competitive_programming">Competitive Programming</a> community
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><a href="https://en.wikipedia.org/wiki/MIDI">MIDI</a> standard is another example where
+audio can be produced by code. A <strong>.midi</strong> file is way smaller than the equivalent <strong>.wav</strong> as it contains
+roughly speaking notes and their duration and not the actual <a href="https://en.wikipedia.org/wiki/Sampling_(signal_processing)">sampled audio</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_software_generated_waveforms">Software generated waveforms</h3>
+<div class="paragraph"><p>From the above methods, producing audio by using one or more
+mathematical functions is probably the one that would produce the smallest outcome.</p></div>
+<div class="paragraph"><p>Building on the idea of the <a href="https://en.wikipedia.org/wiki/Electronic_oscillator">oscillator</a>,
+there could potentially be a mathematical formula that would produce the exact
+analog audio waveform (or any other signal) we would like to reproduce.</p></div>
+<div class="paragraph"><p>This could be the best technique of lossless compression. However, finding
+such a formula for most cases other than the very simple ones is <strong>way hard</strong>.</p></div>
+<div class="paragraph"><p>However, it is relatively easy to create simple and well-defined signals.
+A <a href="https://en.wikipedia.org/wiki/Sine_wave">sine wave</a> for example or a <a href="https://en.wikipedia.org/wiki/Circle">circle</a>.</p></div>
+<div class="paragraph"><p>For example there is a <a href="https://pypi.org/project/pysinewave/">Python module</a> that
+let&#8217;s you create and playback sine waves!</p></div>
+<div class="paragraph"><p>Of course there is a hidden cost of intermediate libraries but this should be
+considered as <em>common infrastructure</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_generating_pacman_with_code">Generating pacman with code</h3>
+<div class="paragraph"><p>The circle happens to be the <strong>pacman</strong> character, <em>more or less</em>!</p></div>
+<div class="paragraph"><p>One way to create an animated image for a <a href="https://en.wikipedia.org/wiki/2D_computer_graphics"><strong>2D</strong> game</a> is to have a set of images
+and by changing them in the right intervals produce the effect of animation.</p></div>
+<div class="paragraph"><p>These images are usually part of one bigger image file called <a href="https://en.wikipedia.org/wiki/Sprite_(computer_graphics)">sprite</a>.</p></div>
+<div class="paragraph"><p>The <strong>pacman</strong> however is a partial circle filled with color, probably <span class="yellow black-background">yellow</span>!</p></div>
+<div class="paragraph"><p>Here is an example of some <strong>lua</strong>(<a href="https://love2d.org/">LÖVE</a>) code that demonstrates a moving <strong>pacman</strong> created
+by a mathematical formula and by interchanging images for comparison.</p></div>
+<div class="paragraph"><p><span class="image">
+<img src="pacman-animation-comparison.gif" alt="wak wak wak&#8230;" />
+</span></p></div>
+<div class="paragraph"><p>For reference here is the code. Don&#8217;t mind it too much, it is a <em>quick and dirty</em> approach <strong>:-)</strong></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">local</span></span> x <span style="color: #990000">=</span> <span style="color: #993399">20</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">-- image code</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> images <span style="color: #990000">=</span> <span style="color: #FF0000">{}</span>
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> image
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> quad
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> t <span style="color: #990000">=</span> <span style="color: #993399">0</span>
+<span style="font-style: italic"><span style="color: #9A1900">-- gen code</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> PI_QUARTER <span style="color: #990000">=</span> math<span style="color: #990000">.</span>pi<span style="color: #990000">/</span><span style="color: #993399">4</span>
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> TWO_PI <span style="color: #990000">=</span> <span style="color: #993399">2</span><span style="color: #990000">*</span>math<span style="color: #990000">.</span>pi
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> arc_start <span style="color: #990000">=</span> PI_QUARTER
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> arc_end <span style="color: #990000">=</span> TWO_PI <span style="color: #990000">-</span> PI_QUARTER
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> animation_value <span style="color: #990000">=</span> PI_QUARTER
+<span style="font-weight: bold"><span style="color: #0000FF">local</span></span> animation_state <span style="color: #990000">=</span> <span style="color: #993399">1</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">function</span></span> love<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load</span></span><span style="color: #990000">()</span>
+        love<span style="color: #990000">.</span>window<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setTitle</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Pacman'</span><span style="color: #990000">)</span>
+        love<span style="color: #990000">.</span>window<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setMode</span></span><span style="color: #990000">(</span> <span style="color: #993399">800</span><span style="color: #990000">,</span> <span style="color: #993399">150</span><span style="color: #990000">)</span>
+        <span style="font-style: italic"><span style="color: #9A1900">-- image code</span></span>
+        images<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newImage</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'pacman1.png'</span><span style="color: #990000">)</span>
+        images<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newImage</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'pacman2.png'</span><span style="color: #990000">)</span>
+        images<span style="color: #990000">[</span><span style="color: #993399">3</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newImage</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'pacman3.png'</span><span style="color: #990000">)</span>
+        quad <span style="color: #990000">=</span> love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newQuad</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">20</span><span style="color: #990000">,</span> <span style="color: #993399">20</span><span style="color: #990000">,</span> <span style="color: #993399">20</span><span style="color: #990000">,</span> <span style="color: #993399">20</span><span style="color: #990000">)</span>
+        image <span style="color: #990000">=</span> images<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+<span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">function</span></span> love<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">draw</span></span><span style="color: #990000">()</span>
+        <span style="font-style: italic"><span style="color: #9A1900">-- image code</span></span>
+        love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">draw</span></span><span style="color: #990000">(</span>image<span style="color: #990000">,</span> quad<span style="color: #990000">,</span> x<span style="color: #990000">,</span> <span style="color: #993399">100</span><span style="color: #990000">)</span>
+        <span style="font-style: italic"><span style="color: #9A1900">-- gen code</span></span>
+        love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setColor</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">unpack</span></span><span style="color: #990000">(</span><span style="color: #FF0000">{</span><span style="color: #993399">255</span><span style="color: #990000">,</span> <span style="color: #993399">255</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #FF0000">}</span><span style="color: #990000">))</span>
+        love<span style="color: #990000">.</span>graphics<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">arc</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"fill"</span><span style="color: #990000">,</span> x <span style="color: #990000">+</span> <span style="color: #993399">10</span><span style="color: #990000">,</span> <span style="color: #993399">60</span><span style="color: #990000">,</span> <span style="color: #993399">10</span><span style="color: #990000">,</span> arc_start<span style="color: #990000">-</span>animation_value<span style="color: #990000">,</span>
+        arc_end<span style="color: #990000">+</span>animation_value<span style="color: #990000">,</span> <span style="color: #993399">100</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">function</span></span> love<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">update</span></span><span style="color: #990000">(</span>dt<span style="color: #990000">)</span>
+        <span style="font-style: italic"><span style="color: #9A1900">-- image code</span></span>
+        t <span style="color: #990000">=</span> t <span style="color: #990000">+</span> dt <span style="color: #990000">*</span> <span style="color: #993399">6</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> t <span style="color: #990000">&lt;</span> <span style="color: #993399">1</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                image <span style="color: #990000">=</span> images<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">elseif</span></span> t <span style="color: #990000">&lt;</span> <span style="color: #993399">2</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                image <span style="color: #990000">=</span> images<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">]</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">elseif</span></span> t <span style="color: #990000">&lt;</span> <span style="color: #993399">3</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                image <span style="color: #990000">=</span> images<span style="color: #990000">[</span><span style="color: #993399">3</span><span style="color: #990000">]</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">elseif</span></span> t <span style="color: #990000">&lt;</span> <span style="color: #993399">4</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                image <span style="color: #990000">=</span> images<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">]</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">else</span></span>
+                t <span style="color: #990000">=</span> <span style="color: #993399">0</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+        <span style="font-style: italic"><span style="color: #9A1900">-- gen code</span></span>
+        arc_start <span style="color: #990000">=</span> PI_QUARTER
+        arc_end <span style="color: #990000">=</span> TWO_PI <span style="color: #990000">-</span> PI_QUARTER
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> animation_value <span style="color: #990000">&gt;=</span> PI_QUARTER <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                animation_state <span style="color: #990000">=</span> <span style="color: #993399">2</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">elseif</span></span> animation_value <span style="color: #990000">&lt;=</span> <span style="color: #993399">0</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                animation_state <span style="color: #990000">=</span> <span style="color: #993399">1</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> animation_state <span style="color: #990000">==</span> <span style="color: #993399">1</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                <span style="font-style: italic"><span style="color: #9A1900">-- close mouth</span></span>
+                animation_value <span style="color: #990000">=</span> animation_value <span style="color: #990000">+</span> dt <span style="color: #990000">*</span> <span style="color: #993399">3</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">elseif</span></span> animation_state <span style="color: #990000">==</span> <span style="color: #993399">2</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                <span style="font-style: italic"><span style="color: #9A1900">-- open mouth</span></span>
+                animation_value <span style="color: #990000">=</span> animation_value <span style="color: #990000">-</span> dt <span style="color: #990000">*</span> <span style="color: #993399">3</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+        x <span style="color: #990000">=</span> x <span style="color: #990000">+</span> <span style="color: #993399">50</span> <span style="color: #990000">*</span> dt
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> x <span style="color: #990000">&gt;</span> <span style="color: #993399">800</span> <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                x <span style="color: #990000">=</span> <span style="color: #990000">-</span><span style="color: #993399">20</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">end</span></span></tt></pre></div></div>
+<div class="paragraph"><p>The point is that the <strong>3</strong> images used to create the <strong>pacman</strong> animation are
+a bit less that <strong>6kb</strong> in total while the code version is uncompressed less than <strong>1kb</strong>.</p></div>
+<div class="paragraph"><p>In that spirit <a href="https://play.google.com/store/apps/details?id=pntanasis.android.metronome&amp;hl=el">BeatKeeper</a> is
+less than <strong>30kb</strong> in size. The audio produced by the metronome is a sine wave
+created in <a href="https://github.com/MasterEx/BeatKeeper/blob/master/src/pntanasis/android/metronome/AudioGenerator.java#L25">code</a>.</p></div>
+<div class="paragraph"><p>As a bonus, animating <strong>pacman</strong> that way produces a more fluent motion. In order
+to achieve this smoothness the other way it is required to move faster in order
+to trick the eye or use more images that would result to an even bigger sprite.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_conclusion">Conclusion</h3>
+<div class="paragraph"><p>Today we don&#8217;t have to worry if our program will fit in one <a href="https://en.wikipedia.org/wiki/Floppy_disk">floppy disk</a>
+or be able to fit whole in our computer&#8217;s RAM.</p></div>
+<div class="paragraph"><p>On the other hand it would be a great deal if we could easily find mathematical formulas
+that produce a desired signal because then we could achieve very efficient
+compression. This is pretty hard though and maybe it will never be achieved.</p></div>
+<div class="paragraph"><p>What is important however and we can achieve by doing this kind of stuff is
+reminding to ourselves that <em>programming is fun</em>!</p></div>
+<div class="paragraph"><p><strong>So, until the next time&#8230; have fun!</strong></p></div>
+</div>
+<div class="sect2">
+<h3 id="_see_also">See also</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://gist.github.com/MasterEx/2b31191cb15c94728785d51bf8e0efa1">Gist with the pacman example code.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.youtube.com/watch?v=q_3d1x2VPxk">Youtube video about how NES era audio was produced.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://irkenkitties.com/blog/2015/03/29/creating-sound-on-the-nes/#next-step">Article about NES audio creation.</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.youtube.com/watch?v=jvIzIAgRWV0">Youtube video about the SNES sampling audio capabilities.</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
