@@ -8,6 +8,1096 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Design Pattern Synergies: Exploring the Decorator Pattern</title>
+        <link>https://masterex.github.io/archive/2020/07/25/decorator-design-pattern-synergies.html</link>
+        <description>Design Pattern Synergies: Exploring the Decorator Pattern</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_design_pattern_synergies_exploring_the_decorator_pattern">Design Pattern Synergies: Exploring the Decorator Pattern</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In this article I am going to talk about the <a href="https://en.wikipedia.org/wiki/Decorator_pattern">Decorator</a>
+<a href="https://en.wikipedia.org/wiki/Design_pattern">Design Pattern</a>.</p></div>
+<div class="paragraph"><p>More specifically, I will present some combinations of the <strong>Decorator</strong>
+pattern with other <strong>Design Patterns</strong> in order to achieve better readability and
+maintainability of our code. I am going to use <strong>Java</strong> in the code segments of this article but
+all the examples should be applicable to any object oriented language.</p></div>
+<div class="paragraph"><p>Before examining the Design Pattern synergies let&#8217;s make sure that we have a common
+understanding of the <strong>Decorator</strong> pattern.</p></div>
+<div class="sect2">
+<h3 id="_decorator_pattern_definition">Decorator Pattern Definition</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>In object-oriented programming, the decorator pattern is a design pattern
+that allows behavior to be added to an individual object, dynamically, without
+affecting the behavior of other objects from the same class.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>Another definition provided in the book <a href="https://www.oreilly.com/library/view/head-first-design/0596007124/">Head First Design Patterns</a>
+is the following:</p></div>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>The Decorator Pattern attaches additional responsibilities to an object dynamically.
+Decorators provide a flexible alternative to subclassing for extending functionality.</p></div>
+</div>
+<div class="attribution">
+&#8212; Head First Design Patterns
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_understanding_the_decorator_pattern">Understanding the Decorator Pattern</h3>
+<div class="paragraph"><p>The <strong>Decorator</strong> pattern has some very <em>powerful</em> features.</p></div>
+<div class="paragraph"><p><strong>The Decorator Pattern attaches additional responsibilities to an object dynamically.</strong></p></div>
+<div class="paragraph"><p>This means that one may <em>decorate</em> an object at <a href="https://en.wikipedia.org/wiki/Runtime_(program_lifecycle_phase)">runtime</a>
+and add additional functionality to that object.</p></div>
+<div class="paragraph"><p>Imagine this example. We have a program that writes a file to the file system.</p></div>
+<div class="paragraph"><p>This could be expressed in code like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.txt"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">))</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>At some point we decide that the file should be compressed! Then by following the
+<strong>Decorator</strong> pattern we may add this additional functionality <em>without changing any of the involved classes</em>!</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">)))</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="https://masterex.github.io/archive/2020/07/25/../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">Have in mind that the <code>try-with-resources</code> may
+<a href="https://stackoverflow.com/questions/12552863/correct-idiom-for-managing-multiple-chained-resources-in-try-with-resources-bloc">fail to close the resources</a>
+in case an error is thrown during the construction of one of the wrappers.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>To make the <em>change at runtime</em> part more obvious, let&#8217;s say that some of
+our users want to select if the file will be compressed or not.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">// compressed is a boolean - true or false</span></span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> compressed <span style="color: #990000">?</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">)</span> <span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.txt"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> fos <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+                <span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> compressed <span style="color: #990000">?</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>fos<span style="color: #990000">)</span> <span style="color: #990000">:</span> fos<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>See, in the above example <em>the behavior may be decided at runtime</em>.</p></div>
+<div class="paragraph"><p>The key point in this case is that the <strong>decorators</strong> all implement
+the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/OutputStream.html">OutputStream</a>
+interface.</p></div>
+<div class="paragraph"><p>Every <strong>Decorator</strong> adds an extra bit of functionality around the methods
+defined by the <strong>interface</strong>. For example the <strong>GZIPOutputStream</strong> will wrap
+the <code>os.write("Hello, World!".getBytes())</code> and compress
+the data. Then the <code>write()</code> method of <strong>FileOutputStream</strong> will be called which
+will write the compressed data to the specified file.</p></div>
+<div class="paragraph"><p>I guess this is the most common and probably most powerful form of the
+<strong>Decorator</strong> pattern. You may have an <strong>OutputStream</strong> object which has been
+wrapped around <em>dozen of times</em>, each time with a <strong>decorator</strong> which adds a tiny
+bit more functionality.</p></div>
+<div class="paragraph"><p>Except the case described above there are times where we may need to add additional
+functionality to an object. Functionality which may not follow a <em>common</em>
+<em>interface</em>.</p></div>
+<div class="paragraph"><p>We still can do that. Consider the following example where we want additionally to produce
+a hash of the created file and print it to the user.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">File</span> file <span style="color: #990000">=</span> compressed <span style="color: #990000">?</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">)</span> <span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.txt"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> fos <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+                <span style="color: #008080">CheckedOutputStream</span> cos <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>fos<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">());</span>
+                <span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> compressed <span style="color: #990000">?</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>cos<span style="color: #990000">)</span> <span style="color: #990000">:</span> cos<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+        System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>cos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>See, we have added some extra functionality for the calculation of the
+<a href="https://en.wikipedia.org/wiki/Checksum">checksum</a>. This has the implication
+that now we rely on the existence of the <strong>cos</strong> variable in our code which
+has the <em>explicit</em> type of <strong>CheckedOutputStream</strong>.</p></div>
+<div class="paragraph"><p>This is not so bad actually. On the other hand, it would complicate things
+if we wanted to write the <em>try-with-resources</em> a bit differently, by
+not using separate variables for each <strong>decorator</strong>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>
+                          <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">),</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">())))</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+        <span style="font-style: italic"><span style="color: #9A1900">// How we will get checksum? os is not of type CheckedOutputStream!</span></span>
+        <span style="font-style: italic"><span style="color: #9A1900">// System.out.println(cos.getChecksum().getValue());</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Of course, in that specific case there is a good way to get the <strong>checksum</strong>
+by keeping a reference of the <code>Adler32</code> object.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">Checksum</span> checksum <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">();</span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>
+                               <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">),</span> checksum<span style="color: #990000">)))</span> <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello, World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+        System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>checksum<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>This is not always the case as we may need to access fields of a specific
+wrapper. In case the specific <strong>decorator</strong> we need to access is the last one
+on the stack then it is easy to access it.
+Otherwise keeping a reference of the specific decorator object is
+the only option.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_outputstream_decorators">OutputStream Decorators</h3>
+<div class="paragraph"><p>Most of the <strong>Decorators</strong> we have seen in the previous examples are part of
+the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/package-summary.html">java.io</a> package. The basic interface the <strong>Decorators</strong> use is
+the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/OutputStream.html">OutputStream</a>.</p></div>
+<div class="paragraph"><p>There are numerous implementations of this <strong>Decorator</strong>. One may find them by
+examining the <strong>Javadoc</strong> of the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/OutputStream.html">OutputStream</a>
+interface.</p></div>
+<div class="paragraph"><p>The <strong>Direct Known Subclasses</strong> of <strong>OutputSteam</strong> are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/ByteArrayOutputStream.html">ByteArrayOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/FileOutputStream.html">FileOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/FilterOutputStream.html">FilterOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/ObjectOutputStream.html">ObjectOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PipedOutputStream.html">PipedOutputStream</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In addition to that the <strong>Direct Known Subclasses</strong> of <strong>FilterOutputStream</strong> are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/BufferedOutputStream.html">BufferedOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/CheckedOutputStream.html">CheckedOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/crypto/CipherOutputStream.html">CipherOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/DataOutputStream.html">DataOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/DeflaterOutputStream.html">DeflaterOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/DigestOutputStream.html">DigestOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/InflaterOutputStream.html">InflaterOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintStream.html">PrintStream</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The reason <strong>FilterOutputStream</strong> has so many subclasses is that
+<em>this class is the superclass of all classes that filter output streams.
+These streams sit on top of an already existing output stream
+(the underlying output stream) which it uses as its basic sink of data,
+but possibly transforming the data along the way or providing additional functionality.</em></p></div>
+<div class="paragraph"><p>Wait! There is <em>more</em>! The <strong>DeflaterOutputStream</strong> has the following
+<strong>Direct Known Subclasses</strong>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/GZIPOutputStream.html">GZIPOutputStream</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/ZipOutputStream.html">ZipOutputStream</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Then <strong>ZipOutputStream</strong> has as <strong>Direct Known Subclasses</strong> the <strong>JarOutputStream</strong>.</p></div>
+<div class="paragraph"><p><strong>PrintStream</strong> has as <strong>Direct Known Subclasses</strong> the <strong>LogStream</strong>, which however
+is now <strong>deprecated</strong>.</p></div>
+<div class="paragraph"><p>If we count <strong>all</strong> that we have in total <strong>15</strong> concrete <strong>OutputStream</strong> implementations.</p></div>
+<div class="paragraph"><p>For sure one has to be pretty familiar with the <code>java.io</code> <strong>API</strong> in order to
+use it in its full potential.</p></div>
+<div class="paragraph"><p>The <strong>Decorator</strong> pattern is also used in other parts of the <strong>API</strong>, for
+example the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html">InputStream</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_decorator_pattern_drawbacks">Decorator Pattern Drawbacks</h3>
+<div class="paragraph"><p>By now the problems of the <strong>Decorator</strong> pattern should be apparent.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Too many implementations of a <strong>Decorator</strong> interface may exist. It may
+ be difficult for one to find all the implementations or know how to
+ use them. Note that the <strong>OutputStream</strong> classes are not even all included in
+ a package exclusive to this type of <strong>decorator</strong>!
+</p>
+</li>
+<li>
+<p>
+It&#8217;s difficult to access methods that are not defined by the base interface,
+ especially when the specific <strong>decorator</strong> which adds the extra functionality
+ is wrapped by many other instances of <strong>decorators</strong>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Below we are going to try to address these two issues by adding more
+<strong>design patterns</strong> in the mix!</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_for_comparison">Code for comparison</h3>
+<div class="paragraph"><p>Before going on let&#8217;s set some common code that we are going to try
+to improve later on:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">byte</span><span style="color: #990000">[]</span> data <span style="color: #990000">=</span> <span style="color: #FF0000">{</span><span style="color: #FF0000">'H'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'e'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\0</span><span style="color: #FF0000">'</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+<span style="color: #008080">CheckedOutputStream</span> cos <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">());</span>
+os <span style="color: #990000">=</span> cos<span style="color: #990000">;</span>
+os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+<span style="color: #008080">PrintStream</span> pos <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+os <span style="color: #990000">=</span> pos<span style="color: #990000">;</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+pos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>cos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span></tt></pre></div></div>
+<div class="paragraph"><p>In this example we are keeping an <strong>OutputStream</strong> object for making all the basic
+actions on it and we keep references to the <strong>CheckedOutputStream</strong> and
+<strong>PrintStream</strong> decorators so we may call some methods provided exclusively
+by these <strong>2</strong> types.</p></div>
+<div class="paragraph"><p>Let&#8217;s omit the <em>try-with-resources</em> for now for the sake of clarity.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_initiating_decorators_by_using_a_factory_method">Initiating Decorators By Using a Factory Method</h3>
+<div class="paragraph"><p>The first <strong>design pattern</strong> which comes in mind when initializing objects that
+share a common <strong>interface</strong> is probably the <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory method</a>
+pattern.</p></div>
+<div class="paragraph"><p>Normally a <strong>factory method</strong> accepts one or a few more arguments.
+A decorator for our case could seem like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">OutputStreamFactory</span> <span style="color: #FF0000">{</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">OutputStream</span> <span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span>
+                 <span style="color: #009900">boolean</span> buffered<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> checked<span style="color: #990000">,</span>
+                 <span style="color: #009900">boolean</span> gzipped<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> printStreamed<span style="color: #990000">)</span>
+                      <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException<span style="color: #990000">,</span> IOException <span style="color: #FF0000">{</span>
+                <span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ByteArrayOutputStream</span></span><span style="color: #990000">();</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> buffered<span style="color: #990000">,</span> checked<span style="color: #990000">,</span> gzipped<span style="color: #990000">,</span> printStreamed<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">OutputStream</span> <span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">File</span> file<span style="color: #990000">,</span>
+                 <span style="color: #009900">boolean</span> buffered<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> checked<span style="color: #990000">,</span>
+                 <span style="color: #009900">boolean</span> gzipped<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> printStreamed<span style="color: #990000">)</span>
+                      <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException<span style="color: #990000">,</span> IOException <span style="color: #FF0000">{</span>
+                <span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> buffered<span style="color: #990000">,</span> checked<span style="color: #990000">,</span> gzipped<span style="color: #990000">,</span> printStreamed<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">OutputStream</span> <span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">,</span>
+                 <span style="color: #009900">boolean</span> buffered<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> checked<span style="color: #990000">,</span>
+                 <span style="color: #009900">boolean</span> gzipped<span style="color: #990000">,</span> <span style="color: #009900">boolean</span> printStreamed<span style="color: #990000">)</span>
+                      <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException<span style="color: #990000">,</span> IOException <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>buffered<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                <span style="color: #FF0000">}</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>checked<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">());</span>
+                <span style="color: #FF0000">}</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>gzipped<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                <span style="color: #FF0000">}</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>printStreamed<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                <span style="color: #FF0000">}</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> os<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>In code this could be used like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">byte</span><span style="color: #990000">[]</span> data <span style="color: #990000">=</span> <span style="color: #FF0000">{</span><span style="color: #FF0000">'H'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'e'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\0</span><span style="color: #FF0000">'</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getBytes</span></span><span style="color: #990000">());</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span></tt></pre></div></div>
+<div class="paragraph"><p>So, what have we achieved?</p></div>
+<div class="paragraph"><p><strong>PROS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Less code to initialize our decorated object.
+</p>
+</li>
+<li>
+<p>
+All the possible decorators we want to support may be initialized by the
+ factory method. It is easy to inspect a single method, its arguments and documentation
+ and know what kind of decorators are available.
+</p>
+</li>
+<li>
+<p>
+The use of the concrete decorator classes is encapsulated inside the
+ <strong>factory method</strong> and this permits future changes
+ with little refactoring effort.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>CONS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+There is no way to get access to the internal decorators.
+</p>
+</li>
+<li>
+<p>
+The <strong>factory method</strong> may get too crowded with many arguments.
+</p>
+</li>
+<li>
+<p>
+Exception handling and object initialization may be a bit more complex.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In general I don&#8217;t find personally any great benefit to the above solution.</p></div>
+<div class="paragraph"><p>Maybe a bit different implementation of multiple factory methods, one for
+each case could be more beneficial.</p></div>
+<div class="paragraph"><p>Consider the following <strong>class</strong>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">OutputStreamFactory</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-style: italic"><span style="color: #9A1900">/**</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">     * Creates a new ByteArrayOutputStream.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">     * </span></span><span style="color: #009900">@return</span><span style="font-style: italic"><span style="color: #9A1900"> An empty ByteArrayOutputStream.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">     */</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">ByteArrayOutputStream</span> <span style="font-weight: bold"><span style="color: #000000">byteArrayOutputStream</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ByteArrayOutputStream</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">FileOutputStream</span> <span style="font-weight: bold"><span style="color: #000000">fileOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">File</span> file<span style="color: #990000">)</span>
+                                   <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">BufferedOutputStream</span> <span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">CheckedOutputStream</span> <span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">,</span>
+                                                      <span style="color: #008080">Checksum</span> checksum<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> checksum<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">GZIPOutputStream</span> <span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">PrintStream</span> <span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Hmm, this way we have actually wrapped the initialization of each concrete <strong>OutputStream</strong>
+to a separate method. This would be used in action like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">byte</span><span style="color: #990000">[]</span> data <span style="color: #990000">=</span> <span style="color: #FF0000">{</span><span style="color: #FF0000">'H'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'e'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\0</span><span style="color: #FF0000">'</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">fileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+os <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+<span style="color: #008080">CheckedOutputStream</span> cos <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">());</span>
+os <span style="color: #990000">=</span> cos<span style="color: #990000">;</span>
+os <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+<span style="color: #008080">PrintStream</span> pos <span style="color: #990000">=</span> OutputStreamFactory<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+os <span style="color: #990000">=</span> pos<span style="color: #990000">;</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+pos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>cos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span></tt></pre></div></div>
+<div class="paragraph"><p>If you consider this for a moment this is exactly like calling the concrete
+constructors but with some additional benefits!</p></div>
+<div class="paragraph"><p>Furthermore we could return the interface type but I didn&#8217;t implemented it
+like that in this example to avoid extra <strong>type casting</strong>.</p></div>
+<div class="paragraph"><p><strong>Extra PROS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Easily find all the available <strong>Decorators</strong> by browsing the (preferably documented) methods of the
+ <strong>OutputStreamFactory</strong> class. All modern <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">IDE</a>s
+ should support auto-completion.
+</p>
+</li>
+<li>
+<p>
+Encapsulated classes can be altered with minimal refactoring (especially if
+ we would return <strong>OutputStream</strong> objects instead of the concrete classes).
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In general I see benefit from having a class like this <em>only in the case there are
+too many decorators around</em>. The <strong>programmer</strong> would be free to spend less time
+hunting external documentation and more time relying to the every day tools
+of the trade in order to find easily the required information.</p></div>
+<div class="paragraph"><p><strong>CONS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Every other drawback we had before still remains.
+</p>
+</li>
+<li>
+<p>
+The <strong>API</strong> is <em>too</em> verbose. Statically importing the factory class
+ makes it less verbose but maybe a bit less readable because all the factory
+ methods could be mistaken for local ones.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_decorating_by_using_the_builder_pattern">Decorating by using the Builder Pattern</h3>
+<div class="paragraph"><p>Another popular pattern for object creation is the <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>.</p></div>
+<div class="paragraph"><p>We are going to use <a href="https://en.wikipedia.org/wiki/Joshua_Bloch">Josh Bloch&#8217;s</a>
+variation of the pattern as described in <a href="https://www.amazon.co.uk/Effective-Java-Second-Joshua-Bloch/dp/0321356683">Effective Java</a>.</p></div>
+<div class="paragraph"><p>This should look like this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="color: #FF0000">{</span>
+
+    <span style="color: #008080">enum</span> BaseType <span style="color: #FF0000">{</span>
+        ByteArrayOutputStream<span style="color: #990000">,</span> FileOutputStream<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> buffered<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> checked<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> gzipped<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> printStreamed<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Checksum</span> checksum<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">File</span> file<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">BaseType</span> baseType<span style="color: #990000">;</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>baseType <span style="color: #990000">=</span> BaseType<span style="color: #990000">.</span>ByteArrayOutputStream<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span><span style="color: #008080">File</span> file<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>file <span style="color: #990000">=</span> file<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>baseType <span style="color: #990000">=</span> BaseType<span style="color: #990000">.</span>FileOutputStream<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">(</span><span style="color: #009900">boolean</span> buffered<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>buffered <span style="color: #990000">=</span> buffered<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span><span style="color: #009900">boolean</span> checked<span style="color: #990000">,</span> <span style="color: #008080">Checksum</span> checksum<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>checked <span style="color: #990000">=</span> checked<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>checksum <span style="color: #990000">=</span> checksum<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">(</span><span style="color: #009900">boolean</span> gzipped<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>gzipped <span style="color: #990000">=</span> gzipped<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">(</span><span style="color: #009900">boolean</span> printStreamed<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>printStreamed <span style="color: #990000">=</span> printStreamed<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStream</span> <span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException<span style="color: #990000">,</span> IOException <span style="color: #FF0000">{</span>
+        <span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">switch</span></span><span style="color: #990000">(</span>baseType<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">case</span></span> ByteArrayOutputStream<span style="color: #990000">:</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ByteArrayOutputStream</span></span><span style="color: #990000">();</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">break</span></span><span style="color: #990000">;</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">case</span></span> FileOutputStream<span style="color: #990000">:</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">break</span></span><span style="color: #990000">;</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">default</span></span><span style="color: #990000">:</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">IllegalStateException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Base OutputStream not specified."</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>buffered<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>checked<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> checksum<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>gzipped<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>printStreamed<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> os<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>This could be used like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">byte</span><span style="color: #990000">[]</span> data <span style="color: #990000">=</span> <span style="color: #FF0000">{</span><span style="color: #FF0000">'H'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'e'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'l'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'</span><span style="color: #CC33CC">\0</span><span style="color: #FF0000">'</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+<span style="color: #008080">File</span> file <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">File</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"hello.gz"</span><span style="color: #990000">);</span>
+<span style="color: #008080">Checksum</span> cksum <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Adler32</span></span><span style="color: #990000">();</span>
+<span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span>file<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span> cksum<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">();</span>
+<span style="color: #008080">PrintStream</span> pos <span style="color: #990000">=</span> <span style="color: #990000">(</span>PrintStream<span style="color: #990000">)</span> os<span style="color: #990000">;</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+pos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>cksum<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span></tt></pre></div></div>
+<div class="paragraph"><p>Let&#8217;s rate this pattern!</p></div>
+<div class="paragraph"><p><strong>PROS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+The <strong>decorators</strong> can be easily found under the <strong>builder</strong> class.
+</p>
+</li>
+<li>
+<p>
+The syntax is short enough.
+</p>
+</li>
+<li>
+<p>
+We can use the created builder to create many similar objects.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>CONS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+We cannot access intermediate decorators. For example in the
+ code above we cast the <strong>OutputStream</strong> to <strong>PrintStream</strong> which is the last
+ one used. We cannot access for example the <strong>CheckedOutputStream</strong> directly.
+</p>
+</li>
+<li>
+<p>
+The order of the decoration is fixed inside the <code>build()</code> method. We cannot
+ decorate multiple times with the same decorator or alter the order easily without
+ making the implementation too complex. However, this structure is sufficient
+ for most of the common cases.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A couple of notes.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+We could make the builder class implement <strong>Autocloseable</strong>
+ in order to <strong>free</strong> correctly the resources if used in <em>try-with-resources</em>.
+</p>
+</li>
+<li>
+<p>
+We can omit calling the builder methods if we want to pass <strong>false</strong> to them
+ because this is the default value. Additionally we could achieve a more <a href="https://en.wikipedia.org/wiki/Fluent_interface">fluent</a>
+ <strong>API</strong>. if we didn&#8217;t accept arguments at all. For example calling a more <strong>fluent</strong>
+ <strong>API</strong> for the previous example would be like that:
+</p>
+</li>
+</ol></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span>file<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span>cksum<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">();</span></tt></pre></div></div>
+<div class="paragraph"><p>Of course having arguments makes a bit easier to use the <strong>API</strong> in some cases.
+Consider the example where the <strong>compressed</strong> functionality was added
+at runtime based on some condition.</p></div>
+<div class="paragraph"><p>I think I personally like this way most of all so far. It has some rough
+edges but it provides a beautiful and readable interface.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_now_what_more_builder_pattern">Now what? More Builder Pattern</h3>
+<div class="paragraph"><p>The builder pattern as described by <strong>Bloch</strong> has some important benefits.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+In contrast to <a href="https://en.wikipedia.org/wiki/JavaBeans">Javabean</a> initialization of objects by using the
+ <strong>setters</strong> methods this way we can be sure that the created object will be
+ fully initialized and has the expected state before we use it.
+</p>
+</li>
+<li>
+<p>
+A factory may be re-used and create other instances of similar objects.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>In the case of the <strong>decorators builder</strong> we may disregard these benefits
+in favor of other. The builder could be written as such:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">OutputStream</span> os<span style="color: #990000">;</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ByteArrayOutputStream</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span><span style="color: #008080">File</span> file<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>os <span style="color: #990000">=</span> os<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">Checksum</span> checksum<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> checksum<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamBuilder</span> <span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStream</span> <span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> os<span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Now, we have lost the <strong>2nd</strong> previously mentioned benefit. However, we gained
+something else. We can access this way the intermediate decorators:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">OutputStreamBuilder</span> builder <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilder</span></span><span style="color: #990000">(</span>file<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span>cksum<span style="color: #990000">);</span>
+
+<span style="color: #008080">CheckedOutputStream</span> cos <span style="color: #990000">=</span> <span style="color: #990000">(</span>CheckedOutputStream<span style="color: #990000">)</span> builder<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">();</span>
+
+<span style="color: #008080">OutputStream</span> os <span style="color: #990000">=</span> builder
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">()</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">();</span>
+
+<span style="color: #008080">PrintStream</span> pos <span style="color: #990000">=</span> <span style="color: #990000">(</span>PrintStream<span style="color: #990000">)</span> os<span style="color: #990000">;</span>
+
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+pos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+
+System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>cos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span></tt></pre></div></div>
+<div class="paragraph"><p>If wanted we could wrap a decorator multiple times that way. Also, the order the
+decorators are applied isn&#8217;t any more fixed.</p></div>
+<div class="paragraph"><p>As we can see this variation of <em>building</em> objects may often be more suitable
+for building <strong>decorators</strong> in comparison to the original.</p></div>
+<div class="paragraph"><p>I think with this we have more or less exhausted the topic of initializing
+instances of <strong>decorators</strong>. At the process we got familiar with each approach
+and with the benefits that offers and the problems that introduces.</p></div>
+<div class="paragraph"><p>Let&#8217;s see if we can address the <strong>second</strong> issue. When we <strong>decorate</strong>
+an object with a decorator which adds additional functionality not defined in
+the <strong>decorator</strong> interface we have to keep references to the concrete class instead.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_meet_the_adapter">Meet the Adapter</h3>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>In software engineering, the adapter pattern is a software design pattern (also known as wrapper, an alternative naming shared with the decorator pattern) that allows the interface of an existing class to be used as another interface.[1] It is often used to make existing classes work with others without modifying their source code.</p></div>
+</div>
+<div class="attribution">
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>In order to solve the problem of having access to the intermediate concrete
+classes we can instead create an <a href="https://en.wikipedia.org/wiki/Adapter_pattern">adapter</a> that exposes all the intermediate interfaces.</p></div>
+<div class="paragraph"><p>The adapter in our example could look like this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">OutputStreamAdapter</span> <span style="font-weight: bold"><span style="color: #0000FF">extends</span></span> OutputStream <span style="color: #008080">implements</span> Appendable<span style="color: #990000">,</span> Closeable <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">OutputStream</span> os<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">CheckedOutputStream</span> cos<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">DeflaterOutputStream</span> dos<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Appendable</span> appendable<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">PrintStream</span> pos<span style="color: #990000">;</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamAdapter</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> os<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #000000">setOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">addOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> o<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #000000">setOutputStream</span></span><span style="color: #990000">(</span>o<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">setOutputStream</span></span><span style="color: #990000">(</span><span style="color: #008080">OutputStream</span> o<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        os <span style="color: #990000">=</span> o<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>o <span style="color: #008080">instanceof</span> CheckedOutputStream<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            cos <span style="color: #990000">=</span> <span style="color: #990000">(</span>CheckedOutputStream<span style="color: #990000">)</span> o<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>o <span style="color: #008080">instanceof</span> DeflaterOutputStream<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            dos <span style="color: #990000">=</span> <span style="color: #990000">(</span>DeflaterOutputStream<span style="color: #990000">)</span> o<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>o <span style="color: #008080">instanceof</span> Appendable<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            appendable <span style="color: #990000">=</span> <span style="color: #990000">(</span>Appendable<span style="color: #990000">)</span> o<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>o <span style="color: #008080">instanceof</span> PrintStream<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            pos <span style="color: #990000">=</span> <span style="color: #990000">(</span>PrintStream<span style="color: #990000">)</span> o<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> i<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>i<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">Checksum</span> <span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>cos <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> cos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>os <span style="color: #008080">instanceof</span> OutputStreamAdapter<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #990000">((</span>OutputStreamAdapter<span style="color: #990000">)</span> os<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">finish</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>dos <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            dos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">finish</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>os <span style="color: #008080">instanceof</span> OutputStreamAdapter<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="color: #990000">((</span>OutputStreamAdapter<span style="color: #990000">)</span> os<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">finish</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #009900">byte</span><span style="color: #990000">[]</span> b<span style="color: #990000">,</span> <span style="color: #009900">int</span> off<span style="color: #990000">,</span> <span style="color: #009900">int</span> len<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>b<span style="color: #990000">,</span> off<span style="color: #990000">,</span> len<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span><span style="color: #009900">byte</span><span style="color: #990000">[]</span> b<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"WRITE!"</span><span style="color: #990000">);</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>b<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">Appendable</span> <span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #008080">CharSequence</span> cs<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>appendable <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            appendable<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>cs<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">Appendable</span> <span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #008080">CharSequence</span> cs<span style="color: #990000">,</span> <span style="color: #009900">int</span> i<span style="color: #990000">,</span> <span style="color: #009900">int</span> i1<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>appendable <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            appendable<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>cs<span style="color: #990000">,</span> i<span style="color: #990000">,</span> i1<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    @Override
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">Appendable</span> <span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #009900">char</span> c<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> IOException <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>appendable <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            appendable<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>c<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #008080">String</span> x<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>pos <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            pos<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>x<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UnsupportedOperationException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Decorator method not implemented."</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>I have implemented only some of the methods in this example but the point is to
+implement <strong>all</strong> of the <strong>decorators</strong> that add additional functionality.</p></div>
+<div class="paragraph"><p>With an adapter like this we may access each specific even if it is not implemented
+by all the decorators. An <strong>exception</strong> will be thrown if the implementation
+does not exist.</p></div>
+<div class="paragraph"><p>This could be used like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">OutputStreamAdapter</span> os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamBuilderWithAdapter</span></span><span style="color: #990000">(</span>file<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">bufferedOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">checkedOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span> cksum<span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">gzipOutputStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStream</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span>
+                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">write</span></span><span style="color: #990000">(</span>data<span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"World!"</span><span style="color: #990000">);</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flush</span></span><span style="color: #990000">();</span>
+os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">();</span>
+System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>os<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getChecksum</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getValue</span></span><span style="color: #990000">());</span></tt></pre></div></div>
+<div class="paragraph"><p>This uses the <em>Bloch-based</em> <strong>Builder</strong> class from before. However, some modification is required.
+The <code>build()</code> method should look like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">OutputStreamAdapter</span> <span style="font-weight: bold"><span style="color: #000000">build</span></span><span style="color: #990000">()</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> FileNotFoundException<span style="color: #990000">,</span> IOException <span style="color: #FF0000">{</span>
+        <span style="color: #008080">OutputStreamAdapter</span> osa<span style="color: #990000">;</span>
+        <span style="color: #008080">OutputStream</span> os<span style="color: #990000">;</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">switch</span></span><span style="color: #990000">(</span>baseType<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">case</span></span> ByteArrayOutputStream<span style="color: #990000">:</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamAdapter</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ByteArrayOutputStream</span></span><span style="color: #990000">());</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">break</span></span><span style="color: #990000">;</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">case</span></span> FileOutputStream<span style="color: #990000">:</span>
+                        os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamAdapter</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">FileOutputStream</span></span><span style="color: #990000">(</span>file<span style="color: #990000">));</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">break</span></span><span style="color: #990000">;</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">default</span></span><span style="color: #990000">:</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">IllegalStateException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Base OutputStream not specified."</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        osa <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">OutputStreamAdapter</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>buffered<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">BufferedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                osa<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>checked<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CheckedOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">,</span> checksum<span style="color: #990000">);</span>
+                osa<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>gzipped<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">GZIPOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                osa<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>printStreamed<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                os <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+                osa<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addOutputStream</span></span><span style="color: #990000">(</span>os<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> osa<span style="color: #990000">;</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p><strong>PROS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+We can access all the intermediate decorator functionality without leaking
+ references to the intermediate concrete classes.
+</p>
+</li>
+<li>
+<p>
+We have control if the implementation is not there to throw an exception
+ and delegate the control to the client, fail silently or graciously somehow.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>CONS</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Many more lines of code to implement the adapter.
+</p>
+</li>
+<li>
+<p>
+Increased maintenance cost. For each new decorator which deviates from the
+ main interface we have to add the
+ new methods to the <strong>adapter</strong>. For any change we may have to update
+ the <strong>adapter</strong> accordingly.
+</p>
+</li>
+<li>
+<p>
+Builder <code>build()</code> method is kind of more complicated.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In general however I feel for certain occasions it offers some useful
+functionality.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_conclusion">Conclusion</h3>
+<div class="paragraph"><p>In this article we explored various combinations of the <strong>Decorator</strong> pattern
+with the <strong>Factory method</strong>, <strong>Builder</strong> and <strong>Adapter</strong> patterns. Hopefully, we all
+have a better understanding of what each combination offers.</p></div>
+<div class="paragraph"><p>By all means do not go out and start using every bit of design pattern
+combination demonstrated here.</p></div>
+<div class="paragraph"><p>Using the <strong>Decorator</strong> pattern alone is fine for most of the cases, especially
+if the total number of decorators is low. Just don&#8217;t forget to provide
+the necessary documentation and maybe group them all together under the
+same package/directory.</p></div>
+<div class="paragraph"><p>Don&#8217;t rush to add things that <a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">you are not going to need soon or ever</a>.
+As you have seen many of the above combinations introduce additional
+complexity and require more maintenance effort. Keep it simple
+but have in mind how to solve a problem when it arise.</p></div>
+<div class="paragraph"><p>The only exception to the above rule may be the case where you are building an <strong>API</strong> that
+will be distributed for external consumption. Maybe then providing an
+<strong>API</strong> what won&#8217;t introduce breaking changes in the future is important.</p></div>
+<div class="paragraph"><p>Finally, some patterns such as the <strong>Adapter</strong>, <strong>Decorator</strong> or <strong><a href="https://en.wikipedia.org/wiki/Proxy_pattern">Proxy</a></strong> share
+similar implementations. Don&#8217;t get confused, sometimes the differences are subtle. The name of the pattern first
+of all shows the intention. The specific implementation is usually well-defined
+but comes second.</p></div>
+<div class="paragraph"><p>I hope you have found any of the above just a <em>wee</em> <a href="https://en.wikipedia.org/wiki/Bit">bit</a> useful.
+Until the next time keep coding <strong>smart</strong> <em>:-)</em></p></div>
+</div>
+<div class="sect2">
+<h3 id="_see_also">See also</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://stackoverflow.com/questions/328496/when-would-you-use-the-builder-pattern/1953567#1953567">StackOverflow: When would you use the Builder Pattern?</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://stackoverflow.com/questions/55389996/decorator-design-and-factory-design-patterns">StackOverflow: Decorator design and factory design patterns</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://softwareengineering.stackexchange.com/questions/241430/what-are-the-benefits-of-using-a-decorator-factory-that-decorates-objects">SE.softwareengineering: What are the benefits of using a decorator factory that decorates objects?</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.amazon.com/Design-Patterns-Object-Oriented-Addison-Wesley-Professional-ebook/dp/B000SEIBB8">Design Patterns: Elements of Reusable Object-Oriented Software</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.oreilly.com/library/view/head-first-design/0596007124/">Head First Design Patterns</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Sat, 25 Jul 2020 17:07:29 +0300</pubDate>
+        <guid>https://masterex.github.io/archive/2020/07/25/decorator-design-pattern-synergies.html</guid>
+    </item>
+    <item>
         <title>Signal generation by math formulas for the greater good!</title>
         <link>https://masterex.github.io/archive/2020/07/18/signal-generation-by-using-mathematical-formulas.html</link>
         <description>Signal generation by math formulas for the greater good!</description>
