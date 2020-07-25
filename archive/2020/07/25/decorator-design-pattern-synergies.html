@@ -360,7 +360,7 @@ by these <strong>2</strong> types.</p></div>
 share a common <strong>interface</strong> is probably the <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory method</a>
 pattern.</p></div>
 <div class="paragraph"><p>Normally a <strong>factory method</strong> accepts one or a few more arguments.
-A decorator for our case could seem like that:</p></div>
+A factory for our case could seem like that:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
@@ -965,7 +965,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #FF0000">}</span></tt></pre></div></div>
 <div class="paragraph"><p>I have implemented only some of the methods in this example but the point is to
 implement <strong>all</strong> of the <strong>decorators</strong> that add additional functionality.</p></div>
-<div class="paragraph"><p>With an adapter like this we may access each specific even if it is not implemented
+<div class="paragraph"><p>With an adapter like this we may access each one directly even if it is not implemented
 by all the decorators. An <strong>exception</strong> will be thrown if the implementation
 does not exist.</p></div>
 <div class="paragraph"><p>This could be used like that:</p></div>
