@@ -8,6 +8,118 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Job diversification in the modern household</title>
+        <link>https://masterex.github.io/archive/2020/09/03/job-diversification-in-the-modern-household.html</link>
+        <description>Job diversification in the modern household</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_job_diversification_in_the_modern_household">Job diversification in the modern household</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The last months due to <a href="https://en.wikipedia.org/wiki/COVID-19_pandemic">COVID-19</a>
+many people lost their jobs.
+Even companies that were developing software had
+to layoff people or make wage cuts if their core business
+was in the area of transportation, tourism or something else
+that was affected by the situation.</p></div>
+<div class="paragraph"><p>This was a harsh reality check for programmers and other
+information technology professionals who in general are
+accustomed to be hunted by the recruiters and change jobs
+by choice and not by force.</p></div>
+<div class="paragraph"><p>In investment a popular idea is the <a href="https://www.investopedia.com/terms/d/diversification.asp">diversification</a> of the
+investments in order to protect the various assets for
+unpredictable - but probable - dangers.</p></div>
+<div class="paragraph"><p><em>In the same spirit and having in mind the uncertainty of
+the last decade I think that it is wise to apply a similar
+diversification strategy within a household when this is possible
+in order to protect the income of the family.</em></p></div>
+<div class="paragraph"><p>Some simple rules for the members of a family could be:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Work in different companies
+</p>
+</li>
+<li>
+<p>
+Work in different business domains/sectors
+</p>
+</li>
+<li>
+<p>
+Work in different professions/roles
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>I have placed the above from the easier to achieve to the harder one.
+I mean, I am not suggesting to change profession (or spouse)! But in case
+in a family there is a big variation of professions this is good.</p></div>
+<div class="paragraph"><p>Of course there are advantages to work in the same company and/or
+profession. However, we need to sacrifice some advantages in order to gain more
+<em>stability</em> (where stability read <strong>don&#8217;t lose it all</strong>).</p></div>
+<div class="paragraph"><p>Among the advantages of working in the same company are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Share the commute
+</p>
+</li>
+<li>
+<p>
+Spend more time together
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Among the advantages of the same business domain and/or profession are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Use of the common professional network/connections which leads to
+ new opportunities.
+</p>
+</li>
+<li>
+<p>
+Support in work related matters.
+</p>
+</li>
+<li>
+<p>
+Support in career development.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>However, despite all the above benefits the extra <em>security</em> that comes
+from the diversification means that probably in a time of crisis
+the household&#8217;s income won&#8217;t become <strong>0$</strong>.</p></div>
+<div class="paragraph"><p>This means that even if the household&#8217;s <a href="https://www.investopedia.com/terms/e/emergency_fund.asp">emergency fund</a> is in place
+(<strong>and make sure it is</strong>) it may be left untouched.</p></div>
+<div class="paragraph"><p>Also, the fact that a part of the family&#8217;s income still exists
+means that the member who have lost the job may search for longer
+period of time for a new one, feel less pressured and eventually make
+a better and more profitable choice.</p></div>
+<div class="paragraph"><p>I hope that my thinking makes some sense to you.</p></div>
+<div class="sect2">
+<h3 id="_epilogue">Epilogue</h3>
+<div class="paragraph"><p>I coincidentally have a different
+job from my spouse, in different sectors and recently when I had some trouble
+with my previous work which got insolvent I was less stressed during the
+whole process.</p></div>
+<div class="paragraph"><p>Finally, every situation is different. Try to make the best choice
+for your situation. Don&#8217;t use my advise blindly but consider it
+and decide what option is the best for your case.</p></div>
+<div class="paragraph"><p>Have in mind, not everything will always go according to plan.
+That&#8217;s <strong>OK</strong>, <em>just try not to make it a habit!</em></p></div>
+</div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Thu, 03 Sep 2020 01:45:55 +0300</pubDate>
+        <guid>https://masterex.github.io/archive/2020/09/03/job-diversification-in-the-modern-household.html</guid>
+    </item>
+    <item>
         <title>Design Pattern Synergies: Exploring the Decorator Pattern</title>
         <link>https://masterex.github.io/archive/2020/07/25/decorator-design-pattern-synergies.html</link>
         <description>Design Pattern Synergies: Exploring the Decorator Pattern</description>
@@ -331,7 +443,7 @@ by these <strong>2</strong> types.</p></div>
 share a common <strong>interface</strong> is probably the <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory method</a>
 pattern.</p></div>
 <div class="paragraph"><p>Normally a <strong>factory method</strong> accepts one or a few more arguments.
-A decorator for our case could seem like that:</p></div>
+A factory for our case could seem like that:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
@@ -936,7 +1048,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #FF0000">}</span></tt></pre></div></div>
 <div class="paragraph"><p>I have implemented only some of the methods in this example but the point is to
 implement <strong>all</strong> of the <strong>decorators</strong> that add additional functionality.</p></div>
-<div class="paragraph"><p>With an adapter like this we may access each specific even if it is not implemented
+<div class="paragraph"><p>With an adapter like this we may access each one directly even if it is not implemented
 by all the decorators. An <strong>exception</strong> will be thrown if the implementation
 does not exist.</p></div>
 <div class="paragraph"><p>This could be used like that:</p></div>
