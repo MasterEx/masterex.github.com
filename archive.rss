@@ -8,6 +8,248 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>Lack of pagination considered harmful</title>
+        <link>https://masterex.github.io/archive/2020/09/09/lack-of-pagination-considered-harmful.html</link>
+        <description>Lack of pagination considered harmful</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_lack_of_pagination_considered_harmful">Lack of pagination considered harmful</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>Pagination, also known as paging, is the process of dividing a document
+into discrete pages, either electronic pages or printed pages.</p></div>
+<div class="paragraph"><p>&#8230;</p></div>
+<div class="paragraph"><p>Pagination can be handled client-side or server-side. Server-side pagination
+is more common. Client-side pagination can be used when there are very few records
+to be accessed, in which case all records can be returned, and the client can use
+JavaScript to view the separate pages. By using AJAX, hybrid server/client-side
+pagination can be used, in which Javascript is used to request the subsequent
+page which is loaded and inserted into the Document Object Model via AJAX.</p></div>
+<div class="paragraph"><p>Server-side pagination is appropriate for large data sets providing faster
+initial page load, accessibility for those not running Javascript, and complex
+view business logic.</p></div>
+</div>
+<div class="attribution">
+<em>https://en.wikipedia.org/wiki/Pagination</em><br />
+&#8212; Wikipedia
+</div></div>
+<div class="paragraph"><p>Client-side pagination means that the server will return <strong>all</strong> the
+results that match some search criteria and the client will under the hood
+display them in chunks called pages. That just a trick to help the
+user focus on a subset of the results.</p></div>
+<div class="paragraph"><p>Additionally, the client may let the user filter the results or apply
+different ordering rules etc.</p></div>
+<div class="paragraph"><p>For sure, if you are the back-end software engineer implementing a system
+like that is a much simpler implementation and less work for you.</p></div>
+<div class="paragraph"><p>On the other hand, server-side pagination means that the client will request
+the server only the data that it will display. The burden of implementing
+the pagination logic is now split both to client and server sides with
+the server-side pulling most of the weight.</p></div>
+<div class="paragraph"><p>Here is an example of how Google let the user navigate between the
+pages of the result data:</p></div>
+<div class="paragraph"><p><span class="image">
+<img src="https://masterex.github.io/archive/2020/09/09/google-pagination.png" alt="Google Pagination" />
+</span></p></div>
+<div class="paragraph"><p>In this article I will talk to you about server-side pagination
+and try to convince you why <em>always</em> you should go for it.</p></div>
+<div class="sect2">
+<h3 id="_my_first_encounter_with_pagination">My first encounter with pagination</h3>
+<div class="paragraph"><p>I think the first time I have considered implementing server-side
+pagination was during a university web development course where we
+had to build a Question and Answer website, something like a simplified
+<a href="https://en.wikipedia.org/wiki/Stack_Overflow">StackOverflow</a>.</p></div>
+<div class="paragraph"><p>I think inspired partially by <a href="https://en.wikipedia.org/wiki/Twitter">Twitter</a>
+I would like to have the main page
+load the questions dynamically as the user would scroll down.</p></div>
+<div class="paragraph"><p>From the server perspective there is no actual difference regarding
+how the client decides to represent the data.</p></div>
+<div class="paragraph"><p>The client is free to implement pages such as the Google results,
+9gag, Twitter or whatever.</p></div>
+<div class="paragraph"><p>This worked out beautifully back then and actually since then it seemed to me that
+this was the best way to implement pagination. I thought that it would
+be natural for everyone to implement the pagination in the server-side
+but as I later found it actually wasn&#8217;t!</p></div>
+</div>
+<div class="sect2">
+<h3 id="_pagination_misfortune">Pagination misfortune</h3>
+<div class="paragraph"><p>A few years later I was working in a professional environment.</p></div>
+<div class="paragraph"><p>There was an application developed and considered finished by some other
+team. It was in the process of being penetration tested before being
+deployed to production.</p></div>
+<div class="paragraph"><p>The pen test has failed and it was up to my team to find out what was going wrong.</p></div>
+<div class="paragraph"><p>The outcome of the pen test was that some requests were timing out.
+Probably the pen test flagged these requests as potential
+for <a href="https://en.wikipedia.org/wiki/Denial-of-service_attack">DoS</a> attack.</p></div>
+<div class="paragraph"><p>Very soon after exploring the application it was obvious to me what was
+the problem.</p></div>
+<div class="paragraph"><p>The application had a classic search page with a criteria form that
+would return the results and display them in pages. This page
+would fetch all the data from the server and then implement the
+pagination in the client-side.</p></div>
+<div class="paragraph"><p>For the purposes of the pen test there were generated test data. There
+were around <strong>12000</strong> entries returned from that service.</p></div>
+<div class="paragraph"><p>The client took a minute or something to fetch all the data
+and afterwards there were a few dozens of seconds until the browser be actually
+able to display them properly.</p></div>
+<div class="paragraph"><p>Also, as far as I remember even actions like changing pages were slow
+because the browser had so many elements in memory to handle.</p></div>
+<div class="paragraph"><p>Long story short, I have implemented server-side pagination and there
+was a tremendous boost in performance. Everything worked beautifully.
+App passed the pen test and <em>went live on time with just a couple
+of over-hours</em>!</p></div>
+<div class="paragraph"><p><em>That was the first time I realized how important is the server-side
+pagination. Something that I thought was naturally a better choice
+and my preferred way of implementing pagination was now proven to
+me that it was practically the best way.</em></p></div>
+<div class="paragraph"><p>What I didn&#8217;t know was how common that mistake was.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_path_to_success">Path to success</h3>
+<div class="paragraph"><p>From then on when I was implementing such a service I was providing
+pagination if I had the chance. The implementation specifics could vary
+but that didn&#8217;t really matter.</p></div>
+<div class="paragraph"><p>There were times where quality would decreased in favor of delivering faster.
+In some cases there wasn&#8217;t enough time for implementing server-side pagination.
+Then, I tried to make sure to communicate the dangers of not having pagination.
+I made sure that this decision was documented and when the time did
+came we could identify quickly the problem and pay our debt.</p></div>
+<div class="paragraph"><p>And the time always came. It varied depending how fast the data were growing.
+It could be one month, six months or even years later. But it would eventually
+happen.</p></div>
+<div class="paragraph"><p>I have faced the lack of server-side pagination from the client-side too.
+Again I made sure to let the back-end team know.</p></div>
+<div class="paragraph"><p>Some times I heard as a response that we
+could implement pagination in the browser if we wanted to. Of course this
+was never the problem.</p></div>
+<div class="paragraph"><p>Other times I have heard that they know but they didn&#8217;t have
+time at the moment or that they know but by their projections
+this wouldn&#8217;t be a problem for the next <strong>X</strong> years.</p></div>
+<div class="paragraph"><p>That was ok. I sympathize the developers who make an educated choice
+and trade-offs for good
+reasons. <em>I dislike when things happen by coincidence.</em></p></div>
+</div>
+<div class="sect2">
+<h3 id="_more_pagination_madness">More pagination madness</h3>
+<div class="paragraph"><p>As you can seen not always my concerns were addressed.</p></div>
+<div class="paragraph"><p>I remember working in another app that was going to be used in an
+internal network. This is a very common setting
+for "enterprise" class applications.</p></div>
+<div class="paragraph"><p>The app was fetching all the data from the server in each search screen.
+It also did provide client-side filtering on each column.</p></div>
+<div class="paragraph"><p>Fun fact was that the back-end service was implementing the pagination but it
+wasn&#8217;t implemented in the client. The client did fetch everything
+explicitly. (However, the service didn&#8217;t implement the filtering!)</p></div>
+<div class="paragraph"><p>I have raised my concerns but I was told that it was OK. The app was going
+to be used in an internal network. It was going to work as expected
+for a big number of results.</p></div>
+<div class="paragraph"><p>In some screens where the problem was more apparent the client was enforcing
+a few search filters as mandatory in order to limit the results. This is not bullet
+proof as again after some time it will cause problems.</p></div>
+<div class="paragraph"><p>And you know what. This app went to the clients for user acceptance
+test. They have loaded it with lots of test data and boom!</p></div>
+<div class="paragraph"><p>Some requests as expected started to take too much time to respond!
+Others started to fail some or all of the times with timeouts!</p></div>
+<div class="paragraph"><p>Of course the behavior varied depending on the network quality and load.</p></div>
+<div class="paragraph"><p>From our end we ensured the users that the app was working OK for a couple
+dozen thousands of results. The users insisted that they got the error sooner.</p></div>
+<div class="paragraph"><p>The cause was simple and it was that their network was slower. We tested
+the app in a fast local network. Their test server was in an internal
+network but slower, with more hops and load than ours. So the delay
+was bigger.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_lessons_learned">Lessons learned</h3>
+<div class="paragraph"><p>I hope to have made you see by presenting you <strong>2</strong> real life experiences
+how nasty can be the lack of server-side pagination. Be sure that I have
+more similar stories to tell!</p></div>
+<div class="paragraph"><p>I am convinced for sure that the lack of server-side pagination
+will always sooner or later be a problem. It is not a <a href="https://en.wikipedia.org/wiki/Program_optimization#When_to_optimize">premature optimization</a>.
+It should be a standard.</p></div>
+<div class="paragraph"><p>It will start with the application getting slower. After some time and depending
+the web server configuration it will start failing for some of the requests
+and eventually for every request.</p></div>
+<div class="paragraph"><p>So, let&#8217;s have some bullet points we all like!</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Server-side pagination for little data or a local network application
+   may be an optimization.
+   For many data or an internet facing application it will be a necessity.
+</p>
+</li>
+<li>
+<p>
+If server-side pagination is not implemented make sure to communicate
+   the potential problems with the involved parties and document it so
+   in the future you will move faster when the problem rise.
+</p>
+</li>
+<li>
+<p>
+Don&#8217;t think that it won&#8217;t happen to you. It will!
+</p>
+</li>
+<li>
+<p>
+Test your application with sufficient number of data. Consider the
+   data that will be accumulated after a few years of operation and
+   then add some more. With properly implemented pagination it shouldn&#8217;t
+   matter and it should work the same regardless the volume.
+</p>
+</li>
+<li>
+<p>
+When implementing server-side pagination take into consideration if
+   it is required to support filtering and/or ordering. This is absolutely
+   doable but could be tricky.
+</p>
+</li>
+<li>
+<p>
+It takes a correct implementation from both the server and the client
+   in order to have this done correctly.
+</p>
+</li>
+<li>
+<p>
+Set a sensible default pages size. I wouldn&#8217;t suggest setting a <strong>max</strong>
+   limit but you can consider it if you want to make sure that the
+   client will use the pagination.
+</p>
+</li>
+<li>
+<p>
+Always make educated choices!
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_epilogue">Epilogue</h3>
+<div class="paragraph"><p>I hope I have been motivational enough and you will <em>always</em> implement
+server-side pagination (or at least seriously consider it)!</p></div>
+<div class="paragraph"><p>It is actually not so hard if you have some experience with it. Modern
+frameworks provide some of the required functionality and make the
+process easier.</p></div>
+<div class="paragraph"><p>I could argue and discuss how a (possible) beautiful pagination API should
+look like but this is
+a matter of secondary importance.</p></div>
+<div class="paragraph"><p>Deliberately, I haven&#8217;t mentioned specific technologies, protocols etc.
+in this article. It doesn&#8217;t matter. Server-side pagination may be
+implemented in any language, framework or protocol and it should!</p></div>
+<div class="paragraph"><p>So, carry on and <strong>code responsibly</strong>!</p></div>
+</div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Wed, 09 Sep 2020 01:07:53 +0300</pubDate>
+        <guid>https://masterex.github.io/archive/2020/09/09/lack-of-pagination-considered-harmful.html</guid>
+    </item>
+    <item>
         <title>Job diversification in the modern household</title>
         <link>https://masterex.github.io/archive/2020/09/03/job-diversification-in-the-modern-household.html</link>
         <description>Job diversification in the modern household</description>
