@@ -47,10 +47,10 @@ like that is a much simpler implementation and less work for you.</p></div>
 the server only the data that it will display. The burden of implementing
 the pagination logic is now split both to client and server sides with
 the server-side pulling most of the weight.</p></div>
-<div class="paragraph"><p>Here is an example of how Google let the user navigate between the
+<div class="paragraph"><p>Here is an example of how Google and others let the user navigate between the
 pages of the result data:</p></div>
 <div class="paragraph"><p><span class="image">
-<img src="https://masterex.github.io/archive/2020/09/09/google-pagination.png" alt="Google Pagination" />
+<img src="https://masterex.github.io/archive/2020/09/09/pagination-examples.png" alt="Pagination Examples" />
 </span></p></div>
 <div class="paragraph"><p>In this article I will talk to you about server-side pagination
 and try to convince you why <em>always</em> you should go for it.</p></div>
@@ -2498,7 +2498,7 @@ using the types in a not desired way.</p></div>
 <div class="paragraph" id="fosscomm2014-thoughts-on-programming-languages"><p><strong>Java</strong> is such a language. Here is an example.</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2515,7 +2515,7 @@ curve of such a language quicker as the syntax tends to be simpler.</p></div>
 <div class="paragraph" id="fosscomm2014-thoughts-on-programming-languages"><p>Such a language is <strong>Javascript</strong>. Here is an example:</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2566,7 +2566,7 @@ developer to be more expressive.</p></div>
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
 <div class="title">Lua</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2574,7 +2574,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="fosscomm2014-thoughts-on-programming-languages"></a>
 <div class="title">C</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -2914,7 +2914,7 @@ describe my approach.</p></div>
 <h3 id="_add_word_to_row_algorithm">Add Word to Row Algorithm</h3>
 <div class="listingblock">
 <a id="cryptolexo"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3015,7 +3015,7 @@ data chunks to check if any transmission errors took place.</p></div>
 This got me to the library&#8217;s pydoc and I show this example <a href="https://www.dlitz.net/software/pycrypto/api/current/toc-Crypto.Hash.SHA-module.html">here</a></p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3028,7 +3028,7 @@ http://www.gnu.org/software/src-highlite -->
 in my program:</p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3058,7 +3058,7 @@ comments.</p></div>
 <div class="paragraph" id="pycrypto-hash-learning-by-example"><p>So, in my case I should have done the following:</p></div>
 <div class="listingblock">
 <a id="pycrypto-hash-learning-by-example"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3100,7 +3100,7 @@ group of ticks and gaps(silence).</p></div>
 <div class="paragraph" id="beatkeeper-visual-tick"><p>Here is the updated code:</p></div>
 <div class="listingblock">
 <a id="beatkeeper-visual-tick"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3281,7 +3281,7 @@ Install it in /usr/bin or something like that
 <div class="paragraph" id="asciiblog-is-evolving"><p>Command set resembles the git one. I&#8217;ll list it here:</p></div>
 <div class="listingblock">
 <a id="asciiblog-is-evolving"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3636,7 +3636,7 @@ in order to execute the encrypted file.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
 <div class="title">Original Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3644,7 +3644,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
 <div class="title">Encrypted Code</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3701,7 +3701,7 @@ Let me quote them and explain some of them.</p></div>
 This looks like this:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3722,7 +3722,7 @@ http://www.gnu.org/software/src-highlite -->
 PHP&#8217;s <span class="green">eval()</span> method. If we decode it, it looks like this:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3905,7 +3905,7 @@ available PHP functions.</p></div>
 <div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is my magic code:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3964,7 +3964,7 @@ could try to implement another encryption mechanism on top of PHPShadow.</p></di
 are pretty naive but they serve our purpose really nicely.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -3988,7 +3988,7 @@ http://www.gnu.org/software/src-highlite -->
 and the private for the decryption.</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4020,7 +4020,7 @@ was a "Hello World" one and the ciphertext was the above:</p></div>
 is our precious decoder</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4093,7 +4093,7 @@ numbers for the cipher-text.</p></div>
 <div class="paragraph" id="phpshadow-3.2.0-review"><p>Here is an example:</p></div>
 <div class="listingblock">
 <a id="phpshadow-3.2.0-review"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4239,7 +4239,7 @@ to implement a metronome with that.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioGenerator</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4340,7 +4340,7 @@ with the <span class="green">writeSound()</span> method.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">Metronome</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4440,7 +4440,7 @@ song <strong>Oh, Susanna</strong>.</p></div>
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4546,7 +4546,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="listingblock">
 <a id="android-audio-synthesis"></a>
 <div class="title">AudioSynthesisDemoActivity</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4785,7 +4785,7 @@ and the xml files that we should create!</p></div>
 <div class="paragraph" id="jupar"><p>Here is the relevant code:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4882,7 +4882,7 @@ such as 1.0 , 1.1 etc and release is an integer starting from 1 and counting.</p
 <div class="paragraph" id="jupar"><p>Then we set the remote xml with the current release info. Here is an example:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4909,7 +4909,7 @@ notify the user for the new version and don&#8217;t perform an automatic update.
 the needed files. Here how <span class="red">files.xml</span> looks like:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4927,7 +4927,7 @@ http://www.gnu.org/software/src-highlite -->
 This is the last xml file and looks like this:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4981,7 +4981,7 @@ path as an argument and let&#8217;s up to the developer how to handle this.</p><
 <div class="paragraph" id="jupar"><p>You can try to find the executables path with a command like:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -4999,7 +4999,7 @@ doesn&#8217;t works for JVMs previous to 1.5.</p></div>
 <div class="paragraph" id="jupar"><p>Use a full path to set the temporary directory:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5013,7 +5013,7 @@ update<span style="color: #990000">.</span><span style="font-weight: bold"><span
 <div class="paragraph" id="jupar"><p>And then have an <span class="red">update.xml</span> with also full paths.</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5035,7 +5035,7 @@ to provide an update method that takes the executable&#8217;s full path as an ar
 <div class="paragraph" id="jupar"><p>So we only need to have something like that:</p></div>
 <div class="listingblock">
 <a id="jupar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5208,7 +5208,7 @@ Spectrum&#8217;s initial screen with Sinclair&#8217;s copyright note.</p></div>
 So we could directly run:</p></div>
 <div class="listingblock">
 <a id="spectrum-zx"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5220,7 +5220,7 @@ PRINT name$</tt></pre></div></div>
 example:</p></div>
 <div class="listingblock">
 <a id="spectrum-zx"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5309,7 +5309,7 @@ be mentioned. The progress bar was originally written as part of F.I.C.</p></div
 is the following one:</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5368,7 +5368,7 @@ update method takes the done work units so far and the total work units.</p></di
 <div class="paragraph" id="java-cli-progress-bar"><p>Here is an example:</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5421,7 +5421,7 @@ long. This is obviously the progress bar!</p></div>
 comments that explain what&#8217;s happening.</p></div>
 <div class="listingblock">
 <a id="java-cli-progress-bar"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5579,7 +5579,7 @@ users.</p></div>
 user like that:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5618,7 +5618,7 @@ see that they differ.</p></div>
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we <em>hexdump</em> the original file we&#8217;ll see that the last hex is that:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5631,7 +5631,7 @@ the original.</p></div>
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>The GIF that our user have downloaded will be 7 bytes larger:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5642,7 +5642,7 @@ $ du -b image<span style="color: #990000">.</span>gif
 <div class="paragraph" id="trackable-file-distribution-a-simple-approach"><p>If we hexdump it the last line will be:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5655,7 +5655,7 @@ character table</a>.</p></div>
 the downloaded file last line is:</p></div>
 <div class="listingblock">
 <a id="trackable-file-distribution-a-simple-approach"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5816,7 +5816,7 @@ real world solutions!</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
 <div class="title">CoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5857,7 +5857,7 @@ find the gist with the whole code.</p></div>
 <div class="paragraph" id="php-protect-the-code"><p>I&#8217;ll just go directly to the interesting part:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5909,7 +5909,7 @@ Rename the variables
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
 <div class="title">ObfuscatedCoolCode</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5933,7 +5933,7 @@ for example you can alter string letters with their
 <a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/index.php">numerical code</a>:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -5997,7 +5997,7 @@ the original source code.</p></div>
 the deciphered code. This could be something like that:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -6015,7 +6015,7 @@ algorithm that has been used could easily find the original code.</p></div>
 execute the above code to get the original source code:</p></div>
 <div class="listingblock">
 <a id="php-protect-the-code"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -6387,7 +6387,7 @@ in Asciidoc <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a>.</p></d
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
 <div class="title">Hierarchy</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -6433,7 +6433,7 @@ directory/file listing, that look like that:</p></div>
 like that:</p></div>
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -6461,7 +6461,7 @@ This RSS file contains the post titles and the publication dates.</p></div>
 <span class="green">archive/2011/08/03/asciiblog.html</span>. I should publish it like</p></div>
 <div class="listingblock">
 <a id="hello-world-asciiblog"></a>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
