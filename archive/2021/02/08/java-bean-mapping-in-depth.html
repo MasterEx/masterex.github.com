@@ -1,0 +1,1822 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.4" />
+<meta name="description" content="A deep dive in how java bean mappers work." />
+<meta name="keywords" content="java, software, bean mapping, object mapping, assembler, dto, dozer, mapstruct, jmapper, benchmark" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Java bean mapping in depth</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_java_bean_mapping_in_depth">Java bean mapping in depth</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In this article I am going to try to explain to you everything you need
+to know about bean mapping in <strong>Java</strong>. Before doing so let&#8217;s first understand
+<strong>why</strong> and <strong>when</strong> mapping objects is necessary.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_let_8217_s_talk_about_object_mapping">Let&#8217;s talk about object mapping</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>It&#8217;s <strong>2021</strong> already and I was wondering how much does the software
+design has changed the last <strong>20</strong> years?</p></div>
+<div class="paragraph"><p><a href="https://en.wikipedia.org/wiki/Martin_Fowler_(software_engineer)">Martin Fowler</a>
+in "<a href="https://www.oreilly.com/library/view/patterns-of-enterprise/0321127420/">Patterns of Enterprise Application Architecture</a>" mentions
+the "<a href="https://martinfowler.com/eaaCatalog/dataTransferObject.html">Data Transfer Object</a>" design pattern. Fowler defines the pattern as
+such: "<em>An object that carries data between processes in order to
+reduce the number of method calls</em>".</p></div>
+<div class="paragraph"><p>This pattern essentially advocates that when the communication between
+processes is expensive then it is preferable to avoid the communication
+overhead by sending all the required data in advance, in an effort to
+reduce this overhead.</p></div>
+<div class="paragraph"><p>To achieve this one may create aggregate objects that contain all the
+required information to be sent. These objects are called <em>Data Transfer Objects</em>
+or more commonly <em>DTO</em>.</p></div>
+<div class="paragraph"><p>Fowler mentions "<em>Usually an assembler is used on the server side to transfer
+data between the DTO and any domain objects</em>".</p></div>
+<div class="paragraph"><p>The assembler&#8217;s (a.k.a. mapper) purpose is to compose the DTOs given all
+the domain models that contain all the data to be transmitted.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_are_mappers_still_relevant">Are mappers still relevant?</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Were they ever relevant? The answer is maybe, it depends&#8230;</p></div>
+<div class="paragraph"><p>Developers working on <strong>enterprise</strong> applications and especially with <strong>Java</strong> are
+overzealous, they try to abstract <strong>everything</strong> creating layers and layers
+of abstraction.</p></div>
+<div class="paragraph"><p>Furthermore, they strive to separate every single business part in a different
+module in order to achieve <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>
+and <a href="https://en.wikipedia.org/wiki/Loose_coupling">loose coupling</a> between the components of the code.</p></div>
+<div class="paragraph"><p>This some times works well and the outcome is a robust <a href="https://en.wikipedia.org/wiki/Future_proof">future-proof</a> application
+but other times is just a sad example of <a href="https://en.wikipedia.org/wiki/Overengineering">over-engineering</a>.</p></div>
+<div class="paragraph"><p>Let&#8217;s see a more concrete example.</p></div>
+<div class="paragraph"><p>In a typical application, the application will have to communicate with external entities,
+i.e. with a user by providing some sort of user interface or with another
+system by providing or consuming an API etc. So, for this case the input and
+output will consist of presentation models or <strong>DTO</strong> etc.</p></div>
+<div class="paragraph"><p>Then, the application will have to process in some way the received information
+or the information to transmit according to the <a href="https://en.wikipedia.org/wiki/Business_logic">business logic</a>.
+This layer will usually have it&#8217;s own representation of the business models.</p></div>
+<div class="paragraph"><p>Finally, it will be required to persist or fetch some data from/to the database. There will
+be some "entity" objects that represent in an object oriented fashion the
+data persisted in the database layer (based on the <a href="https://martinfowler.com/eaaCatalog/repository.html">repository pattern</a>).</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="Overview_of_a_three-tier_application_vectorVersion.svg" alt="3-tier-architecture" />
+</div>
+<div class="title">Figure 1. 3-Tier Architecture (source: Wikipedia)</div>
+</div>
+<div class="paragraph"><p>So, in a typical <a href="https://en.wikipedia.org/wiki/Multitier_architecture#Three-tier_architecture">3-layer application</a>
+we can count <strong>3</strong> different types of models:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Repository models/entities
+</p>
+</li>
+<li>
+<p>
+Business models
+</p>
+</li>
+<li>
+<p>
+Presentation models or DTOs
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>Now you will most probably think that at <strong>minimum</strong> we will need <strong>3</strong> kind of objects in
+our applications. However, no. As I have said it <em>depends</em>!</p></div>
+<div class="paragraph"><p>We can actually use only one <strong>Class</strong> in our code to represent everything.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_life_with_only_one_class">Life with only one Class</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Having just <strong>one</strong> class for each layer may work OK for a small application or if
+we want to write an application <strong>fast</strong>, let&#8217;s say some proof of concept.</p></div>
+<div class="paragraph"><p>Not having to deal with mapping and other boilerplate code will keep things <strong>simple</strong>
+and improvements may come in future iterations of the development process <a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">when
+and only if they are needed</a>.</p></div>
+<div class="paragraph"><p>Actually, <a href="https://spring.io/projects/spring-data-rest">Spring&#8217;s Data Rest</a> extension in a sense it does just that. Someone
+will have to create only the <a href="https://docs.spring.io/spring-data/rest/docs/current/reference/html/#projections-excerpts.projections">entities</a> and all the other layers will be
+based on these (with <em>some</em> <a href="https://en.wiktionary.org/wiki/automagic">automagic</a> being involved in the process).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_benefits_of_dtos">Benefits of DTOs</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Let&#8217;s focus more on the benefits of using <strong>DTO</strong> though. This way it will become
+more apparent when to use them or not.</p></div>
+<div class="sect2">
+<h3 id="_1_the_primary_argument_of_fowler_is_the_reduced_communication_overhead">1. The primary argument of Fowler is the reduced communication overhead.</h3>
+<div class="paragraph"><p>Let me give you a real life example. A few years back I was working on an
+electronic restaurant menu which was <strong>optimized</strong> to work on tablets with
+<strong>potentially slow internet connection</strong>.</p></div>
+<div class="paragraph"><p>Our approach was to <strong>download all</strong> the content of the catalog in all the available
+languages <strong>once</strong> and <strong>cache</strong> it in the browser.</p></div>
+<div class="paragraph"><p>For that reason we constructed an <strong>uber DTO</strong> which contained all the information
+of the catalog and actually we were caching it in the server side too. You see,
+the catalogs were read most often than modified.</p></div>
+<div class="paragraph"><p>Have in mind that this is a case where we <strong>knew that all the information should be eventually
+transferred to the client</strong>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_2_data_reduction">2. Data reduction</h3>
+<div class="paragraph"><p>There are cases where we want to remove part of the information our business
+model contains. An example is a "user" object which contains some password
+or security question.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">User</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> password<span style="color: #990000">;</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> securityAnswer<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">/* ...code and stuff... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>It seems appropriate <strong>never to transmit this information</strong>. A <strong>DTO</strong> which
+doesn&#8217;t include these fields may be used.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">UserDTO</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">/* ...code and stuff... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Note that if we serialize our object to <strong>JSON</strong>, <strong>XML</strong> or some other representation
+the serializer may support configuration for hiding fields etc.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">User</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  @JsonIgnore
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> password<span style="color: #990000">;</span>
+  @JsonIgnore
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> securityAnswer<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">/* ...code and stuff... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>However,
+<strong>DTO</strong> is more <strong>generic</strong> and can be used regardless representation, protocols etc.</p></div>
+<div class="paragraph"><p><strong>Reduction</strong> is useful to create "light" representations of our objects too.
+In opposition to the first argument where we want <strong>eagerly</strong> to transfer information we
+may want to use a <strong>lazy</strong> approach.</p></div>
+<div class="paragraph"><p>An <em>example</em> would be to list all the posts of a blog. A <strong>DTO</strong> could contain only the first
+<strong>X</strong> <em>characters of each article and the title</em>. If and when clicked another
+<strong>DTO</strong> representation of the article could be returned by a <strong>subsequent communication</strong>
+and return <em>the whole text along side with the comments and other information</em>.</p></div>
+<div class="paragraph"><p>Finally, another case where data reduction is handy is to avoid <strong>complex representation
+cases</strong>. For example two objects that are creating a <strong>cycle</strong> in the <a href="https://en.wikipedia.org/wiki/Object_graph">object graph</a>,
+would not be converted to JSON. However, a DTO could represent this relationship
+<strong>partially</strong> and avoid this issue when converting it to JSON (of course
+the same can be achieved with <code>@JsonIgnore</code> but you get my point).</p></div>
+</div>
+<div class="sect2">
+<h3 id="_3_transform_data">3. Transform data</h3>
+<div class="paragraph"><p>Another capability offered by <strong>DTO</strong> pattern is to adapt the provided data. Let&#8217;s say
+that we have a user and in our business model we have a birth date field.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">User</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">LocalDate</span> birthday<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">/* ...code and stuff... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>However, in our <strong>DTO</strong> we want to expose an <em>age field</em>. This can be done quite
+easily.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">UserDTO</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Integer</span> age<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">/* ...code and stuff... */</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_4_loose_coupling">4. Loose coupling</h3>
+<div class="paragraph"><p>As I have mentioned previously <strong>enterprise</strong> developers <em>love</em> to separate their
+code into <strong>modules</strong> and <strong>layers</strong>. It is important each module or layer to be <em>isolated</em> by the other
+ones.</p></div>
+<div class="paragraph"><p>The isolation among other things ensures that implementation <strong>details are
+not leaked outside</strong> the module/layer and the code is decoupled in a way that <strong>change</strong> in
+one module/layer should <strong>not affect</strong> the other ones.</p></div>
+<div class="paragraph"><p><strong>DTO</strong> and different types of models per module/layer contribute towards <em>code decoupling</em>.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_back_to_mappers">Back to mappers</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I have made such an extensive reference to <strong>DTO</strong> because mappers are <em>historically</em>
+associated with this particular pattern.</p></div>
+<div class="paragraph"><p>Let&#8217;s say we have the following business model.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">User</span> <span style="color: #FF0000">{</span>
+  <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="color: #008080">String</span> email<span style="color: #990000">;</span>
+  <span style="color: #008080">String</span> password<span style="color: #990000">;</span>
+  <span style="color: #008080">String</span> salt<span style="color: #990000">;</span>
+  <span style="color: #008080">LocalDate</span> created<span style="color: #990000">;</span>
+  <span style="color: #008080">Boolean</span> activated<span style="color: #990000">;</span>
+  <span style="color: #008080">Boolean</span> locked<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">//... getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>And we want to map it to the following DTO.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">UserDTO</span> <span style="color: #FF0000">{</span>
+  <span style="color: #008080">enum</span> Status <span style="color: #FF0000">{</span>
+    ACTIVATED<span style="color: #990000">,</span>
+    LOCKED<span style="color: #990000">,</span>
+    NEW
+  <span style="color: #FF0000">}</span>
+  <span style="color: #008080">String</span> username<span style="color: #990000">;</span>
+  <span style="color: #008080">String</span> email<span style="color: #990000">;</span>
+  <span style="color: #008080">LocalDate</span> creationTs<span style="color: #990000">;</span>
+  <span style="color: #008080">Status</span> status<span style="color: #990000">;</span>
+  <span style="font-style: italic"><span style="color: #9A1900">//... getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>A <strong>mapper</strong> could <em>look like</em> this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">Mapper</span> <span style="color: #FF0000">{</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">UserDTO</span> <span style="font-weight: bold"><span style="color: #000000">userToDto</span></span><span style="color: #990000">(</span><span style="color: #008080">User</span> user<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="color: #008080">UserDTO</span> dto <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">UserDTO</span></span><span style="color: #990000">();</span>
+    dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setUsername</span></span><span style="color: #990000">(</span>user<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getUsername</span></span><span style="color: #990000">());</span>
+    dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setEmail</span></span><span style="color: #990000">(</span>user<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getEmail</span></span><span style="color: #990000">());</span>
+    dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setCreationTs</span></span><span style="color: #990000">(</span>user<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getCreated</span></span><span style="color: #990000">());</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>user<span style="color: #990000">.</span>getLocked<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+      dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setStatus</span></span><span style="color: #990000">(</span>Status<span style="color: #990000">.</span>LOCKED<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>user<span style="color: #990000">.</span>getActivated<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+      dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setStatus</span></span><span style="color: #990000">(</span>Status<span style="color: #990000">.</span>ACTIVATED<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+      dto<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setStatus</span></span><span style="color: #990000">(</span>Status<span style="color: #990000">.</span>NEW<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> dto<span style="color: #990000">;</span>
+  <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>The benefit <em>at a first glance</em> may not be apparent but we have <strong>managed to contain
+all the knowledge about how the mapping should be done within the Mapper</strong>.</p></div>
+<div class="paragraph"><p>The <strong>business layer</strong> which uses the <strong>User</strong> class <em>won&#8217;t change</em> if the <strong>UserDTO</strong>
+changes somehow, let&#8217;s say <em>renamed</em> the <strong>username</strong> field to <strong>handle</strong>. In that
+case <strong>only</strong> the <strong>Mapper</strong> code should be updated and of course the code which
+uses the <strong>DTO</strong> which should be in the <strong>presentation</strong> layer.</p></div>
+<div class="paragraph"><p><strong>Fowler</strong> in <strong>2004</strong> <a href="https://martinfowler.com/bliki/LocalDTO.html">argued</a> that the <strong>DTO</strong> pattern shouldn&#8217;t be used if not actually
+needed. He has specifically mentioned that code decoupling locally inside
+the same application is not a good enough reason especially because of the
+overhead that exists regarding the creation and maintenance of all the mappers.</p></div>
+<div class="paragraph"><p>However, this overhead nowadays is <strong>minimized</strong> because there are <strong>plenty</strong>
+of <em>tools</em> which <strong>automate</strong> this process.</p></div>
+<div class="paragraph"><p>In the next sections we are going to
+see which are the available tools in <strong>Java</strong> nowadays, how they work <em>under
+the hood</em> and how they compare in terms or <strong>performance</strong>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_object_mapping_works_in_java">How object mapping works in Java</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are <strong>3</strong> basic mechanisms that are used by the various <strong>mapping frameworks</strong>
+in <strong>Java</strong> in order to automate this process.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<strong>Reflection</strong>
+</p>
+</li>
+<li>
+<p>
+<strong>Code generation</strong>
+</p>
+</li>
+<li>
+<p>
+<strong>Code instrumentation</strong>
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>I am going to talk more about each methodology below and present some <strong>example
+code</strong>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/warning.png" alt="Warning" />
+</td>
+<td class="content">Mind that the example code is written only for demonstration purposes and offers
+very trivial functionality. Do not use it in production, instead use one of
+the many well established mapping frameworks out there like the ones mentioned later in this article.</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_reflection">Reflection</h3>
+<div class="paragraph"><p><strong>Reflection</strong> is a <strong>powerful</strong> technique that allows to manipulate in
+various ways an object at <a href="https://en.wikipedia.org/wiki/Runtime_(program_lifecycle_phase)">runtime</a>. It is the most <strong>dynamic</strong> methodology but
+it comes with a <strong>considerable</strong> price, <strong>it is the slowest one</strong>.</p></div>
+<div class="paragraph"><p>Let&#8217;s assume that we want to <strong>map two objects</strong> by mapping their fields
+<strong>if their names and types are equal</strong>.</p></div>
+<div class="paragraph"><p>This could be done with reflection like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #990000">&lt;</span>T<span style="color: #990000">&gt;</span> <span style="color: #008080">T</span> <span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span><span style="color: #008080">Object</span> src<span style="color: #990000">,</span> <span style="color: #008080">Class&lt;T&gt;</span> c<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> NoSuchMethodException<span style="color: #990000">,</span>
+    InstantiationException<span style="color: #990000">,</span> IllegalAccessException<span style="color: #990000">,</span> IllegalArgumentException<span style="color: #990000">,</span>
+    InvocationTargetException <span style="color: #FF0000">{</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>src <span style="color: #990000">==</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">;</span>
+  <span style="color: #FF0000">}</span>
+  <span style="color: #008080">Constructor&lt;T&gt;</span> defaultPublicConstructor <span style="color: #990000">=</span> c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getConstructor</span></span><span style="color: #990000">();</span>
+  <span style="color: #008080">T</span> targetObject <span style="color: #990000">=</span> defaultPublicConstructor<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newInstance</span></span><span style="color: #990000">();</span>
+  Field<span style="color: #990000">[]</span> srcFields <span style="color: #990000">=</span> src<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getClass</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredFields</span></span><span style="color: #990000">();</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(</span><span style="color: #008080">Field</span> srcField <span style="color: #990000">:</span> srcFields<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+      <span style="color: #008080">Field</span> trgField <span style="color: #990000">=</span> targetObject<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getClass</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredField</span></span><span style="color: #990000">(</span>srcField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">());</span>
+      srcField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setAccessible</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">);</span>
+      trgField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setAccessible</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">);</span>
+      trgField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span>targetObject<span style="color: #990000">,</span> srcField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span>src<span style="color: #990000">));</span>
+    <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">NoSuchFieldException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+      System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>String
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Field %s not found on target class"</span><span style="color: #990000">,</span> srcField<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()));</span>
+    <span style="color: #FF0000">}</span>
+  <span style="color: #FF0000">}</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> targetObject<span style="color: #990000">;</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>In the above example the map method accepts as an argument the <strong>src object</strong>
+and the <strong>target class</strong>. It <strong>creates</strong> a target object and <strong>populates</strong> the fields
+<strong>even if they are declared private and are not exposed by a getter method</strong>.</p></div>
+<div class="paragraph"><p>The <strong>mapper</strong> do <strong>not need to know beforehand</strong> which classes it will map. It
+can even map classes that are <strong>loaded at runtime</strong>.</p></div>
+<div class="sect3">
+<h4 id="_pros">Pros</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Can map private members
+</p>
+</li>
+<li>
+<p>
+Can map classes that were loaded at runtime
+</p>
+</li>
+<li>
+<p>
+From a user&#8217;s perspective a default mapper with sane assumptions
+ is very easy to use with minimal code
+</p>
+</li>
+<li>
+<p>
+From an implementor&#8217;s perspective it is relatively easy to implement
+ and debug too
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_cons">Cons</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+It is significantly slow based on the other methodologies
+</p>
+</li>
+<li>
+<p>
+There may be unexpected <a href="https://stackoverflow.com/questions/41869269/pros-and-cons-of-java-reflection">runtime behavior</a>
+ and <a href="https://stackoverflow.com/questions/3002904/what-is-the-security-risk-of-object-reflection">security considerations</a>
+</p>
+</li>
+<li>
+<p>
+The reflection support may be disabled
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_code_generation">Code generation</h3>
+<div class="paragraph"><p>Next to our list is <strong>code generation</strong>. This is the generation of <strong>source code</strong>
+that performs the mapping similarly to a hand written mapper when the
+application is <strong>compiled</strong>.</p></div>
+<div class="paragraph"><p>To do so the most <em>popular</em> way would be to create a special <strong>annotation</strong> that
+marks interfaces as <strong>mappers</strong>, create an <strong>interface</strong> with the methods that
+we wish to use for the <strong>mapping</strong> and let an <strong>annotation processor</strong> create
+the mapping interface&#8217;s implementation <strong>at the compilation of the program</strong>.</p></div>
+<div class="paragraph"><p>Such a mapper could seem like that.</p></div>
+<div class="sect4">
+<h5 id="_mapper_annotation">Mapper Annotation</h5>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>@<span style="font-weight: bold"><span style="color: #000000">Target</span></span><span style="color: #990000">(</span>ElementType<span style="color: #990000">.</span>TYPE<span style="color: #990000">)</span>
+@<span style="font-weight: bold"><span style="color: #000000">Retention</span></span><span style="color: #990000">(</span>RetentionPolicy<span style="color: #990000">.</span>SOURCE<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> @<span style="font-weight: bold"><span style="color: #0000FF">interface</span></span> <span style="color: #008080">Mapper</span> <span style="color: #FF0000">{</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect4">
+<h5 id="_mapper_interface">Mapper Interface</h5>
+<div class="paragraph"><p>This is <strong>client</strong> side code.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>@Mapper
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">interface</span></span> <span style="color: #008080">StaticCodeGenerationMapper</span> <span style="color: #FF0000">{</span>
+
+  <span style="color: #008080">StaticCodeGenerationMapper</span> INSTANCE <span style="color: #990000">=</span> Mappers<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getMappers</span></span><span style="color: #990000">(</span>StaticCodeGenerationMapper<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">);</span>
+
+  <span style="color: #008080">TargetBean</span> <span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span><span style="color: #008080">SourceBean</span> s<span style="color: #990000">);</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect4">
+<h5 id="_mapper_annotation_processor">Mapper Annotation Processor</h5>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>@<span style="font-weight: bold"><span style="color: #000000">SupportedAnnotationTypes</span></span><span style="color: #990000">(</span>
+  <span style="color: #FF0000">"masterex.github.com.customstaticcodegenerationmapper.Mapper"</span><span style="color: #990000">)</span>
+@<span style="font-weight: bold"><span style="color: #000000">SupportedSourceVersion</span></span><span style="color: #990000">(</span>SourceVersion<span style="color: #990000">.</span>RELEASE_11<span style="color: #990000">)</span>
+@<span style="font-weight: bold"><span style="color: #000000">AutoService</span></span><span style="color: #990000">(</span>Processor<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">MapperGenerator</span> <span style="font-weight: bold"><span style="color: #0000FF">extends</span></span> AbstractProcessor <span style="color: #FF0000">{</span>
+
+  @Override
+  <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #009900">boolean</span> <span style="font-weight: bold"><span style="color: #000000">process</span></span><span style="color: #990000">(</span><span style="color: #008080">Set&lt;? extends TypeElement&gt;</span> annotations<span style="color: #990000">,</span> <span style="color: #008080">RoundEnvironment</span> re<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="color: #008080">List&lt;Element&gt;</span> annotatedElements <span style="color: #990000">=</span> annotations<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">flatMap</span></span><span style="color: #990000">(</span>annotation <span style="color: #990000">-&gt;</span> re<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getElementsAnnotatedWith</span></span><span style="color: #990000">(</span>annotation<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">())</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>x <span style="color: #990000">-&gt;</span> x<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getKind</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> ElementKind<span style="color: #990000">.</span>INTERFACE<span style="color: #990000">)</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">collect</span></span><span style="color: #990000">(</span>Collectors<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">toList</span></span><span style="color: #990000">());</span>
+
+    annotatedElements<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">forEach</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">::</span>createImplementation<span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">;</span>
+  <span style="color: #FF0000">}</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">createImplementation</span></span><span style="color: #990000">(</span><span style="color: #008080">Element</span> element<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="color: #008080">String</span> implementationClassName <span style="color: #990000">=</span> String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"%s%s"</span><span style="color: #990000">,</span>
+          element<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">(),</span> SUFFIX<span style="color: #990000">);</span>
+    <span style="color: #008080">String</span> interfaceQualifiedName <span style="color: #990000">=</span> <span style="color: #990000">((</span>TypeElement<span style="color: #990000">)</span> element<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">getQualifiedName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">();</span>
+    <span style="color: #008080">String</span> packageName <span style="color: #990000">=</span> interfaceQualifiedName<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">substring</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span> interfaceQualifiedName
+                                                                     <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lastIndexOf</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'.'</span><span style="color: #990000">));</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+      <span style="color: #008080">JavaFileObject</span> mapperFile <span style="color: #990000">=</span> processingEnv<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getFiler</span></span><span style="color: #990000">().</span>
+          <span style="font-weight: bold"><span style="color: #000000">createSourceFile</span></span><span style="color: #990000">(</span>packageName <span style="color: #990000">+</span> <span style="color: #FF0000">"."</span> <span style="color: #990000">+</span> implementationClassName<span style="color: #990000">);</span>
+      <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #990000">(</span><span style="color: #008080">PrintWriter</span> out <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">PrintWriter</span></span><span style="color: #990000">(</span>mapperFile<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">openWriter</span></span><span style="color: #990000">()))</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>packageName <span style="color: #990000">!=</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+          out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"package "</span><span style="color: #990000">);</span>
+          out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">print</span></span><span style="color: #990000">(</span>packageName<span style="color: #990000">);</span>
+          out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">";"</span><span style="color: #990000">);</span>
+          out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"public class "</span><span style="color: #990000">);</span>
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">print</span></span><span style="color: #990000">(</span>implementationClassName<span style="color: #990000">);</span>
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">" implements "</span> <span style="color: #990000">+</span> interfaceQualifiedName<span style="color: #990000">);</span>
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">" {"</span><span style="color: #990000">);</span>
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">();</span>
+
+        element<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getEnclosedElements</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getKind</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> ElementKind<span style="color: #990000">.</span>METHOD<span style="color: #990000">)</span>
+          <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">forEach</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> <span style="font-weight: bold"><span style="color: #000000">generateMethod</span></span><span style="color: #990000">(</span>e<span style="color: #990000">,</span> out<span style="color: #990000">));</span>
+
+        out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"}"</span><span style="color: #990000">);</span>
+      <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">IOException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+      <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Failed to generate mapper"</span><span style="color: #990000">,</span> ex<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+  <span style="color: #FF0000">}</span>
+
+  <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">generateMethod</span></span><span style="color: #990000">(</span><span style="color: #008080">Element</span> element<span style="color: #990000">,</span> <span style="color: #008080">PrintWriter</span> out<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="color: #008080">TypeMirror</span> srcType <span style="color: #990000">=</span> <span style="color: #990000">((</span>ExecutableType<span style="color: #990000">)</span> element<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">asType</span></span><span style="color: #990000">()).</span><span style="font-weight: bold"><span style="color: #000000">getParameterTypes</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">);</span>
+    <span style="color: #008080">TypeMirror</span> destType <span style="color: #990000">=</span> <span style="color: #990000">((</span>ExecutableType<span style="color: #990000">)</span> element<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">asType</span></span><span style="color: #990000">()).</span><span style="font-weight: bold"><span style="color: #000000">getReturnType</span></span><span style="color: #990000">();</span>
+
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"  @Override"</span><span style="color: #990000">);</span>
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"  public %s %s(%s src) {"</span><span style="color: #990000">,</span> destType<span style="color: #990000">,</span> element
+                                                         <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">(),</span> srcType<span style="color: #990000">));</span>
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"    if (src == null) {"</span><span style="color: #990000">);</span>
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"      return null;"</span><span style="color: #990000">);</span>
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"    }"</span><span style="color: #990000">);</span>
+    out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"    %s dst = new %s();"</span><span style="color: #990000">,</span> destType<span style="color: #990000">,</span> destType<span style="color: #990000">));</span>
+
+    <span style="color: #008080">DeclaredType</span> srcDeclaredType <span style="color: #990000">=</span> <span style="color: #990000">(</span>DeclaredType<span style="color: #990000">)</span> srcType<span style="color: #990000">;</span>
+    <span style="color: #008080">List&lt;Element&gt;</span> srcMethods <span style="color: #990000">=</span> srcDeclaredType<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">asElement</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getEnclosedElements</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getKind</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> ElementKind<span style="color: #990000">.</span>METHOD<span style="color: #990000">)</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">startsWith</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"get"</span><span style="color: #990000">))</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">collect</span></span><span style="color: #990000">(</span>Collectors<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">toList</span></span><span style="color: #990000">());</span>
+
+    <span style="color: #008080">DeclaredType</span> destDeclaredType <span style="color: #990000">=</span> <span style="color: #990000">(</span>DeclaredType<span style="color: #990000">)</span> destType<span style="color: #990000">;</span>
+    <span style="color: #008080">Set&lt;String&gt;</span> dstMethods <span style="color: #990000">=</span> destDeclaredType<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">asElement</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">getEnclosedElements</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getKind</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> ElementKind<span style="color: #990000">.</span>METHOD<span style="color: #990000">)</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">startsWith</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"set"</span><span style="color: #990000">))</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span>e <span style="color: #990000">-&gt;</span> e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">())</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">collect</span></span><span style="color: #990000">(</span>Collectors<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">toSet</span></span><span style="color: #990000">());</span>
+
+    srcMethods<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">stream</span></span><span style="color: #990000">()</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">filter</span></span><span style="color: #990000">(</span>method <span style="color: #990000">-&gt;</span> dstMethods<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">contains</span></span><span style="color: #990000">(</span>method<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">()</span>
+                                                            <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">replaceFirst</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"g"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"s"</span><span style="color: #990000">)))</span>
+      <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">forEach</span></span><span style="color: #990000">(</span>method <span style="color: #990000">-&gt;</span> <span style="color: #FF0000">{</span>
+         out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"    dst.%s(src.%s);"</span><span style="color: #990000">,</span>
+         method<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getSimpleName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">replaceFirst</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"g"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"s"</span><span style="color: #990000">),</span> method<span style="color: #990000">));</span>
+      <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+
+      out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"    return dst;"</span><span style="color: #990000">);</span>
+      out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"  }"</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>The above code uses <a href="https://github.com/google/auto/tree/master/service">Google Autoservice</a> library which facilitates the creation
+of annotation processors.</p></div>
+<div class="paragraph"><p>As you can see the implementation of the client is a little more <em>demanding</em>
+than the previous one. The developer should create an interface with
+the methods required for the mapping to work.</p></div>
+<div class="paragraph"><p>The <strong>processor</strong> scans the client&#8217;s code for interfaces annotated with this
+specific annotation and for each one found it goes on with the <strong>creation
+of the actual mapper implementation</strong>. A name for the class implementation is
+selected based on the interface name concatenated with the word <strong>Implementation</strong>.</p></div>
+<div class="paragraph"><p>In the above example the mapping is pretty naive. It maps the <strong>setters</strong> of the
+destination object with the <strong>getters</strong> of the target&#8217;s one. It assumes that
+the ones that have the <strong>same name</strong> are also of the <strong>same type</strong>.</p></div>
+<div class="paragraph"><p>Literally the <strong>generated file</strong> is created by writing <strong>line per line</strong> its
+content.</p></div>
+<div class="paragraph"><p><strong>Mind</strong> that in order to get at <strong>runtime</strong> the actual implementation of the
+generated mapper a <em>trick</em> is required:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">StaticCodeGenerationMapper</span> INSTANCE <span style="color: #990000">=</span> Mappers<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getMappers</span></span><span style="color: #990000">(</span>StaticCodeGenerationMapper<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">);</span></tt></pre></div></div>
+<div class="paragraph"><p>The <code>Mappers</code> class is implemented by the mapping framework and uses <strong>a
+bit of reflection</strong> in order to return an <strong>object</strong> that implements our mapper&#8217;s
+interface. This is <em>essential</em> because the concrete class <strong>does not actually exist</strong>
+when we write the client code. Let&#8217;s see it:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #990000">&lt;</span>T<span style="color: #990000">&gt;</span> <span style="color: #008080">T</span> <span style="font-weight: bold"><span style="color: #000000">getMappers</span></span><span style="color: #990000">(</span><span style="color: #008080">Class&lt;T&gt;</span> c<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+    <span style="color: #008080">Constructor&lt;T&gt;</span> constructor <span style="color: #990000">=</span> <span style="color: #990000">(</span>Constructor<span style="color: #990000">&lt;</span>T<span style="color: #990000">&gt;)</span> c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getClassLoader</span></span><span style="color: #990000">()</span>
+                              <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">loadClass</span></span><span style="color: #990000">(</span>c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()</span> <span style="color: #990000">+</span> SUFFIX<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredConstructor</span></span><span style="color: #990000">();</span>
+    constructor<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setAccessible</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">);</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> constructor<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newInstance</span></span><span style="color: #990000">();</span>
+  <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span>ClassNotFoundException <span style="color: #990000">|</span> NoSuchMethodException <span style="color: #990000">|</span> SecurityException <span style="color: #990000">|</span>
+     InstantiationException <span style="color: #990000">|</span> InvocationTargetException <span style="color: #990000">|</span> <span style="color: #008080">IllegalAccessException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeException</span></span><span style="color: #990000">(</span>ex<span style="color: #990000">);</span>
+  <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_pros_2">Pros</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Performance comparable to a hand written mapper
+</p>
+</li>
+<li>
+<p>
+Except the part of the reflective loading of the concrete implementation
+ there is no need for other runtime dependencies
+</p>
+</li>
+<li>
+<p>
+From a user&#8217;s perspective debugging the mapper or understanding how it works is
+ pretty easy
+</p>
+</li>
+<li>
+<p>
+If required one may copy the generated mappers
+ into the project and eliminate the need of external dependencies (including the need
+ of loading the mapper with reflection)
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_cons_2">Cons</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+These mappers cannot map what they don&#8217;t know! No mapping of objects
+ loaded at runtime (which do not at least implement an existing interface)
+</p>
+</li>
+<li>
+<p>
+No way of mapping private members
+</p>
+</li>
+<li>
+<p>
+Requires a bit more code from the client&#8217;s implementation side
+</p>
+</li>
+<li>
+<p>
+The mapper implementation is more complex and more difficult to achieve/debug
+</p>
+</li>
+<li>
+<p>
+More mapping methods means a bigger generated file
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_code_instrumentation">Code instrumentation</h3>
+<div class="paragraph"><p>This is the process of generating <strong>bytecode at runtime</strong>.</p></div>
+<div class="paragraph"><p>In a sense, it is pretty similar to the static <strong>code generation</strong>. It creates
+new methods that can handle the mapping but <strong>instead of writing them as
+java text in a file, it writes them as bytecode</strong>.</p></div>
+<div class="paragraph"><p>Below there is an example offering similar functionality as the static
+code generated mapper.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">interface</span></span> <span style="color: #008080">AbstractMapper</span><span style="color: #990000">&lt;</span>S<span style="color: #990000">,</span> D<span style="color: #990000">&gt;</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">D</span> <span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span><span style="color: #008080">S</span> o<span style="color: #990000">);</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">InstrumentationMapper</span><span style="color: #990000">&lt;</span>S<span style="color: #990000">,</span> D<span style="color: #990000">&gt;</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">AbstractMapper&lt;S, D&gt;</span> mapper<span style="color: #990000">;</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #000000">InstrumentationMapper</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">Class&lt;S&gt; source, final Class&lt;D&gt;</span> destination<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">this</span></span><span style="color: #990000">.</span>mapper <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">getMapper</span></span><span style="color: #990000">(</span>source<span style="color: #990000">,</span> destination<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span>InstantiationException <span style="color: #990000">|</span> IllegalAccessException <span style="color: #990000">|</span> NoSuchMethodException
+                <span style="color: #990000">|</span> IllegalArgumentException <span style="color: #990000">|</span> <span style="color: #008080">InvocationTargetException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Failed to initialize mapper"</span><span style="color: #990000">,</span> ex<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="color: #008080">D</span> <span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span><span style="color: #008080">S</span> source<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> mapper<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">map</span></span><span style="color: #990000">(</span>source<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="font-weight: bold"><span style="color: #0000FF">synchronized</span></span> <span style="color: #008080">AbstractMapper&lt;S, D&gt; getMapper(final Class&lt;S&gt;</span> source<span style="color: #990000">,</span>
+                                                               <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">Class&lt;D&gt;</span> destination<span style="color: #990000">)</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">throws</span></span> InstantiationException<span style="color: #990000">,</span> IllegalAccessException<span style="color: #990000">,</span> NoSuchMethodException<span style="color: #990000">,</span>
+            IllegalArgumentException<span style="color: #990000">,</span> InvocationTargetException <span style="color: #FF0000">{</span>
+        <span style="color: #008080">String</span> mapperClassName <span style="color: #990000">=</span> <span style="color: #990000">(</span>source<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()</span> <span style="color: #990000">+</span> destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">())</span>
+                                                                   <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">replaceAll</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"</span><span style="color: #CC33CC">\\</span><span style="color: #FF0000">."</span><span style="color: #990000">,</span> <span style="color: #FF0000">""</span><span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #990000">(</span>AbstractMapper<span style="color: #990000">&lt;</span>S<span style="color: #990000">,</span> D<span style="color: #990000">&gt;)</span> destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getClassLoader</span></span><span style="color: #990000">()</span>
+                    <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">loadClass</span></span><span style="color: #990000">(</span>mapperClassName<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredConstructor</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">newInstance</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">ClassNotFoundException</span> e<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #990000">(</span>AbstractMapper<span style="color: #990000">&lt;</span>S<span style="color: #990000">,</span> D<span style="color: #990000">&gt;)</span> <span style="font-weight: bold"><span style="color: #000000">generateMapper</span></span><span style="color: #990000">(</span>destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getClassLoader</span></span><span style="color: #990000">(),</span>
+                    mapperClassName<span style="color: #990000">,</span> source<span style="color: #990000">,</span> destination<span style="color: #990000">)</span>
+                                             <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredConstructor</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">newInstance</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Class&lt;?&gt;</span> <span style="font-weight: bold"><span style="color: #000000">generateMapper</span></span><span style="color: #990000">(</span><span style="color: #008080">ClassLoader</span> classLoader<span style="color: #990000">,</span> <span style="color: #008080">String</span> className<span style="color: #990000">,</span>
+                                     <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">Class&lt;S&gt; source, inal Class&lt;D&gt;</span> destination<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="color: #008080">ClassPool</span> cp <span style="color: #990000">=</span> ClassPool<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getDefault</span></span><span style="color: #990000">();</span>
+            <span style="color: #008080">CtClass</span> cc <span style="color: #990000">=</span> cp<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">makeClass</span></span><span style="color: #990000">(</span>className<span style="color: #990000">);</span>
+            cc<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setInterfaces</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">new</span></span> CtClass<span style="color: #990000">[]</span><span style="color: #FF0000">{</span>cp<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span>AbstractMapper<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">())</span><span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+            CtNewConstructor<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">defaultConstructor</span></span><span style="color: #990000">(</span>cc<span style="color: #990000">);</span>
+            <span style="color: #008080">CtClass</span> returnType <span style="color: #990000">=</span> cp<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span>Object<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">());</span>
+            CtClass<span style="color: #990000">[]</span> arguments <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> CtClass<span style="color: #990000">[]</span><span style="color: #FF0000">{</span>cp<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span>Object<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">())</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+            <span style="color: #008080">CtMethod</span> ctMethod <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">CtMethod</span></span><span style="color: #990000">(</span>returnType<span style="color: #990000">,</span> <span style="color: #FF0000">"map"</span><span style="color: #990000">,</span> arguments<span style="color: #990000">,</span> cc<span style="color: #990000">);</span>
+            ctMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setBody</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">mappingMethodBody</span></span><span style="color: #990000">(</span>source<span style="color: #990000">,</span> destination<span style="color: #990000">));</span>
+            cc<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addMethod</span></span><span style="color: #990000">(</span>ctMethod<span style="color: #990000">);</span>
+            cc<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setModifiers</span></span><span style="color: #990000">(</span>cc<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getModifiers</span></span><span style="color: #990000">()</span> <span style="color: #990000">&amp;</span> <span style="color: #990000">~</span>Modifier<span style="color: #990000">.</span>ABSTRACT<span style="color: #990000">);</span>
+            <span style="color: #008080">Class&lt;?&gt;</span> generetedClass <span style="color: #990000">=</span> cc<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">toClass</span></span><span style="color: #990000">();</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> generetedClass<span style="color: #990000">;</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span>NotFoundException <span style="color: #990000">|</span> <span style="color: #008080">CannotCompileException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            Logger<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getLogger</span></span><span style="color: #990000">(</span>InstrumentationMapper<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()).</span><span style="font-weight: bold"><span style="color: #000000">log</span></span><span style="color: #990000">(</span>Level<span style="color: #990000">.</span>SEVERE<span style="color: #990000">,</span>
+                                                                               <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span> ex<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">throw</span></span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeException</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Failed to generate mapper."</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> <span style="font-weight: bold"><span style="color: #000000">mappingMethodBody</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">Class&lt;S&gt; src, final Class&lt;D&gt;</span> destination<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="color: #008080">StringBuilder</span> sb <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">StringBuilder</span></span><span style="color: #990000">();</span>
+        sb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"{"</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"%s dst = new %s();"</span><span style="color: #990000">,</span> destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">(),</span>
+                                                                    destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()));</span>
+        sb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>String<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"%s src = (%s) $1;"</span><span style="color: #990000">,</span> src<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">(),</span> src<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()));</span>
+        Method<span style="color: #990000">[]</span> srcMethods <span style="color: #990000">=</span> src<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getDeclaredMethods</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(</span><span style="color: #008080">Method</span> srcMethod <span style="color: #990000">:</span> srcMethods<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(!</span>srcMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">startsWith</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"get"</span><span style="color: #990000">))</span> <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">continue</span></span><span style="color: #990000">;</span>
+            <span style="color: #FF0000">}</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+                <span style="color: #008080">Method</span> trgMethod <span style="color: #990000">=</span> destination<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getMethod</span></span><span style="color: #990000">(</span>srcMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()</span>
+                                <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">replaceFirst</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"get"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"set"</span><span style="color: #990000">),</span> srcMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getReturnType</span></span><span style="color: #990000">());</span>
+                sb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span>String
+                   <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"dst.%s(src.%s());"</span><span style="color: #990000">,</span> trgMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">(),</span> srcMethod<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getName</span></span><span style="color: #990000">()));</span>
+            <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span>NoSuchMethodException <span style="color: #990000">|</span> <span style="color: #008080">SecurityException</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>String
+                  <span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Method %s not found or accessible on source or target class"</span><span style="color: #990000">,</span>
+                                                                                      ex<span style="color: #990000">));</span>
+            <span style="color: #FF0000">}</span>
+        <span style="color: #FF0000">}</span>
+        sb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"return dst;"</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">append</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"}"</span><span style="color: #990000">);</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> sb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">toString</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Such a mapper would be created like that from within our program:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #008080">InstrumentationMapper&lt;SourceBean, TargetBean&gt;</span> mapper <span style="color: #990000">=</span>
+               <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> InstrumentationMapper<span style="color: #990000">&lt;&gt;(</span>SourceBean<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">,</span> TargetBean<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">class</span></span><span style="color: #990000">);</span></tt></pre></div></div>
+<div class="paragraph"><p>The above code uses the <a href="https://www.javassist.org/">Javassist</a> library for the <strong>bytecode</strong> manipulation part.</p></div>
+<div class="paragraph"><p>First of all we create an <strong>interface</strong> which offers a <strong>map method</strong>. This <strong>accepts
+an object of one type</strong> and <strong>return an object of a different type</strong>.</p></div>
+<div class="paragraph"><p>Next, the <code>InstrumentationMapper</code> will create at <strong>runtime</strong> a class which
+<strong>implements the interface</strong> mentioned above. It uses <em>a bit of reflection</em> in
+order to examine the classes that will map and based on that it creates
+the implementation.</p></div>
+<div class="paragraph"><p>The <strong>reflection</strong> is used <strong>only</strong> when the mapper is created. Afterwards, the
+mapper should <strong>perform</strong> in theory as <strong>a hand written</strong> one.</p></div>
+<div class="paragraph"><p>The <em>tricky</em> part in <code>InstrumentationMapper</code> is that at runtime <strong>the generics
+are erased</strong>. So, the generated <strong>bytecode</strong> class and methods have to take
+that into account.</p></div>
+<div class="sect3">
+<h4 id="_pros_3">Pros</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Performance comparable to hand written mappers after the initialization
+</p>
+</li>
+<li>
+<p>
+Can handle objects loaded at runtime
+</p>
+</li>
+<li>
+<p>
+From a user&#8217;s perspective a default mapper with sane assumptions
+ is very easy to be used with minimal code
+</p>
+</li>
+<li>
+<p>
+Probably brings the best of both the previous approaches
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_cons_3">Cons</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Cannot map private members (without alerting the bytecode of the mapped
+ classes or using reflection)
+</p>
+</li>
+<li>
+<p>
+From a user&#8217;s perspective debugging such a mapper if required is tricky
+</p>
+</li>
+<li>
+<p>
+Implementing and debugging the mapper is complex
+</p>
+</li>
+<li>
+<p>
+Higher initialization overhead
+</p>
+</li>
+<li>
+<p>
+As it depends on reflection at runtime for the creation of the mappers
+ it may suffer from the relevant limitations mentioned before
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_traits_of_the_mapping_frameworks">Traits of the mapping frameworks</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now that we have a <strong>better understanding</strong> about how automated mapping in <strong>Java</strong>
+works we can imagine what are the <strong>limitations</strong> and the <strong>strengths</strong>
+of each framework based on how they <em>work under the hood</em>.</p></div>
+<div class="paragraph"><p>A few <strong>traits</strong> of the frameworks are strongly connected to the <strong>methodology</strong>
+it uses.</p></div>
+<div class="paragraph"><p><strong>First</strong> of all the <strong>performance</strong>, meaning how fast it can map one object to another.
+Then, another important characteristic is if it can <strong>dynamically</strong> handle
+objects loaded at <strong>runtime</strong> or not.</p></div>
+<div class="paragraph"><p>Additionally, apart from the simple <strong>conventional</strong> cases I have presented in
+the examples earlier, most mappers accept <strong>additional configuration</strong> regarding
+<strong>what</strong> fields to map and <strong>how</strong> to do it.</p></div>
+<div class="paragraph"><p>Each framework approaches this configuration differently. Most common ways
+are to express these <strong>mapping rules</strong> in <strong>code</strong> by exposing some <strong>API</strong>, in <strong>annotations</strong> in the mapped
+classes or in <strong>XML</strong>. The <em>expressiveness</em> of the API a mapping framework provides
+is another <strong>important factor</strong> which deeply affects the <strong>day to day productivity</strong> of the
+development process.</p></div>
+<div class="paragraph"><p>Finally, another aspect of a framework is if it can <strong>change the mapping
+configuration</strong> it uses without the need of <strong>recompilation</strong> or even change
+the configuration at <strong>runtime</strong>.</p></div>
+<div class="paragraph"><p>All the above are decisive factors when choosing what mapping framework
+to use.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_java_mapping_frameworks">Java mapping frameworks</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Below I am going to list some <strong>Java</strong> frameworks/libraries along-side a few
+of their <strong>basic</strong> characteristics. There characteristics are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Type</strong>: The basic underlying mechanism used by the framework
+</p>
+</li>
+<li>
+<p>
+<strong>License</strong>: What software license it uses
+</p>
+</li>
+<li>
+<p>
+<strong>Configuration</strong>: What are the supported ways the framework may be configured
+</p>
+</li>
+<li>
+<p>
+<strong>GH Stars</strong>: GitHub stars. It can loosely interpreted as an indication of the
+ popularity of the framework.
+</p>
+</li>
+<li>
+<p>
+<strong>First Release</strong>: Older release version and year found in maven repository.
+</p>
+</li>
+<li>
+<p>
+<strong>Last Release</strong>: Newest release version and year found in maven repository
+ (at the time of writing this article).
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The first and last release may be used as an <em>indicator</em> regarding if the project
+is <strong>active or not</strong> and how <strong>mature</strong> it is.</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<thead>
+<tr>
+<th align="left" valign="top">NAME</th>
+<th align="left" valign="top"> TYPE</th>
+<th align="left" valign="top"> LICENSE</th>
+<th align="left" valign="top"> CONFIGU- RATION</th>
+<th align="left" valign="top"> GH STARS</th>
+<th align="left" valign="top"> FIRST RELEASE</th>
+<th align="left" valign="top"> LAST RELEASE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="http://erchu.github.io/bean-cp/">bean-cp</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">GPLv3</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">11</p></td>
+<td align="left" valign="top"><p class="table">1.0 (2014)</p></td>
+<td align="left" valign="top"><p class="table">1.0.2 (2017)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="http://commons.apache.org/proper/commons-beanutils/">BeanUtils</a></p></td>
+<td align="left" valign="top"><p class="table">Reflection</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">187</p></td>
+<td align="left" valign="top"><p class="table">1.0 (2005)</p></td>
+<td align="left" valign="top"><p class="table">1.9.4 (2019)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://hotelsdotcom.github.io/bull/">BULL</a></p></td>
+<td align="left" valign="top"><p class="table">Reflection</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API - Annotations</p></td>
+<td align="left" valign="top"><p class="table">151</p></td>
+<td align="left" valign="top"><p class="table">1.1.19 (2019)</p></td>
+<td align="left" valign="top"><p class="table">1.7.6 (2021)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://github.com/roookeee/datus">Datus</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">MIT</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">33</p></td>
+<td align="left" valign="top"><p class="table">0.9.0 (2019)</p></td>
+<td align="left" valign="top"><p class="table">1.5.0 (2020)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://dozermapper.github.io/">Dozer</a></p></td>
+<td align="left" valign="top"><p class="table">Reflection</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">XML - Annotations</p></td>
+<td align="left" valign="top"><p class="table">1.8k</p></td>
+<td align="left" valign="top"><p class="table">2.0.1 (2006)</p></td>
+<td align="left" valign="top"><p class="table">6.5.0 (2019)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://jmapper-framework.github.io/jmapper-core/">JMapper</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API - XML - Annotations</p></td>
+<td align="left" valign="top"><p class="table">155</p></td>
+<td align="left" valign="top"><p class="table">1.1.0 (2012)</p></td>
+<td align="left" valign="top"><p class="table">1.6.0.1 (2016)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://mapstruct.org/">MapStruct</a></p></td>
+<td align="left" valign="top"><p class="table">Static code generation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API and Annotations</p></td>
+<td align="left" valign="top"><p class="table">3.6k</p></td>
+<td align="left" valign="top"><p class="table">1.0.0 (2013)</p></td>
+<td align="left" valign="top"><p class="table">1.4.1 (2020)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="http://modelmapper.org/">ModelMapper</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">1.7k</p></td>
+<td align="left" valign="top"><p class="table">0.3.1 (2011)</p></td>
+<td align="left" valign="top"><p class="table">2.3.9 (2020)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://github.com/geoffreywiseman/Moo">MooMapper</a></p></td>
+<td align="left" valign="top"><p class="table">Reflection</p></td>
+<td align="left" valign="top"><p class="table">BSD</p></td>
+<td align="left" valign="top"><p class="table">Java API - Annotations</p></td>
+<td align="left" valign="top"><p class="table">25</p></td>
+<td align="left" valign="top"><p class="table">2.0 (2014)</p></td>
+<td align="left" valign="top"><p class="table">2.1.0 (2018)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://github.com/dobrynya/nomin">Nomin</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Groovy</p></td>
+<td align="left" valign="top"><p class="table">40</p></td>
+<td align="left" valign="top"><p class="table">1.0.0 (2010)</p></td>
+<td align="left" valign="top"><p class="table">1.2 (2020)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://orika-mapper.github.io/orika-docs/">Orika</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">1k</p></td>
+<td align="left" valign="top"><p class="table">1.0 (2012)</p></td>
+<td align="left" valign="top"><p class="table">1.5.4 (2019)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="https://github.com/remondis-it/remap">ReMap</a></p></td>
+<td align="left" valign="top"><p class="table">Code instrumentation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API</p></td>
+<td align="left" valign="top"><p class="table">74</p></td>
+<td align="left" valign="top"><p class="table">0.0.3 (2017)</p></td>
+<td align="left" valign="top"><p class="table">4.2.5 (2020)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><a href="http://www.selma-java.org/">Selma</a></p></td>
+<td align="left" valign="top"><p class="table">Static code generation</p></td>
+<td align="left" valign="top"><p class="table">Apache 2.0</p></td>
+<td align="left" valign="top"><p class="table">Java API and Annotations</p></td>
+<td align="left" valign="top"><p class="table">200</p></td>
+<td align="left" valign="top"><p class="table">0.1 (2014)</p></td>
+<td align="left" valign="top"><p class="table">1.0 (2017)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p>In the next section we are going to <strong>benchmark</strong> all the above frameworks and
+see which is the <strong>fastest</strong>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_performance_benchmark">Performance benchmark</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The performance test was written using the <a href="https://openjdk.java.net/projects/code-tools/jmh/">JMH</a> microbenchmarking framework.</p></div>
+<div class="paragraph"><p>Below, we are going to see a few different cases. In all of them we are going to
+focus on <strong>throughput</strong> (mapping operations per second). All the graphs
+below are in <a href="https://en.wikipedia.org/wiki/Logarithmic_scale">logarithmic scale</a>.</p></div>
+<div class="sect2">
+<h3 id="_1_map_objects_with_primitive_type_fields">1. Map objects with primitive type fields</h3>
+<div class="paragraph"><p>In the benchmark below we are going to map <strong>2</strong> simple objects which
+contain <strong>primitive type fields</strong>.</p></div>
+<div class="sect3">
+<h4 id="_source_object">Source Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">SourceSimplePrimitiveObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> field1<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> field2<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> field3<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">char</span> field4<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">double</span> field5<span style="color: #990000">;</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_target_object">Target Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">TargetSimplePrimitiveObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">int</span> field1<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">boolean</span> field2<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">String</span> field3<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">char</span> field4<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #009900">double</span> field5<span style="color: #990000">;</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_benchmark_results">Benchmark results</h4>
+<div class="imageblock">
+<div class="content">
+<img src="simple-object-mapping-benchmark.png" alt="simple-object-mapping" />
+</div>
+</div>
+<div class="paragraph"><p>Let&#8217;s mark the <span class="red">reflection</span> mappers with <span class="red">red</span>, the static <span class="green">code
+generation</span> with <span class="green">green</span> and the <span class="RebeccaPurple">code instrumentation</span> with <span class="RebeccaPurple">purple</span>.</p></div>
+<div class="paragraph"><p>If we group them in <a href="https://en.wikipedia.org/wiki/Order_of_magnitude">orders of magnitude</a> it would be like that:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^8</strong> operations: <span class="green">MapStruct</span>, <span class="green">Selma</span>, <span class="RebeccaPurple">JMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^7</strong> operations: <span class="RebeccaPurple">Nomin</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^6</strong> operations: <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="RebeccaPurple">bean-cp</span>, <span class="RebeccaPurple">ReMap</span>, <span class="red">BULL</span>, <span class="RebeccaPurple">ModelMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="RebeccaPurple">Datus</span>, <span class="red">BeanUtils</span>, <span class="red">Dozer</span>, <span class="red">MooMapper</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>We don&#8217;t care about the exact numbers</strong> because these may vary per <strong>execution</strong> of
+the benchmark and they depend on the <strong>capacity</strong> of the <strong>machine</strong> the tests are
+run on. However, it is important to see the <strong>relation</strong> of the throughput between
+each one so we may understand which ones perform better and which not.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content"><strong>All</strong> the mappers used in the above benchmark are producing <strong>equivalent</strong>
+objects in an <strong>equivalent</strong> way. (more on that later)</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_map_objects_with_array_fields">2. Map objects with array fields</h3>
+<div class="sect3">
+<h4 id="_source_object_2">Source Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">SourceSimpleArrayObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Integer<span style="color: #990000">[]</span> array1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Integer<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Boolean<span style="color: #990000">[]</span> array2 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Boolean<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> String<span style="color: #990000">[]</span> array3 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> String<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Character<span style="color: #990000">[]</span> array4 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Character<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Double<span style="color: #990000">[]</span> array5 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Double<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_target_object_2">Target Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">TargetSimpleArrayObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Integer<span style="color: #990000">[]</span> array1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Integer<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Boolean<span style="color: #990000">[]</span> array2 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Boolean<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> String<span style="color: #990000">[]</span> array3 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> String<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Character<span style="color: #990000">[]</span> array4 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Character<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> Double<span style="color: #990000">[]</span> array5 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> Double<span style="color: #990000">[</span><span style="color: #993399">1000</span><span style="color: #990000">];</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_benchmark_results_2">Benchmark results</h4>
+<div class="imageblock">
+<div class="content">
+<img src="array-object-mapping-benchmark.png" alt="array-object-mapping" />
+</div>
+</div>
+<div class="paragraph"><p>If we group them in orders of magnitude it would be like that:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="green">MapStruct (Shallow)</span>, <span class="RebeccaPurple">JMapper</span>, <span class="RebeccaPurple">Nomin</span>, <span class="RebeccaPurple">bean-cp</span>, <span class="green">MapStruct</span>, <span class="RebeccaPurple">ReMap</span>, <span class="green">Selma</span>, <span class="red">BULL</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="red">BeanUtils</span>, <span class="RebeccaPurple">Datus</span>, <span class="red">MooMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^3</strong> operations: <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^2</strong> operations: <span class="RebeccaPurple">ModelMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^1</strong> operations: <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A few <strong>surprises</strong> here! First of all we see a drop in the order of magnitude compared to
+the previous benchmark for all the frameworks. This is partially based on
+the fact that each array contains <strong>1000</strong> entries. So there is much more mapping
+to be performed per object.</p></div>
+<div class="paragraph"><p>Another surprise is that we see <span class="red">reflection</span> mappers to perform
+better than <span class="RebeccaPurple">code instrumentation</span> mappers that were better
+in the previous benchmark.</p></div>
+<div class="paragraph"><p>In this graph you can see that the columns are colored differently and
+that a new entry <code>MapStruct (Shallow)</code> was introduced.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content">All the mappers produce <strong>equivalent</strong> objects but <strong>not</strong> in an
+<strong>equivalent</strong> way. The <strong>blue</strong>  ones are making a shallow copy of the <code>Array</code>
+while the <strong>red</strong> ones are creating a new <code>Array</code> object.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The <code>MapStruct (Shallow)</code> uses a bit of <strong>custom mapping code</strong> to produce a mapper
+which makes a <strong>shallow</strong> copy. It will be included also in the next benchmarks
+as a comparison of <strong>how expensive</strong> it is to <strong>create</strong> new objects instead of <strong>re-using</strong>
+them.</p></div>
+<div class="paragraph"><p>Have in mind that in general the <strong>blue</strong> mappers which make the shallow copy
+have a <strong>competitive advantage</strong> in terms of speed against the <strong>red</strong> ones which
+create <strong>5</strong> new objects per mapping.</p></div>
+<div class="paragraph"><p>Both outcomes may be <strong>equivalent</strong> but they are <strong>not the same</strong>. Most of the times
+making shallow copies is enough but <em>some</em> times it may
+produce undesired behavior and obscure bugs.</p></div>
+<div class="paragraph"><p>Ideally, I would like to <strong>compare</strong> mappers that produce the result object the
+<strong>same</strong> way but this <em>may not be configurable</em> in some mappers and it requires
+special configuration. So, I have decided to continue
+like that.</p></div>
+<div class="paragraph"><p>In the <strong>next</strong> benchmarks I am going to <strong>present</strong> the results in a <strong>similar</strong> way.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_map_objects_with_list_fields">3. Map objects with list fields</h3>
+<div class="sect3">
+<h4 id="_source_object_3">Source Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">SourceSimpleListObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Integer&gt;</span> list1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Boolean&gt;</span> list2 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;String&gt;</span> list3 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Character&gt;</span> list4 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Double&gt;</span> list5 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_target_object_3">Target Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">TargetSimpleListObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Integer&gt;</span> list1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Boolean&gt;</span> list2 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;String&gt;</span> list3 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Character&gt;</span> list4 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">List&lt;Double&gt;</span> list5 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> ArrayList<span style="color: #990000">&lt;&gt;();</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_benchmark_results_3">Benchmark results</h4>
+<div class="imageblock">
+<div class="content">
+<img src="list-object-mapping-benchmark.png" alt="list-object-mapping" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Like before in the graph the <strong>blue</strong> ones are making a <strong>shallow copy</strong> of the <strong>lists</strong>
+while the <strong>red</strong> ones are creating a new object.</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^7</strong> operations: <span class="green">MapStruct (Shallow)</span>, <span class="RebeccaPurple">JMapper</span>, <span class="RebeccaPurple">Nomin</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^6</strong> operations: <span class="RebeccaPurple">bean-cp</span>, <span class="green">MapStruct</span>, <span class="red">BeanUtils</span>, <span class="RebeccaPurple">Datus</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="red">BULL</span>, <span class="green">Selma</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="red">MooMapper</span>, <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="RebeccaPurple">ReMap</span>, <span class="RebeccaPurple">ModelMapper</span>, <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In this benchmark it becomes obvious the difference in performance caused by
+the <strong>shallow copy</strong> when
+we compare the <strong>2</strong> different implementations of the <span class="green">MapStruct</span> mapper.</p></div>
+<div class="paragraph"><p>Again, we see <span class="red">reflection</span> mappers being faster than <span class="green">static code generation</span>
+or <span class="RebeccaPurple">code instrumentation</span> ones. This is explained though
+by the <strong>shallow</strong> copy behavior.</p></div>
+<div class="paragraph"><p>Considering that, I think that this benchmark
+is <strong>consistent</strong> with the <strong>first</strong> one. Under the circumstances only <span class="RebeccaPurple">ReMap</span>
+and <span class="RebeccaPurple">ModelMapper</span> performed worse than what <em>I would expect</em>.</p></div>
+<div class="paragraph"><p>I am not <em>sure</em> why this is happening. An <em>assumption</em> is that these mappers
+do not handle these <strong>specific</strong> cases optimally and maybe they depend more
+on <span class="red">reflection</span> than they should.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_map_complex_objects">4. Map complex objects</h3>
+<div class="sect3">
+<h4 id="_source_object_4">Source Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">SourceComplexObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">SourceSimpleObject</span> simpleObject<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">SourceSimpleListObject</span> listObject<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Date</span> date<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">BigInteger</span> number<span style="color: #990000">;</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_target_object_4">Target Object</h4>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">TargetComplexObject</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">TargetSimplePrimitiveObject</span> simpleObject<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">TargetSimpleListObject</span> listObject<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">Date</span> date<span style="color: #990000">;</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">private</span></span> <span style="color: #008080">BigInteger</span> number<span style="color: #990000">;</span>
+    <span style="font-style: italic"><span style="color: #9A1900">// ...getters and setters</span></span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_benchmark_results_4">Benchmark results</h4>
+<div class="imageblock">
+<div class="content">
+<img src="complex-object-mapping-benchmark.png" alt="complex-object-mapping" />
+</div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content">In the graph the <strong>blue</strong> ones are making a <strong>shallow</strong> copy of <strong>both</strong>
+the <strong>List</strong> and the <strong>Date</strong> object. The <strong>green</strong> ones are making a shallow copy
+<strong>only</strong> of the <strong>Date</strong> object. The <strong>red</strong> ones don&#8217;t make a shallow copy of any of
+these <strong>2</strong> cases.</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^7</strong> operations: <span class="RebeccaPurple">JMapper</span>, <span class="green">MapStruct (Shallow)</span>, <span class="RebeccaPurple">Nomin</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="green">MapStruct</span>, <span class="RebeccaPurple">bean-cp</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="red">BULL</span>, <span class="red">BeanUtils</span>, <span class="RebeccaPurple">Datus</span>, <span class="red">MooMapper</span>, <span class="green">Selma</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^3</strong> operations: <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^2</strong> operations: <span class="RebeccaPurple">ReMap</span>, <span class="RebeccaPurple">ModelMapper</span>, <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Generally, the results of this test are the expected and aligned with the
+previous benchmark.</p></div>
+<div class="paragraph"><p>Again, we see that with the <strong>very basic configuration</strong> the way each mapper
+works may <strong>significantly vary</strong>.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comparison_with_other_benchmarks">Comparison with other benchmarks</h3>
+<div class="paragraph"><p>In this section I would like to <strong>compare</strong> the produced results with a few
+other <strong>publicly</strong> available <strong>benchmarks</strong>:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<a href="https://github.com/eugenp/tutorials/tree/master/performance-tests">Benchmark by Baeldung</a>
+ (explained in <a href="https://www.baeldung.com/java-performance-mapping-frameworks">this</a> article)
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/arey/java-object-mapper-benchmark">Benchmark by Antoine Ray</a>
+ (explained in  <a href="https://javaetmoi.com/2015/09/benchmark-frameworks-java-mapping-objet/">this</a> article written in <strong>French</strong>)
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>There are <strong>differences</strong> of my results and the results of the other benchmarks.</p></div>
+<div class="paragraph"><p>Bare in mind that:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+We are mapping different objects
+</p>
+</li>
+<li>
+<p>
+We are using different configuration for our mappers
+</p>
+</li>
+</ol></div>
+<div class="sect3">
+<h4 id="_1_baeldung_benchmark">1. Baeldung Benchmark</h4>
+<div class="sect4">
+<h5 id="_simple">Simple</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="green">MapStruct</span>, <span class="RebeccaPurple">JMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^3</strong> operations: <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^2</strong> operations: <span class="RebeccaPurple">ModelMapper</span>, <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect4">
+<h5 id="_complex">Complex</h5>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="RebeccaPurple">JMapper</span>, <span class="green">MapStruct</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^2</strong> operations: <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^1</strong> operations: <span class="RebeccaPurple">ModelMapper</span>, <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Based on the analysis we had about how mappers work these are <strong>perfectly
+expected</strong> results. I <em>think</em> generally they agree with my benchmark.</p></div>
+<div class="paragraph"><p><span class="RebeccaPurple">JMapper</span> and <span class="green">MapStruct</span> had the best performance as they did in my benchmarks. <span class="RebeccaPurple">Orika</span>
+was an order of magnitude faster than <span class="RebeccaPurple">ModelMapper</span> and <span class="red">Dozer</span>. Only in my
+<strong>first</strong> benchmark <span class="RebeccaPurple">Orika</span> performed a bit better. <span class="red">Dozer</span> <strong>is</strong> always last.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">The Baeldung&#8217;s benchmark does not include tests to verify how the
+mapping is performed but I have performed a few tests and it seems that the produced objects are <strong>equivalent</strong> and
+mapped in an <strong>equivalent</strong> way. So, the <strong>relation</strong> of the <strong>performance</strong> of each
+compared mapping frameworks is <strong>clear</strong>.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_java_et_moi_benchmark">2. Java et moi Benchmark</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>10^7</strong> operations: <span class="green">MapStruct</span>, <span class="green">Selma</span>, <em>Manual</em>, <span class="RebeccaPurple">JMapper</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^6</strong> operations: <span class="RebeccaPurple">Datus</span>, <span class="RebeccaPurple">Orika</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^5</strong> operations: <span class="RebeccaPurple">ModelMapper</span>, <span class="red">BULL</span>
+</p>
+</li>
+<li>
+<p>
+<strong>10^4</strong> operations: <span class="red">Dozer</span>
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">This benchmark also produces <strong>equivalent</strong> objects and the mapping
+is performed in an <strong>equivalent</strong> way.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Finally, a benchmark that agrees with my initial analysis even more than my own! <em>:P</em></p></div>
+<div class="paragraph"><p>Considering the various <strong>shallow</strong> copy cases it is <em>very</em> close to my findings.
+The only <strong>significant</strong> differences I can see is the <span class="RebeccaPurple">ModelMapper</span> which performed
+significantly <strong>better</strong> than my benchmark and <span class="red">BULL</span> which performed a bit <strong>worse</strong>
+than in my benchmark.</p></div>
+<div class="paragraph"><p>Others may vary but I believe we can blame the <strong>shallow</strong> copy behavior for
+the difference.</p></div>
+<div class="paragraph"><p>Another significant difference is that in this benchmark a <strong>realistic DTO</strong> is constructed.
+For example there are fields that use <strong>different names</strong> on source and target
+object and the <strong>object graph</strong> of the source and target object <strong>differs</strong>.
+For that reason this benchmark uses <strong>functionality</strong> of the mappers that
+mine didn&#8217;t touch.</p></div>
+<div class="paragraph"><p>This also could <strong>explain</strong> some of the <strong>deviations</strong> of this benchmark with mine.</p></div>
+<div class="paragraph"><p>In general however I <em>feel</em> that there is <strong>common</strong> ground and the outcome
+is <strong>justified</strong>.</p></div>
+<div class="paragraph"><p>Finally, I find this benchmark closest to the <strong>day to day scenarios</strong> one will have to face. So,
+it is a <strong>very good tool</strong> to help someone <strong>select a performant mapping framework</strong>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">Both these benchmarks avoid in their source/destination objects <code>List</code> or
+<code>Array</code> of primitive wrapper classes. Also they do not include objects such as
+<code>Date</code> which is unclear how to be mapped and except for primitive types or
+primitive wrapper classes the destination classes are different than the
+source ones. This way they don&#8217;t fall into the pitfall of mapping in a
+nonequivalent way.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mapping_framework_selection">Mapping framework selection</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I remember the <strong>first</strong> time I needed a mapper in a professional setting I
+asked around the other colleagues to see what they were using. What they
+did at that time was to use a simple <strong>custom mapper</strong> or perform <strong>manual mapping</strong>.</p></div>
+<div class="paragraph"><p>In general, I am <em>reluctant</em> to use/implement <strong>custom solutions</strong> for problems that
+are <strong>obviously common</strong> and most probably are already addressed by existing
+open-source software. So, I did what <em>everyone</em> would do.. I googled it! One
+of the first results was by <strong>StackOverflow</strong> and it was <a href="https://stackoverflow.com/questions/1432764/any-tool-for-java-object-to-object-mapping">this</a>.</p></div>
+<div class="paragraph"><p>The most up-voted answer was suggesting the <strong>Dozer</strong> mapping framework. So,
+I used that one.</p></div>
+<div class="paragraph"><p>Mapping objects that had their <strong>fields named the same</strong> was very easy and was
+offered out of the box. From time to time I may had to perform a bit more
+<strong>complex</strong> mapping. I suffer from a <em>severe XML allergy</em> but even I could
+configure Dozer to perform the mapping I would like to do. Other times I preferred to manually map the few fields that Dozer
+could not handle (or wasn&#8217;t trivial to handle) and that was <strong>OK</strong>. Unfortunately, Dozer offers very <strong>limited</strong>
+annotation support, for example back then it wasn&#8217;t possible to <strong>exclude</strong> a
+field from being mapped with annotations.</p></div>
+<div class="paragraph"><p>In general I was pretty <strong>happy</strong> though.</p></div>
+<div class="paragraph"><p>However, as you know by know Dozer performs <strong>poorly</strong> compared to other frameworks.</p></div>
+<div class="paragraph"><p>To be honest, even in projects that <strong>heavy mapping</strong> is involved I don&#8217;t
+<em>think</em> that the performance of the mapper will get <strong>noticed</strong> compared to
+other causes of bad performance such as the <strong>database</strong> related stuff.</p></div>
+<div class="paragraph"><p>On the other hand we must admit that using a faster mapping framework is
+like having a <strong>better CPU for free</strong>. It doesn&#8217;t <em>make sense to me</em> to use a
+<strong>slow</strong> framework except only if it offers some <strong>functionality</strong> which isn&#8217;t otherwise
+achievable.</p></div>
+<div class="paragraph"><p>Even then, I find more sane to use <strong>2</strong> mapping frameworks. A <strong>fast</strong> one for <em>everything</em> and a
+<strong>slower</strong> one <strong>only</strong> for the cases which is absolutely required.</p></div>
+<div class="paragraph"><p>Since my first encounter with Dozer I had come across it again in other
+jobs and projects. I blame <strong>2</strong> things for that. First, it is an <strong>old</strong> and
+<strong>well established</strong> framework. People known it and are already <strong>familiar</strong> with it.
+It is the <strong>second</strong> project with the most <strong>GitHub stars</strong> from the ones mentioned after all!
+Many existing projects from the 2000s will probably use it. Second, I blame
+the <strong>above StackOverflow&#8217;s question and most up-voted answer</strong> for this! Even now if someone searches for
+a mapping framework this answer may pop up!</p></div>
+<div class="paragraph"><p><strong>Ignorance</strong> will lead to <strong>poor performance</strong> that will go probably <strong>unnoticed</strong> for ever <strong>wasting</strong>
+electric power and producing <strong>C2O</strong>!</p></div>
+<div class="paragraph"><p>Having said all that I <strong>strongly</strong> <em>suggest</em> to select one of the <strong>fast</strong> mapping
+frameworks.</p></div>
+<div class="paragraph"><p>Other than that it is a matter of <strong>taste</strong> (i.e. XML vs Annotation configuration) and <strong>specific requirements</strong> (i.e. lack
+of setters/getters, support for Generics, mapping of objects loaded at runtime etc.). A quick
+reading of the <strong>documentation</strong> will give you an <strong>idea</strong> about each framework&#8217;s
+<strong>API</strong>. You will have to <strong>try it</strong> yourself in order to see what <strong>suits</strong> you best.</p></div>
+<div class="paragraph"><p>I am personally a bit biased against projects that seem <strong>unpopular</strong> or <strong>abandoned</strong>.
+If a project is <strong>abandoned</strong> at the very least it
+means that if a feature that you would like to have is <strong>missing</strong> it won&#8217;t probably
+get implemented in the <strong>upstream</strong> and if a <strong>security issue</strong> is found a new
+version may come <strong>late or not at all</strong>.</p></div>
+<div class="paragraph"><p>Personally, I currently use MapStruct and I am very happy. I like the API. It is easy
+to configure the mapping of the fields or combine manual mapping if required.
+Also, it is easy to understand how the mapping is performed and debug it if
+required. Furthermore, it seems reasonably active and feature-rich.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lessons_learned">Lessons learned</h2>
+<div class="sectionbody">
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Mapping is not free. Double check if you really need it before going with it!
+</p>
+</li>
+<li>
+<p>
+Manual mapping is not so bad. No shame there! Go with it if you feel like it. It has good
+performance, it does not need extra dependencies, it clearly shows the intention
+of how the mapping should work and it doesn&#8217;t require extra knowledge. However,
+if you find yourself writing all the time boilerplate mapping code then
+seriously consider using a mapper and think of it as an investment in productivity
+for the future!
+</p>
+</li>
+<li>
+<p>
+Re-inventing the wheel requires a lot of effort and hides many caveats.
+Go with well established solutions!
+</p>
+</li>
+<li>
+<p>
+Correctness of the program is more important than performance! Make
+sure to write (explicit or implicit) tests for your mappings! First of all
+you may have configured the mapper wrong. Then, the mapper may not work the way you
+expect it to work. In case you are switching mapping frameworks, let&#8217;s say from a slow one
+to a faster one, make sure to write tests that ensure that the new mapper
+works the same way as the old one.
+</p>
+</li>
+<li>
+<p>
+Avoid using slow mappers! Use the faster, environment friendly ones!
+</p>
+</li>
+<li>
+<p>
+In case you need functionality that is only offered by a slower mapper consider
+using the slow mapper only for the specific cases it is required and not
+for every mapping in the application!
+</p>
+</li>
+<li>
+<p>
+In case you have very special performance requirements make sure to
+write your own benchmark that tests exactly the case that you are interested in.
+All the above benchmarks are indicative.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>I hope you found this article interesting and had as much fun reading it as I had
+writing it!</p></div>
+<div class="paragraph"><p>Finally, a <strong>big thanks</strong> to all the open source contributors that have dedicated
+so much of their time in creating all these <strong>beautiful</strong> tools!</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../images/icons/important.png" alt="Important" />
+</td>
+<td class="content">If you think that I have misjudged a mapper due to bad configuration and my benchmark
+is not objective feel free to provide a patch.</td>
+</tr></table>
+</div>
+<div class="sect3">
+<h4 id="_see_also">See also</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://github.com/MasterEx/custom-bean-mapping">Custom mappers source code</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/MasterEx/bean-mapping-benchmark">Benchmark source code</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
