@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.1.0" />
+<meta name="description" content="An article about the stack size, recursion and thread count." />
+<meta name="keywords" content="java, stack, Xss, StackOverflowException, Thread, ulimit, jvm" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../../../images/favicon.ico" type="image/x-icon" />
+<title>Overflowing the stack for fun</title>
+<title></title>
+<link rel="stylesheet" href="../../../../styles/blog.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/xhtml11.css" type="text/css" />
+<link rel="stylesheet" href="../../../../styles/media-queries.css" type="text/css" />
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+        <div id="layout-menu-box">
+                <div id="layout-menu">
+                        <div id="menu">
+                                <ul class="visible">
+                                        <li><a href="../../../../archive.rss"><img width="32" alt="rss" src="../../../../images/rss.png" /></a></li>
+                                        <li><a href="../../../../about.html">About</a></li>
+                                        <li><a href="../../../../archive.html">Archive</a></li>
+                                        <li><a href="../../../../index.html">Home</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+        <div id="layout-banner-box">
+                <div id="layout-banner">
+                        <div id="layout-description">Periklis Ntanasis:</div>
+                        <div id="layout-title">Master's Touch</div>
+                </div>
+        </div>
+        <div id="layout-content-box">
+                <div id="layout-content">
+                <p><img id="top_fade" src="../../../../images/top-fade.png" alt="fade out" /></p>
+<!-- MAIN_BODY -->
+<div class="sect1">
+<h2 id="_overflowing_the_stack_for_fun">Overflowing the stack for fun</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In <strong>Java</strong> it is very common to fine tune the <strong>JVM</strong> heap size. However, it is
+not so common to specifically set the stack size.</p></div>
+<div class="paragraph"><p>In this article we are going to see how the <strong>JVM</strong> stack works and how we may
+manipulate the stack size. Then, we are going to understand why
+the <strong>StackOverflowException</strong> occurs and what is the relation between the
+stack size and the thread count.</p></div>
+<div class="paragraph"><p>The included code examples use <strong>Java 11</strong>. The operating system I used
+to run them is Linux and the mentioned results may vary depending the
+system available resources.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jvm_stack_101">JVM Stack 101</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When a new Java thread is created some space is allocated for the stack.</p></div>
+<div class="paragraph"><p>When a method call is performed then some information is pushed into the stack.
+The information stored into the stack is called stack frame and contains
+<strong>3</strong> kind of data. The <strong>Local Variable Array</strong>, the <strong>Operand Stack</strong> and the <strong>Frame
+Data</strong>.</p></div>
+<div class="paragraph"><p>The <strong>Local Variable Array</strong> contains entries (called <strong>words</strong>) for the arguments
+and the local variables of the method. The array slots have a size of <strong>4</strong> bytes.
+The types of <strong>int</strong>, <strong>float</strong>, <strong>byte</strong>, <strong>short</strong>, <strong>char</strong> and <strong>object reference</strong> take over <strong>1</strong> slot (<strong>4 bytes</strong>).
+<strong>Double</strong> and <strong>long</strong> occupy <strong>2</strong> slots (<strong>8 bytes</strong>). <strong>Boolean</strong> usual takes over <strong>1</strong> slot but
+this may vary depending the <strong>JVM</strong> implementation.</p></div>
+<div class="paragraph"><p>The <strong>Operand Stack</strong> is used to store and retrieve values between various
+byte-code operations. The Operand Stack is used by the <strong>JVM</strong> like the <strong>CPU</strong> registers
+which stores values between the various operations.</p></div>
+<div class="paragraph"><p>The <strong>Frame Data</strong> is used to store data required for the constant pool resolution,
+the normal method return and the exception dispatch.</p></div>
+<div class="paragraph"><p>The memory for the stack is allocated when a new thread is created. If there is not
+enough space available then an <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/OutOfMemoryError.html">OutOfMemoryError</a> will occur. Afterwards,
+the stack is populated by stack frames when method call happens. If there is not enough space
+available when a stack frame is about to be pushed into the stack
+then a
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackOverflowError.html">StackOverflowException</a>
+ is thrown.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_jvm_xss_argument">The JVM -Xss argument</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The size of the stack is configurable through the <strong>JVM</strong> <code>-Xss</code> argument (stack size).</p></div>
+<div class="paragraph"><p>This value is about the stack of each created thread. So, if for example
+we set the stack size to <strong>2</strong> megabytes (<code>-Xss2M</code>) then each created thread
+will allocate <strong>2</strong> megabytes of memory.</p></div>
+<div class="paragraph"><p>Have in mind that the stack used by thread may be explicitly set at
+the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Thread.html#%3Cinit%3E(java.lang.ThreadGroup,java.lang.Runnable,java.lang.String,long,boolean)">creation point</a>
+of the specific thread and that it&#8217;s up to the specific
+<strong>JVM</strong> implementation used to ignore it or not.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_recursion_and_stackoverflowexception">Recursion and StackOverflowException</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The <strong>smaller</strong> the stack size the sooner the stack will be <strong>overflowed</strong>.</p></div>
+<div class="paragraph"><p>In the start of the article I have mentioned that it is <em>rare</em> to adjust the
+stack size. This is why most of the times the <strong>default</strong> stack size is <strong>sufficient</strong>
+for the operations we perform.</p></div>
+<div class="paragraph"><p>However, if we perform <strong>too many method calls</strong> then the stack&#8217;s available free space will
+be <strong>reduced significantly</strong>. This is a common case when <strong>recursion</strong> is involved.</p></div>
+<div class="paragraph"><p><a href="https://en.wikipedia.org/wiki/Recursion_(computer_science)">Recursion</a>
+ is a programming technique where a method <strong>calls itself</strong> for a number
+of times until the desired outcome is achieved.</p></div>
+<div class="paragraph"><p>We may write <strong>any</strong> code which uses a <strong>loop</strong> with <strong>recursion</strong>.</p></div>
+<div class="paragraph"><p>For example here it is a loop that prints some sequential numbers:</p></div>
+<div class="listingblock">
+<div class="title">ArrayTraversal.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">int</span><span style="color: #990000">[]</span> arr <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="color: #009900">int</span><span style="color: #990000">[]</span> <span style="color: #FF0000">{</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">3</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">6</span><span style="color: #990000">,</span> <span style="color: #993399">7</span><span style="color: #990000">,</span> <span style="color: #993399">8</span><span style="color: #990000">,</span> <span style="color: #993399">9</span><span style="color: #990000">,</span> <span style="color: #993399">10</span><span style="color: #FF0000">}</span><span style="color: #990000">;</span>
+<span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(</span><span style="color: #009900">int</span> i<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">;</span> i<span style="color: #990000">&lt;</span> arr<span style="color: #990000">.</span>length<span style="color: #990000">;</span> i<span style="color: #990000">++)</span> <span style="color: #FF0000">{</span>
+  System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>i<span style="color: #990000">);</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Here is an equivalent recursive method:</p></div>
+<div class="listingblock">
+<div class="title">RecursiveArrayTraversal.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">printArray</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span><span style="color: #990000">[]</span> arr<span style="color: #990000">,</span> <span style="color: #009900">int</span> idx<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span>idx <span style="color: #990000">&lt;</span> arr<span style="color: #990000">.</span>length<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+    System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span>arr<span style="color: #990000">[</span>idx<span style="color: #990000">]);</span>
+    <span style="font-weight: bold"><span style="color: #000000">printArray</span></span><span style="color: #990000">(</span>arr<span style="color: #990000">,</span> <span style="color: #990000">++</span>idx<span style="color: #990000">);</span>
+  <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Which may be used like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">printArray</span></span><span style="color: #990000">(</span>arr<span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">);</span></tt></pre></div></div>
+<div class="paragraph"><p>While the above method works as expected the number of method calls is <strong>increased</strong>
+in a <strong>linear</strong> way depending the length of the provided array. Each time
+the method is called then some space is used in the stack.</p></div>
+<div class="paragraph"><p>So, the above example for a very big array it could eventually cause a <strong>StackOverflowException</strong>.</p></div>
+<div class="listingblock">
+<div class="title">RecursiveArrayTraversalStackOverflow.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #009900">int</span><span style="color: #990000">[]</span> arr <span style="color: #990000">=</span> IntStream<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">range</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">19122</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">toArray</span></span><span style="color: #990000">();</span>
+<span style="font-weight: bold"><span style="color: #000000">printArray</span></span><span style="color: #990000">(</span>arr<span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">);</span></tt></pre></div></div>
+<div class="paragraph"><p>This code if it is executed with the <code>-Xss2M -Xint</code> it will cause a
+<code>StackOverflowException</code>.</p></div>
+<div class="paragraph"><p>Below is an example which demonstrates the <strong>exhaustion</strong> of the stack <strong>regardless
+the stack size</strong>:</p></div>
+<div class="listingblock">
+<div class="title">StackExhaustionRecursion.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">StackExhaustionRecursion</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">AtomicInteger</span> counter <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AtomicInteger</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>String<span style="color: #990000">[]</span> args<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">StackOverflowError</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            ex<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+            System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Depth: "</span> <span style="color: #990000">+</span> counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">());</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>The <code>recur()</code> method performs <strong>infinite</strong> recursion. This means that it
+calls itself infinitely because there <strong>isn&#8217;t any terminating condition</strong>.</p></div>
+<div class="paragraph"><p>Execute this by doing <code>java -Xint -Xss2M StackExhaustionRecursion.java</code>. The <code>-Xint</code>
+turns off the just in time (<a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT</a>) compilation
+which performs various <strong>optimizations</strong>
+on the spot resulting in <strong>variable</strong> stack depth to be printed between the
+executions of the code. So, with the <code>-Xint</code> you&#8217;ll get consistent
+results each time you run the above code (considering that there are
+enough <strong>resources</strong> such as <strong>physical memory</strong> available between the
+executions).</p></div>
+<div class="paragraph"><p>The above example in my machine will print <strong>22612</strong> with the <strong>default configuration</strong>.</p></div>
+<div class="paragraph"><p>Changing the stack size to <strong>1M</strong> will print <strong>10696</strong> while changing the
+stack size to <strong>4M</strong> will print <strong>46443</strong>.</p></div>
+<div class="paragraph"><p>The <code>recur()</code> method do not have any <strong>local variable</strong>
+or <strong>parameter</strong>. If we add some then the stack overflow will happen sooner
+because the stack frames and more specifically the
+local variables array part would be <strong>bigger</strong>.</p></div>
+<div class="paragraph"><p>See the below example:</p></div>
+<div class="listingblock">
+<div class="title">StackExhaustionRecursionWithLocalParameters.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">StackExhaustionRecursionWithLocalParameters</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">AtomicInteger</span> counter <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AtomicInteger</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+        <span style="color: #009900">int</span> a <span style="color: #990000">=</span> <span style="color: #993399">5</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> b <span style="color: #990000">=</span> <span style="color: #993399">10</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> c <span style="color: #990000">=</span> <span style="color: #993399">15</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> d <span style="color: #990000">=</span> <span style="color: #993399">20</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> e <span style="color: #990000">=</span> <span style="color: #993399">25</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> f <span style="color: #990000">=</span> <span style="color: #993399">30</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> g <span style="color: #990000">=</span> <span style="color: #993399">35</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> h <span style="color: #990000">=</span> <span style="color: #993399">40</span><span style="color: #990000">;</span>
+        counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">();</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>String<span style="color: #990000">[]</span> args<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">();</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">StackOverflowError</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            ex<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+            System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Depth: "</span> <span style="color: #990000">+</span> counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">());</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>This prints <strong>13091</strong> in my machine which is considerably smaller compared to
+<strong>22612</strong> (all these examples use a stack size of <strong>2M</strong> except if stated otherwise).</p></div>
+<div class="paragraph"><p>Similarly the method arguments populate the <strong>Local Variable Array</strong> and
+exhausts the available stack space sooner.</p></div>
+<div class="listingblock">
+<div class="title">StackExhaustionRecursionWithPrimitiveMethodArguments.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">StackExhaustionRecursionWithPrimitiveMethodArguments</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">AtomicInteger</span> counter <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AtomicInteger</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span><span style="color: #009900">int</span> a<span style="color: #990000">,</span> <span style="color: #009900">int</span> b<span style="color: #990000">,</span> <span style="color: #009900">int</span> c<span style="color: #990000">,</span> <span style="color: #009900">int</span> d<span style="color: #990000">,</span> <span style="color: #009900">int</span> e<span style="color: #990000">,</span> <span style="color: #009900">int</span> f<span style="color: #990000">,</span> <span style="color: #009900">int</span> g<span style="color: #990000">,</span> <span style="color: #009900">int</span> h<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span>a<span style="color: #990000">,</span> b<span style="color: #990000">,</span> c<span style="color: #990000">,</span> d<span style="color: #990000">,</span> e<span style="color: #990000">,</span> f<span style="color: #990000">,</span> g<span style="color: #990000">,</span> h<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>String<span style="color: #990000">[]</span> args<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">3</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #993399">6</span><span style="color: #990000">,</span> <span style="color: #993399">7</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">StackOverflowError</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            ex<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+            System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Depth: "</span> <span style="color: #990000">+</span> counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">());</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>This will print in my machine <strong>13091</strong>. This is as expected similar to having the
+same arguments as local variables.</p></div>
+<div class="paragraph"><p>Based on the above, have in mind that in case you have <strong>valid</strong> reasons
+to have many method calls and you want to reduce the allocated stack
+space you may save <em>some</em> of it by replacing the individual method arguments
+by <strong>object references</strong>. Consider the following example:</p></div>
+<div class="listingblock">
+<div class="title">StackExhaustionRecursionWithObjectRef.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">StackExhaustionRecursionWithObjectRef</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="font-weight: bold"><span style="color: #0000FF">final</span></span> <span style="color: #008080">AtomicInteger</span> counter <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AtomicInteger</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">ParamObject</span> <span style="color: #FF0000">{</span>
+        <span style="color: #009900">int</span> a <span style="color: #990000">=</span> <span style="color: #993399">5</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> b <span style="color: #990000">=</span> <span style="color: #993399">10</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> c <span style="color: #990000">=</span> <span style="color: #993399">15</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> d <span style="color: #990000">=</span> <span style="color: #993399">20</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> e <span style="color: #990000">=</span> <span style="color: #993399">25</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> f <span style="color: #990000">=</span> <span style="color: #993399">30</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> g <span style="color: #990000">=</span> <span style="color: #993399">35</span><span style="color: #990000">;</span>
+        <span style="color: #009900">int</span> h <span style="color: #990000">=</span> <span style="color: #993399">40</span><span style="color: #990000">;</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span><span style="color: #008080">ParamObject</span> a<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span>a<span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>String<span style="color: #990000">[]</span> args<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="color: #008080">ParamObject</span> po <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">ParamObject</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span>po<span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">StackOverflowError</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            ex<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+            System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Depth: "</span> <span style="color: #990000">+</span> counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">());</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span>
+
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>In my machine this will <strong>crash</strong> after <strong>20727</strong> method calls. This is much better
+than having all the values as method arguments.</p></div>
+<div class="paragraph"><p>However, have in mind that <strong>this is not the same</strong>. This example creates
+once the <strong>ParamObject</strong> in the <strong>heap</strong> and copies the object reference into
+the <strong>Local Variables Array</strong> each time a stack frame is pushed into the stack.</p></div>
+<div class="paragraph"><p>In the case of the method arguments the values are
+<a href="https://stackoverflow.com/questions/40480/is-java-pass-by-reference-or-pass-by-value">copied</a>
+ into the stack.
+So, the two examples are <strong>not equivalent</strong>.</p></div>
+<div class="paragraph"><p>The equivalent would be to pass a <strong>clone</strong> copy of the object as a parameter
+to the method call.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span><span style="color: #008080">ParamObject</span> a<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        counter<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+        <span style="font-weight: bold"><span style="color: #000000">recur</span></span><span style="color: #990000">(</span>a<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">clone</span></span><span style="color: #990000">());</span>
+<span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Of course, this will exhaust the <strong>heap</strong> size sooner instead of the <strong>stack</strong>.
+So, a new <em>trade-off</em> is introduced.</p></div>
+<div class="paragraph"><p>Please, keep in mind all the above and <em>make your choices wisely</em>!</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_indirect_recursion">Indirect Recursion</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are times where recursion may happen in an <strong>indirect</strong> way. For
+example assume that the method <strong>A</strong> calls method <strong>B</strong>, method <strong>B</strong> calls
+method <strong>C</strong> and method <strong>C</strong> calls method <strong>A</strong> again.</p></div>
+<div class="paragraph"><p>These kind of scenarios may be <em>less obvious</em> to debug and may happen
+unknowingly if the flow of the program is somewhat <em>dynamic</em>.</p></div>
+<div class="paragraph"><p>For example if there are things like <a href="https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern">handlers or interceptors</a>
+ that
+calls one the other and they are configured externally this thing
+may happen.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tail_call_optimization">Tail Call Optimization</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Because we have mentioned extensively the <strong>recursion</strong> I would like to briefly
+mention the <a href="https://en.wikipedia.org/wiki/Tail_call">tail call</a> optimization too.</p></div>
+<div class="paragraph"><p>In a few words this is a technique used by the compiler to optimize
+recursive method calls to use <strong>less stack space</strong>.</p></div>
+<div class="paragraph"><p>Unfortunately, it is not implemented in Java but it is an <em>interesting</em> topic.
+If this was available in <strong>Java</strong> the previous examples could be written in
+a recursive way that wouldn&#8217;t throw <strong>StackOverflowError</strong>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_stack_size_and_thread_count">Stack size and thread count</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>As mentioned before the stack size is allocated in the memory when a new
+thread is created. Considering that the memory space is <strong>finite</strong> then this
+means that a <strong>bigger</strong> stack size will
+cause the memory to be exhausted <strong>sooner</strong> while a <strong>smaller</strong> stack size will
+be exhausted <strong>later</strong> resulting to more threads to be created.</p></div>
+<div class="paragraph"><p>Let&#8217;s see an example. Consider the following code:</p></div>
+<div class="listingblock">
+<div class="title">ThreadCountVsMaxSize.java</div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="color: #008080">ThreadCountVsMaxSize</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #008080">AtomicInteger</span> threadCount <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">AtomicInteger</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">);</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">public</span></span> <span style="font-weight: bold"><span style="color: #0000FF">static</span></span> <span style="color: #009900">void</span> <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>String<span style="color: #990000">[]</span> args<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(;;)</span> <span style="color: #FF0000">{</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">new</span></span> <span style="font-weight: bold"><span style="color: #000000">Thread</span></span><span style="color: #990000">(()</span> <span style="color: #990000">-&gt;</span> <span style="color: #FF0000">{</span>
+                    <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> <span style="color: #990000">(;;)</span> <span style="color: #FF0000">{</span>
+                        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span> <span style="color: #FF0000">{</span>
+                            Thread<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">sleep</span></span><span style="color: #990000">(</span><span style="color: #993399">1000</span><span style="color: #990000">);</span>
+                        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">Throwable</span> ex<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+                            ex<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+                            System<span style="color: #990000">.</span>err<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"This is a sleep exception"</span><span style="color: #990000">);</span>
+                        <span style="color: #FF0000">}</span>
+                    <span style="color: #FF0000">}</span>
+                <span style="color: #FF0000">}</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">start</span></span><span style="color: #990000">();</span>
+                threadCount<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">();</span>
+            <span style="color: #FF0000">}</span>
+        <span style="color: #FF0000">}</span> <span style="font-weight: bold"><span style="color: #0000FF">catch</span></span> <span style="color: #990000">(</span><span style="color: #008080">Throwable</span> e<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            System<span style="color: #990000">.</span>out<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">println</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Thread Count: "</span> <span style="color: #990000">+</span> threadCount<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incrementAndGet</span></span><span style="color: #990000">());</span>
+            e<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">printStackTrace</span></span><span style="color: #990000">();</span>
+            System<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">exit</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>This code creates new threads which are <strong>kept alive</strong>. When the new threads
+won&#8217;t be able to be created anymore it exits printing the number of the
+created threads.</p></div>
+<div class="paragraph"><p>Now, let&#8217;s see it in action. However, before doing so let&#8217;s explicitly
+set the amount of available <strong>virtual memory in Linux</strong>. We have to do
+this because virtual memory which utilizes <strong>both</strong> physical memory and pagination
+is usually <strong>too big</strong> and it would be harder to get <em>meaningful</em> results
+in our experiment. Also, there are other limits (i.e. max user processes etc.)
+which may affect the <strong>maximum number</strong> of created threads. By setting a relative
+<strong>small</strong> virtual memory size we will avoid to <strong>hit</strong> these other limits and
+will get more <em>meaningful</em> results.</p></div>
+<div class="paragraph"><p>The command <code>ulimit -v</code> will print the current virtual memory limit which
+should be set to <code>unlimited</code>. Let&#8217;s set it to <strong>10 MB</strong>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>ulimit -v <span style="color: #993399">10485760</span></tt></pre></div></div>
+<div class="paragraph"><p>Then, execute the code like that:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>java -Xint -Xss2M <span style="color: #990000">.</span>/ThreadCountVsMaxSize<span style="color: #990000">.</span>java
+<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">.</span>514s<span style="color: #990000">][</span>warning<span style="color: #990000">][</span>os<span style="color: #990000">,</span>thread<span style="color: #990000">]</span> Failed to start thread - pthread_create failed <span style="color: #990000">(</span>EAGAIN<span style="color: #990000">)</span> <span style="font-weight: bold"><span style="color: #0000FF">for</span></span>
+attributes<span style="color: #990000">:</span> stacksize<span style="color: #990000">:</span> 2048k<span style="color: #990000">,</span> guardsize<span style="color: #990000">:</span> 0k<span style="color: #990000">,</span> detached<span style="color: #990000">.</span>
+Thread Count<span style="color: #990000">:</span> <span style="color: #993399">1411</span>
+java<span style="color: #990000">.</span>lang<span style="color: #990000">.</span>OutOfMemoryError<span style="color: #990000">:</span> unable to create native thread<span style="color: #990000">:</span> possibly out of
+memory or process/resource limits reached
+        at java<span style="color: #990000">.</span>base/java<span style="color: #990000">.</span>lang<span style="color: #990000">.</span>Thread<span style="color: #990000">.</span>start0<span style="color: #990000">(</span>Native Method<span style="color: #990000">)</span>
+        at java<span style="color: #990000">.</span>base/java<span style="color: #990000">.</span>lang<span style="color: #990000">.</span>Thread<span style="color: #990000">.</span>start<span style="color: #990000">(</span>Thread<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">798</span><span style="color: #990000">)</span>
+        at com<span style="color: #990000">.</span>github<span style="color: #990000">.</span>masterex<span style="color: #990000">.</span>stackdemo<span style="color: #990000">.</span>ThreadCountVsMaxSize
+                                 <span style="color: #990000">.</span>main<span style="color: #990000">(</span>ThreadCountVsMaxSize<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">41</span><span style="color: #990000">)</span>
+        at java<span style="color: #990000">.</span>base/jdk<span style="color: #990000">.</span>internal<span style="color: #990000">.</span>reflect<span style="color: #990000">.</span>NativeMethodAccessorImpl
+                                 <span style="color: #990000">.</span>invoke0<span style="color: #990000">(</span>Native Method<span style="color: #990000">)</span>
+        at java<span style="color: #990000">.</span>base/jdk<span style="color: #990000">.</span>internal<span style="color: #990000">.</span>reflect<span style="color: #990000">.</span>NativeMethodAccessorImpl
+                                 <span style="color: #990000">.</span>invoke<span style="color: #990000">(</span>NativeMethodAccessorImpl<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">62</span><span style="color: #990000">)</span>
+        at java<span style="color: #990000">.</span>base/jdk<span style="color: #990000">.</span>internal<span style="color: #990000">.</span>reflect<span style="color: #990000">.</span>DelegatingMethodAccessorImpl
+                                 <span style="color: #990000">.</span>invoke<span style="color: #990000">(</span>DelegatingMethodAccessorImpl<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">43</span><span style="color: #990000">)</span>
+        at java<span style="color: #990000">.</span>base/java<span style="color: #990000">.</span>lang<span style="color: #990000">.</span>reflect<span style="color: #990000">.</span>Method<span style="color: #990000">.</span>invoke<span style="color: #990000">(</span>Method<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">566</span><span style="color: #990000">)</span>
+        at jdk<span style="color: #990000">.</span>compiler/com<span style="color: #990000">.</span>sun<span style="color: #990000">.</span>tools<span style="color: #990000">.</span>javac<span style="color: #990000">.</span>launcher<span style="color: #990000">.</span>Main<span style="color: #990000">.</span>execute<span style="color: #990000">(</span>Main<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">404</span><span style="color: #990000">)</span>
+        at jdk<span style="color: #990000">.</span>compiler/com<span style="color: #990000">.</span>sun<span style="color: #990000">.</span>tools<span style="color: #990000">.</span>javac<span style="color: #990000">.</span>launcher<span style="color: #990000">.</span>Main<span style="color: #990000">.</span>run<span style="color: #990000">(</span>Main<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">179</span><span style="color: #990000">)</span>
+        at jdk<span style="color: #990000">.</span>compiler/com<span style="color: #990000">.</span>sun<span style="color: #990000">.</span>tools<span style="color: #990000">.</span>javac<span style="color: #990000">.</span>launcher<span style="color: #990000">.</span>Main<span style="color: #990000">.</span>main<span style="color: #990000">(</span>Main<span style="color: #990000">.</span>java<span style="color: #990000">:</span><span style="color: #993399">119</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>As you can see a total number of <strong>1411</strong> threads could be created before
+the <strong>memory is exhausted</strong>.</p></div>
+<div class="paragraph"><p>In the above execution the stack size is explicitly set to <strong>2M</strong>. Running the
+same code with stack size <strong>1M</strong> it will create <strong>2827</strong> threads on my machine,
+while running it with <strong>4M</strong> will create <strong>704</strong>.</p></div>
+<div class="paragraph"><p>It is clear that changing the stack size <strong>affects the number of the created
+threads</strong>. This means that an application which needs to create many threads
+then it should better use a <strong>smaller</strong> stack size while an application
+which needs to use more method calls (see recursion) will need a <strong>bigger</strong>
+stack size.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_epilogue">Epilogue</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>During the <strong>October&#8217;s</strong> session of <a href="https://www.jhug.gr/">JHUG</a>,
+<a href="https://www.javaspecialists.eu/about/heinz/">Dr. Heinz Kabutz</a>
+ talked about project
+<a href="https://openjdk.java.net/projects/loom/">Loom</a>.
+During the talk he said that he never had <strong>StackOverflowError</strong> because
+his stack was too small but because there was an error on his code which
+caused <strong>infinite recursion</strong> (you should check the very interesting talk
+<a href="https://vimeo.com/626210978">here</a>, the specific part is around the
+39th minute of the video).</p></div>
+<div class="paragraph"><p>I thought that this was <em>interesting</em>. Usually, the stack is not something
+that <em>troubles</em> us, the defaults are OK. However, I had once a case
+where I needed to <strong>change the stack size</strong> to avoid the <strong>Stack Overflow</strong> error.
+So, this was my <em>motivation</em> for
+exploring a little bit further how the <strong>JVM</strong> stack works and eventually
+write this article.</p></div>
+<div class="paragraph"><p>In my past experience I was working on a <strong>desktop application</strong> with <a href="https://en.wikipedia.org/wiki/Ogg">OGG</a>
+audio file playback capabilities. We have developed a custom audio player
+and we wanted to implement the <strong>seek</strong> functionality which would permit
+the user to jump to a specific point in the audio file. The <strong>OGG</strong> files
+have <a href="https://en.wikipedia.org/wiki/Ogg_page">pages</a> which contain <em>some</em> part of the total audio data.
+Roughly speaking, we needed to find the <strong>correct</strong> page which contained the
+data we wanted to jump to. The pages are <strong>sequential</strong> but do not contain the <strong>same</strong> amount of
+<strong>compressed</strong> audio data so it is not easy to find the specific page in
+<a href="https://en.wikipedia.org/wiki/Time_complexity#Constant_time">constant time</a>. Of course our very initial
+implementation was pretty <em>naive</em> and was just searching <a href="https://en.wikipedia.org/wiki/Linear_search">linearly</a>
+ for the point from the
+start to the end. The pages however were <strong>too</strong> many and for many cases there
+was a <em>significant</em> delay. For this reason we decided to perform a
+<a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">binary search</a>
+which would achieve performance of <code>O(logn)</code> instead of <code>O(n)</code>.
+We went with the <strong>binary search</strong> implementation which seemed simpler to us
+but as I have mentioned the files were <strong>too big</strong> and
+for some cases we were getting <strong>StackOverFlow</strong> error.</p></div>
+<div class="paragraph"><p>At the end we were fine by setting the stack size to <strong>12M</strong> which was actually
+<strong>more than
+enough</strong> but was set to this in order to be safe for unexpected cases where the pages would
+be unusually big. As I have said our application was a desktop application. The number
+of created threads was <strong>limited</strong> and there were not <strong>throughput</strong> issues to
+consider. Now, this was a few years back and I cannot recall all the details
+but I think that this was a <strong>valid</strong> case for changing the <strong>stack size</strong>. There wasn&#8217;t <strong>infinite recursion</strong> but
+we needed to have <strong>too many</strong> method calls.</p></div>
+<div class="paragraph"><p>While I find that there are <strong>valid</strong> cases to use <strong>recursion</strong> as the one mentioned above my <em>suggestion</em>
+is to always avoid it. This may cause less straight forward code in some
+cases but it will save you from the <strong>trouble</strong> of having to provision what
+stack size you are going to use in the future or having limitations regarding
+the <strong>maximum number of created threads</strong>. Also, in general the non recursive
+code should perform better.</p></div>
+<div class="paragraph"><p>To be honest, personally I <strong>don&#8217;t</strong> face the kind of problems where a recursive
+solution would be the first thing to come in mind, in my day to day job.
+It is way more common though to see it in
+<strong>competitive code competitions</strong> and stuff like that. In that setting, it is
+perfectly fine to use it considering that the <strong>physical memory limitations</strong>
+may become an insurmountable obstacle when trying to solve certain problems.</p></div>
+<div class="paragraph"><p>I hope you <em>enjoyed</em> this article. At the end you may find all the code
+used in the examples and also many resources to further read and better
+understand how the <strong>JVM stack</strong> works.</p></div>
+<div class="paragraph"><p>If you have <strong>examples</strong> were you had to adjust your stack size I would <em>love</em>
+to read them in the comments! <em>Take care!</em></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_further_reading_8230">Further reading&#8230;</h2>
+<div class="sectionbody">
+<div class="ulist"><div class="title">Code Samples</div><ul>
+<li>
+<p>
+<a href="https://gist.github.com/MasterEx/9a1ace1d53e166f6ffb7a2131abd5550">All the code used in this article</a>
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">JVM Stack Explained</div><ul>
+<li>
+<p>
+<a href="https://www.geeksforgeeks.org/java-virtual-machine-jvm-stack-area/">https://www.geeksforgeeks.org/java-virtual-machine-jvm-stack-area/</a> - Article which explains how the JVM stack works
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.artima.com/insidejvm/ed2/jvm8.html">https://www.artima.com/insidejvm/ed2/jvm8.html</a> - Another more detailed article regarding how the JVM stack works
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">Tail Call Optimization in Java</div><ul>
+<li>
+<p>
+<a href="https://blog.knoldus.com/tail-recursion-in-java-8/">https://blog.knoldus.com/tail-recursion-in-java-8/</a> - A way to manually achieve tail call optimization in Java
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/Sipkab/jvm-tail-recursion">https://github.com/Sipkab/jvm-tail-recursion</a> - Tail call optimization in Java by bytecode manipulation
+</p>
+</li>
+<li>
+<p>
+<a href="https://stackoverflow.com/questions/310974/what-is-tail-call-optimization">https://stackoverflow.com/questions/310974/what-is-tail-call-optimization</a> - Tail Call Optimization explained
+</p>
+</li>
+<li>
+<p>
+<a href="https://stackoverflow.com/questions/53354898/tail-call-optimisation-in-java">https://stackoverflow.com/questions/53354898/tail-call-optimisation-in-java</a> - Some discussion about TCO in Java
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<!-- MAIN_BODY_END -->
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+        var disqus_config = function () {
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//masterstouch.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<p><img id="bottom_fade" src="../../../../images/bottom-fade.png" alt="fade out" />     </p>
+                </div>
+        </div>
+        <p id="footer">Designed by Periklis Ntanasis
+        <br />
+        <a href="http://validator.w3.org/check?uri=referer">
+  <img style="border-width:0"
+    src="../../../../images/xhtml11.png"
+    alt="Valid XHTML 1.1" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border-width:0"
+    src="../../../../images/css.png"
+    alt="Valid CSS!" />
+</a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/"><img alt="Creative Commons License" style="border-width:0" src="../../../../images/sa.png" /></a>
+<a rel="license" href="https://github.com/MasterEx/AsciiBlog"><img alt="Powered by Ascii Blog" style="border-width:0" src="../../../../images/asciiblog.png" /></a>
+</p>
+<script src="../../../../javascripts/blog.js"></script>
+</body>
+</html>
