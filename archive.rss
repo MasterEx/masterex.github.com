@@ -8,6 +8,193 @@
     <language>en-us</language>
     <generator>just a shell script</generator>
     <item>
+        <title>The future of programming in the AI era</title>
+        <link>https://masterex.github.io/archive/2023/08/21/the-future-of-programming-in-the-AI-era.html</link>
+        <description>The future of programming in the AI era</description>
+        <content:encoded>
+<![CDATA[
+		<div class="sect1">
+<h2 id="_the_future_of_programming_in_the_ai_era">The future of programming in the AI era</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong>2023</strong> is undoubtedly the year of <a href="https://en.wikipedia.org/wiki/Artificial_intelligence"><strong>AI</strong></a>.
+Decades of research in the field have been put into products that became mainstream such as <a href="https://en.wikipedia.org/wiki/ChatGPT">ChatGPT</a>.
+All the big players are running to <a href="https://hackernoon.com/tech-giants-are-in-a-race-to-dominate-the-<strong>AI</strong>-frontier">get a piece of the pie</a>. It is a new kind of gold fever.</p></div>
+<div class="paragraph"><p>While the future of <strong>AI</strong> seems bright there is still much skepticism about what this will bring to the future.
+This also brings the dreadful question "Will software engineers lose their jobs because of <strong>AI</strong>"? A thought that doesn&#8217;t seem so
+<a href="https://www.reddit.com/r/computerscience/comments/12kee2p/will_ai_replace_software_engineers">uncommon</a>.</p></div>
+<div class="paragraph"><p>In this article I am going to talk to you about how I think <strong>AI</strong> will affect programming in the upcoming years.
+I am getting a bit late to the party. There are many articles on the internet that already discuss this topic.
+However, I felt I needed to share my thoughts about this.
+It is mostly <strong>speculative</strong> but I hope you will <em>enjoy</em> it.</p></div>
+<div class="sect2">
+<h3 id="_the_essence_of_programming">The essence of programming</h3>
+<div class="paragraph"><p>There have been <a href="https://en.wikipedia.org/wiki/List_of_programming_languages">numerous</a> programming languages over the years. There are <a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">generic languages</a> build to tackle any kind of problem and <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific languages</a> that are better for specific tasks.</p></div>
+<div class="paragraph"><p><em>Most</em> general purpose languages are Turing complete and this means that they are equivalent.
+This brings the <a href="https://cacm.acm.org/blogs/blog-cacm/262424-why-are-there-so-many-programming-languages/fulltext">question</a>, <em>why do we need so many languages?</em> Why don&#8217;t we have only one language that will do everything we want?</p></div>
+<div class="paragraph"><p>The answer is that while the languages are equivalent they are not the <strong>same</strong>.
+Two <strong>key</strong> differences are the following:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+They differ in <a href="https://en.wikipedia.org/wiki/Expressive_power_(computer_science)">expressiveness</a>.
+</p>
+</li>
+<li>
+<p>
+<a href="https://en.wikipedia.org/wiki/Low-level_programming_language">Lower</a> level languages are harder to use because they aren’t similar to the human language while <a href="https://en.wikipedia.org/wiki/High-level_programming_language">higher</a> level languages are closer to the way humans talk and think.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In that sense generative <strong>AI</strong> can be considered just as another type of programming language. Actually, it may be considered as the most <strong>high-level</strong> language that transforms the natural language instructions to the desired programming language. Think of it as a kind of <a href="https://en.wikipedia.org/wiki/Source-to-source_compiler">transpiler</a> if you like. A human, the programmer, will still have to explain to the <strong>AI</strong> what it needs to be done.</p></div>
+<div class="paragraph"><p>Of course this is not a one time job. A program will evolve in many ways during its life-cycle and
+it will need maintenance. The programmer will be necessary for all of this.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_impact_of_ai_on_programming">Impact of AI on programming</h3>
+<div class="paragraph"><p>What will change is that programming will be easier. It will be trivial for someone inexperienced or unspecialized to implement an idea and produce an actual program.
+So, <strong>the entry barrier to software development will get lower or even lifted</strong>.</p></div>
+<div class="paragraph"><p>Professional developers will be more <strong>productive</strong>. This is something that already happened in the past with <strong>high-level</strong> languages, so it is only logical to happen again now.
+It means that less developers will be required to produce the same amount of work.</p></div>
+<div class="paragraph"><p>Finally, this probably will increase code quality. Software will have less bugs and this
+will make it easier to maintain. Code quality affects <a href="https://dl.acm.org/doi/10.1145/3540250.3558940">productivity</a> too.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_job_security">Job security</h3>
+<div class="paragraph"><p>As you can see, it is expected programming to become <strong>easier</strong> but it is unlikely to become <strong>fully automated</strong>.
+Programmers will have to adapt to a new way of working but this is something <strong>common</strong> for the field.
+New technologies appear all the time and <em>aqcuiring new skills is already an essential part of the job</em>.</p></div>
+<div class="paragraph"><p>Furthermore, there are other less technical factors that we should take into account.</p></div>
+<div class="sect3">
+<h4 id="_ai_adaptation">AI adaptation</h4>
+<div class="paragraph"><p><strong>Changes take time</strong>. My estimation is that generative <strong>AI</strong> will start to be used as a tool to help programmers and people in general to perform their day to day tasks. We already see many applications towards <a href="https://github.com/features/copilot">this</a> direction.
+Eventually, we will come to the point where we will be able to develop a product by expressing all the requirements in a <a href="https://en.wikipedia.org/wiki/Natural_language">natural language</a> but this will take time to become production ready.</p></div>
+<div class="paragraph"><p>This change will be adopted first by the <a href="https://en.wikipedia.org/wiki/Big_Tech">big players</a>. All the other will follow on their own pace.</p></div>
+<div class="paragraph"><p>There will be a <em>couple of decades</em> until this becomes <strong>industry standard</strong>.</p></div>
+<div class="paragraph"><p>Consider for example two programming languages that most of us consider <em>dead</em>,
+<a href="https://en.wikipedia.org/wiki/Fortran">Fortran</a> and <a href="https://en.wikipedia.org/wiki/COBOl">COBOL</a>.
+<strong>Fortan</strong> was first released in <strong>1957</strong> and the latest stable release was in <strong>2018</strong> while
+<strong>COBOL</strong> was released in <strong>1959</strong> and the latest stable release was in <strong>2023</strong>!
+If you search for <a href="https://www.indeed.com/jobs?q=fortran+programmer%252C+cobol+programmer">job</a> postings you will find that there is still demand for both of them!</p></div>
+<div class="paragraph"><p>Another example is about <a href="https://en.wikipedia.org/wiki/Java_(programming_language)">Java</a> which is a modern and popular language. The latest release is <strong>21</strong>.
+However, in <strong>2022</strong> version <strong>8</strong> released in <strong>2014</strong> <a href="https://newrelic.com/resources/report/2022-state-of-java-ecosystem">owns the <strong>46.45%</strong> of the total usage</a>.</p></div>
+<div class="paragraph"><p>You see that for a number of reasons <em>adoption of new technologies in the industry is</em> <strong>slow</strong>. Big tech companies are
+always the early adopters and the ones who actually drive the field but for the rest of the world
+keeping up with the changes is not so easy.</p></div>
+<div class="paragraph"><p>Some reasons about smaller companies not being able to keep up are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Uncertainty that the investment to a new technology will pay off
+</p>
+</li>
+<li>
+<p>
+Lack of experienced people who can lead the transformation
+</p>
+</li>
+<li>
+<p>
+Licencing or other costs that make a new technology unapproachable
+</p>
+</li>
+<li>
+<p>
+Effort to migrate existing/legacy projects is too high and make such an endeavor unattractive
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This is why <strong>I</strong> beleive that it will take us <em>a couple of decades</em> until <strong>AI</strong> becomes <strong>industry standard</strong>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_the_human_factor">The human factor</h4>
+<div class="paragraph"><p>Another point worth mentioning is that even if we get to the point where we may
+develop an application in natural language and we could have only
+business analysts that gather requirements and feed them to <strong>AI</strong>, <em>eliminating</em>
+the programmers altogether is unlikely.</p></div>
+<div class="paragraph"><p>The is a variaty of reasons this is not feasible.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Someone has to be <strong>accountable</strong> for the <strong>quality</strong> of the outcome. When programmers are writing code it is a
+common practice to <strong>review</strong> it for issues. Somenone has to be able to review
+the <strong>AI</strong> generated code and this person has to be able to write such a code
+in order to be able to review it.
+</p>
+</li>
+<li>
+<p>
+<strong>Maintainance</strong> and <strong>support</strong>. <em>Failures will happen</em>. At the time a critical
+system fails it will be very difficult to handle the incident without any human
+at all. What if the crash is so big that the <strong>AI</strong> assistant isn&#8217;t working too?
+Having capable human engineers involved will be irreplaceable.
+</p>
+</li>
+<li>
+<p>
+<strong>Copyright</strong> issues and <strong>code diversity</strong>. Generative <strong>AI</strong> creates new code based
+on a dataset it was trained on. At first there will be copyright issues which
+eventually will be handled by techniques similar to <a href="https://en.wikipedia.org/wiki/Obfuscation_(software)">code obfuscation</a>
+or <a href="https://en.wikipedia.org/wiki/Data_anonymization">data anonymization</a>. However,
+<strong>AI</strong> generated code will still be similar in nature. The lack of <strong>diversity</strong> will
+<strong>decrease</strong> the software <strong>resiliency</strong> to flaws and bugs.
+</p>
+</li>
+<li>
+<p>
+<strong>Special</strong> kind of problems. There is a <strong>niche</strong> where a problem is very unique,
+a new algorithm has to be designed or there is a very specific and uncommon
+performance constraint. The generatibe <strong>AI</strong> will not be able to handle this kind of issues
+where truly original work is required.
+<strong>Specialists</strong> will always be in demand to tackle the <strong>hard</strong> problems.
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_rest_of_the_it_professions">The rest of the IT professions</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Until now I talked only about software engineers but I truly believe that
+the same applies for most of the IT field and probably in many other
+professions that feel threatened by <strong>AI</strong>.</p></div>
+<div class="paragraph"><p><strong>Everyone</strong> will have to <strong>adopt</strong> to a new way of working where <strong>AI</strong> will be the catalyst
+for reaching new levels of <strong>productivity</strong>. Eliminating the human factor
+at all does not seem so simple at this point.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_inevitable_change">The inevitable change</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Mankind through the centuries has faced many groundbreaking discoveries that changed the way we think and work. It is expected some professions that exist today to be <strong>obsolete in the future</strong> and other professions that we can’t even <strong>imagine</strong> will be very popular.</p></div>
+<div class="paragraph"><p>I don’t really believe that the demand for human workers will be significantly decreased.
+In the industrial revolution there were <a href="https://en.wikipedia.org/wiki/Luddite">similar</a> fears
+but eventually the demand for workers was increased and the standard of living
+was improved(<a href="https://www.investopedia.com/terms/i/industrial-revolution.asp">1</a>. <a href="https://www.accountancysa.org.za/the-stages-of-industrial-revolution-and-its-impact-on-jobs/">2</a>, <a href="https://www.ilo.org/wcmsp5/groups/public/---ed_dialogue/---act_emp/documents/presentation/wcms_582793.pdf">3</a>).</p></div>
+<div class="paragraph"><p>I don&#8217;t want to <em>sugarcoat</em> things. Every change has <strong>winners</strong> and <strong>losers</strong>.
+I don&#8217;t think however that <em>technology is good or bad</em>. <strong>AI</strong> was <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_fiction">prophetized</a>
+in popular fiction many decades now and I believe that it is up to us as
+a <strong>society</strong> to make the best out of it and remind to the companies that
+investing on it that it is something that <strong>impacts everyone</strong>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_epilogue">Epilogue</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong>Generative AI</strong> is not something <strong>new</strong>. Now it has <strong>matured</strong> enough and we are able to see its application <strong>everywhere</strong>.</p></div>
+<div class="paragraph"><p>Eventually this will <strong>affect</strong> the way we work and live. Change and adoption needs time though. Only <strong>few pioneer companies</strong> will get <strong>affected</strong> for the <strong>next few years</strong>. Most companies will adopt it <strong>gradually</strong> and we need <strong>many years</strong> until it re-shapes the field.</p></div>
+<div class="paragraph"><p>Today’s IT professionals <strong>don’t have to fear for their jobs</strong>. They will need to adapt to new ways of working but replacing professionals with <strong>AI</strong> is an exercise for the <strong>very distant future</strong>. Even then, it is most probable that new jobs that we can’t predict at the moment will emerge.</p></div>
+<div class="paragraph"><p>I hope my <strong>predictions</strong> to prove accurate. Please, let me know if you have any different thought on the matter!</p></div>
+</div>
+</div>
+		]]>
+</content:encoded>
+        
+        <pubDate>Mon, 21 Aug 2023 01:19:04 +0300</pubDate>
+        <guid>https://masterex.github.io/archive/2023/08/21/the-future-of-programming-in-the-AI-era.html</guid>
+    </item>
+    <item>
         <title>Overflowing the stack for fun</title>
         <link>https://masterex.github.io/archive/2021/12/19/overflowing-the-stack-for-fun.html</link>
         <description>Overflowing the stack for fun</description>
